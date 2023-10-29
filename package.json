@@ -28,7 +28,7 @@
     "email": "nikola@nikolahristov.tech",
     "url": "https://nikolahristov.tech"
   },
-  "publisher": "ms-azuretools",
+  "publisher": "playform",
   "type": "module",
   "main": "main",
   "scripts": {
