@@ -15,13 +15,13 @@
 // to report the results back to the caller. When the tests are finished, return
 // a possible error to the callback or null if none.
 
-import * as path from 'path';
+import * as path from "path";
 // tslint:disable-next-line:no-require-imports no-submodule-imports
-import testRunner = require('vscode/lib/testrunner');
+import testRunner = require("vscode/lib/testrunner");
 
 const options: { [key: string]: string | boolean | number | object } = {
-    ui: 'tdd', 		// the TDD UI is being used in extension.test.ts (suite, test, etc.)
-    useColors: true // colored output from test results
+	ui: "tdd", // the TDD UI is being used in extension.test.ts (suite, test, etc.)
+	useColors: true, // colored output from test results
 };
 
 // You can directly control Mocha options using environment variables beginning with MOCHA_.
@@ -39,25 +39,25 @@ const options: { [key: string]: string | boolean | number | object } = {
 // See https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically#set-options for all available options
 
 // Defaults
-options.reporter = 'mocha-multi-reporters';
+options.reporter = "mocha-multi-reporters";
 options.reporterOptions = {
-    reporterEnabled: 'spec, mocha-junit-reporter',
-    mochaJunitReporterReporterOptions: {
-        mochaFile: path.join(__dirname, '..', '..', 'test-results.xml')
-    }
+	reporterEnabled: "spec, mocha-junit-reporter",
+	mochaJunitReporterReporterOptions: {
+		mochaFile: path.join(__dirname, "..", "..", "test-results.xml"),
+	},
 };
 
 for (const envVar of Object.keys(process.env)) {
-    const match: RegExpMatchArray | null = envVar.match(/^mocha_(.+)/i);
-    if (match) {
-        const [, option] = match;
-        // tslint:disable-next-line:strict-boolean-expressions
-        let value: string | number = process.env[envVar] || '';
-        if (typeof value === 'string' && !isNaN(parseInt(value))) {
-            value = parseInt(value);
-        }
-        options[option] = value;
-    }
+	const match: RegExpMatchArray | null = envVar.match(/^mocha_(.+)/i);
+	if (match) {
+		const [, option] = match;
+		// tslint:disable-next-line:strict-boolean-expressions
+		let value: string | number = process.env[envVar] || "";
+		if (typeof value === "string" && !isNaN(parseInt(value))) {
+			value = parseInt(value);
+		}
+		options[option] = value;
+	}
 }
 console.warn(`Mocha options: ${JSON.stringify(options, null, 2)}`);
 
