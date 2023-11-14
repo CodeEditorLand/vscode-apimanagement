@@ -6,5 +6,5 @@
 import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export interface IGatewayTreeRoot extends IServiceTreeRoot {
-	gatewayName: string;
+    gatewayName: string;
 }

@@ -6,5 +6,5 @@
 import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export interface IAuthorizationProviderTreeRoot extends IServiceTreeRoot {
-	authorizationProviderName: string;
+    authorizationProviderName: string;
 }

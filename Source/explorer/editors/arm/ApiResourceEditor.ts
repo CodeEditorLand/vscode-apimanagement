@@ -9,31 +9,17 @@ import { IApiTreeRoot } from "../../IApiTreeRoot";
 import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 
 // tslint:disable-next-line:no-any
-export class ApiResourceEditor extends BaseArmResourceEditor<IApiTreeRoot> {
-	public entityType: string = "API";
-	constructor() {
-		super();
-	}
+export class ApiResourceEditor extends BaseArmResourceEditor<IApiTreeRoot>  {
+    public entityType: string = "API";
+    constructor() {
+        super();
+    }
 
-	public async getDataInternal(
-		context: AzureTreeItem<IApiTreeRoot>
-	): Promise<ApiManagementModels.ApiContract> {
-		return await context.root.client.api.get(
-			context.root.resourceGroupName,
-			context.root.serviceName,
-			context.root.apiName
-		);
-	}
+    public async getDataInternal(context: AzureTreeItem<IApiTreeRoot>): Promise<ApiManagementModels.ApiContract> {
+        return await context.root.client.api.get(context.root.resourceGroupName, context.root.serviceName, context.root.apiName);
+    }
 
-	public async updateDataInternal(
-		context: AzureTreeItem<IApiTreeRoot>,
-		payload: ApiManagementModels.ApiCreateOrUpdateParameter
-	): Promise<ApiManagementModels.ApiContract> {
-		return await context.root.client.api.createOrUpdate(
-			context.root.resourceGroupName,
-			context.root.serviceName,
-			context.root.apiName,
-			payload
-		);
-	}
+    public async updateDataInternal(context: AzureTreeItem<IApiTreeRoot>, payload: ApiManagementModels.ApiCreateOrUpdateParameter): Promise<ApiManagementModels.ApiContract> {
+        return await context.root.client.api.createOrUpdate(context.root.resourceGroupName, context.root.serviceName, context.root.apiName, payload);
+    }
 }

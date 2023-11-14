@@ -6,5 +6,5 @@
 import { IApiTreeRoot } from "./IApiTreeRoot";
 
 export interface IOperationTreeRoot extends IApiTreeRoot {
-	opName: string;
+    opName: string;
 }

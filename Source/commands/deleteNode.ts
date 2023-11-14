@@ -6,17 +6,10 @@
 import { AzureTreeItem, IActionContext } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";
 
-export async function deleteNode(
-	context: IActionContext,
-	expectedContextValue: string | RegExp,
-	node?: AzureTreeItem
-): Promise<void> {
-	if (!node) {
-		node = await ext.tree.showTreeItemPicker<AzureTreeItem>(
-			expectedContextValue,
-			context
-		);
-	}
+export async function deleteNode(context: IActionContext, expectedContextValue: string | RegExp, node?: AzureTreeItem): Promise<void> {
+    if (!node) {
+        node = await ext.tree.showTreeItemPicker<AzureTreeItem>(expectedContextValue, context);
+    }
 
-	await node.deleteTreeItem(context);
+    await node.deleteTreeItem(context);
 }
