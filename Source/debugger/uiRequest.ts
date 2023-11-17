@@ -5,14 +5,18 @@ import { UiThread } from "./uiThread";
 // tslint:disable: export-name
 
 export class UiRequest {
-
 	public id: string;
 	public threads: UiThread[];
 	private operationId: string;
 	private apiId: string;
 	private productId: string;
 
-	constructor(id: string, operationId: string, apiId: string, productId: string) {
+	constructor(
+		id: string,
+		operationId: string,
+		apiId: string,
+		productId: string
+	) {
 		this.id = id;
 		this.threads = [];
 
@@ -21,9 +25,20 @@ export class UiRequest {
 		this.productId = productId;
 	}
 
-	public addNewThread(gatewayThread: number, policySource: PolicySource): UiThread {
+	public addNewThread(
+		gatewayThread: number,
+		policySource: PolicySource
+	): UiThread {
 		let thread: UiThread;
-		this.threads.push(thread = new UiThread(gatewayThread, this.operationId, this.apiId, this.productId, policySource));
+		this.threads.push(
+			(thread = new UiThread(
+				gatewayThread,
+				this.operationId,
+				this.apiId,
+				this.productId,
+				policySource
+			))
+		);
 		return thread;
 	}
 

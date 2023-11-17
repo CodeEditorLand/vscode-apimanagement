@@ -11,33 +11,49 @@ import { IAuthorizationAccessPolicyTreeRoot } from "../../IAuthorizationAccessPo
 import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 
 // tslint:disable-next-line:no-any
-export class AuthorizationAccessPolicyResourceEditor extends BaseArmResourceEditor<IAuthorizationAccessPolicyTreeRoot>  {
-    public entityType: string = "AuthorizationAccessPolicy";
-    constructor() {
-        super();
-    }
+export class AuthorizationAccessPolicyResourceEditor extends BaseArmResourceEditor<IAuthorizationAccessPolicyTreeRoot> {
+	public entityType: string = "AuthorizationAccessPolicy";
+	constructor() {
+		super();
+	}
 
-    public async getDataInternal(context: AzureTreeItem<IAuthorizationAccessPolicyTreeRoot>): Promise<IAuthorizationAccessPolicyContract>  {
-        const apimService = new ApimService(
-            context.root.credentials,
-            context.root.environment.resourceManagerEndpointUrl,
-            context.root.subscriptionId,
-            context.root.resourceGroupName,
-            context.root.serviceName);
+	public async getDataInternal(
+		context: AzureTreeItem<IAuthorizationAccessPolicyTreeRoot>
+	): Promise<IAuthorizationAccessPolicyContract> {
+		const apimService = new ApimService(
+			context.root.credentials,
+			context.root.environment.resourceManagerEndpointUrl,
+			context.root.subscriptionId,
+			context.root.resourceGroupName,
+			context.root.serviceName
+		);
 
-        const response = await apimService.getAuthorizationAccessPolicy(context.root.authorizationProviderName, context.root.authorizationName, context.root.accessPolicyName);
-        return nonNullValue(response);
-    }
+		const response = await apimService.getAuthorizationAccessPolicy(
+			context.root.authorizationProviderName,
+			context.root.authorizationName,
+			context.root.accessPolicyName
+		);
+		return nonNullValue(response);
+	}
 
-    public async updateDataInternal(context: AzureTreeItem<IAuthorizationAccessPolicyTreeRoot>, payload: IAuthorizationAccessPolicyContract): Promise<IAuthorizationAccessPolicyContract> {
-        const apimService = new ApimService(
-            context.root.credentials,
-            context.root.environment.resourceManagerEndpointUrl,
-            context.root.subscriptionId,
-            context.root.resourceGroupName,
-            context.root.serviceName);
+	public async updateDataInternal(
+		context: AzureTreeItem<IAuthorizationAccessPolicyTreeRoot>,
+		payload: IAuthorizationAccessPolicyContract
+	): Promise<IAuthorizationAccessPolicyContract> {
+		const apimService = new ApimService(
+			context.root.credentials,
+			context.root.environment.resourceManagerEndpointUrl,
+			context.root.subscriptionId,
+			context.root.resourceGroupName,
+			context.root.serviceName
+		);
 
-        const response = await apimService.createAuthorizationAccessPolicy(context.root.authorizationProviderName, context.root.authorizationName, context.root.accessPolicyName, payload.properties);
-        return nonNullValue(response);
-    }
+		const response = await apimService.createAuthorizationAccessPolicy(
+			context.root.authorizationProviderName,
+			context.root.authorizationName,
+			context.root.accessPolicyName,
+			payload.properties
+		);
+		return nonNullValue(response);
+	}
 }

@@ -5,12 +5,13 @@
 
 export const isWindows: boolean = /^win/.test(process.platform);
 
-export const extensionName = 'vscode-azureapim';
-export const extensionPrefix: string = 'azureApiManagement';
+export const extensionName = "vscode-azureapim";
+export const extensionPrefix: string = "azureApiManagement";
 export const doubleClickDebounceDelay = 500; //milliseconds
 export const topItemCount: number = 20;
 
-export const swaggerSchema = "application/vnd.ms-azure-apim.swagger.definitions+json";
+export const swaggerSchema =
+	"application/vnd.ms-azure-apim.swagger.definitions+json";
 export const openApiSchema = "application/vnd.oai.openapi.components+json";
 export const swaggerExport = "swagger";
 export const openApiExport = "openapi%2Bjson";
@@ -24,8 +25,8 @@ export const invalidIdCharRegEx = "[^A-Za-z0-9]";
 export const maxApiNameLength = 80;
 export const HttpTriggerType = "httpTrigger";
 export enum HttpTriggerDirectionContract {
-    in = "in",
-    out = "out"
+	in = "in",
+	out = "out",
 }
 export const HttpTriggerAuthLevelAdmin = "admin";
 export const FunctionAppKeyLength = 40;
@@ -35,8 +36,8 @@ export const maxTokenValidTimeSpan = 29;
 export const gatewayHostName = "CustomerHostName";
 
 export enum GatewayKeyType {
-    primary = "primary",
-    secondary = "secondary"
+	primary = "primary",
+	secondary = "secondary",
 }
 
 // constants for extractor
@@ -44,12 +45,12 @@ export const templatesFolder = "templates";
 
 export const showSavePromptConfigKey = "azureApiManagement.showSavePrompt";
 
-export const advancedPolicyAuthoringExperienceConfigKey = "azureApiManagement.advancedPolicyAuthoringExperience";
+export const advancedPolicyAuthoringExperienceConfigKey =
+	"azureApiManagement.advancedPolicyAuthoringExperience";
 
 export const policyFormat = "rawxml";
 
-export const emptyGlobalPolicyXml =
-    `<!--
+export const emptyGlobalPolicyXml = `<!--
     IMPORTANT:
     - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
     - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
@@ -73,8 +74,7 @@ export const emptyGlobalPolicyXml =
     </on-error>
 </policies>`;
 
-export const emptyPolicyXml =
-    `<!--
+export const emptyPolicyXml = `<!--
     IMPORTANT:
     - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
     - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
