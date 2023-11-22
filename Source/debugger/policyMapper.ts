@@ -1,3 +1,4 @@
+
 // tslint:disable: no-unsafe-any
 // tslint:disable: indent
 // tslint:disable: export-name
@@ -14,21 +15,20 @@
 
 export class PolicyMapper {
 	public static WhiteSpaceCharacters = " \r\n\t";
-	public static NameCharacters =
-		"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-:";
+	public static NameCharacters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-:";
 
 	private index: number;
 	private xml: string;
 	private map: PolicyMap;
 	private count: {
-		[key: string]: number;
+		[key: string]: number
 	};
 	private stack: string[];
 	private line: number;
 	private column: number;
 	private capturedLocation: {
-		line: number;
-		column: number;
+		line: number,
+		column: number,
 		index: number;
 	};
 
@@ -41,10 +41,7 @@ export class PolicyMapper {
 		this.line = 0;
 		this.column = 0;
 
-		while (
-			this.index < this.xml.length &&
-			(this.xmlComment() || this.element())
-		) {}
+		while (this.index < this.xml.length && (this.xmlComment() || this.element())) { }
 
 		return this.map;
 	}
@@ -62,23 +59,18 @@ export class PolicyMapper {
 		let closing = false;
 		while (this.index < this.xml.length) {
 			const char = this.xml[this.index];
-			if (char === "<") {
+			if (char === '<') {
 				if (!start) {
 					start = [this.line, this.column];
 				}
-			} else if (char === "/") {
+			} else if (char === '/') {
 				if (!name) {
 					if (nameStart > 0 && !name) {
 						name = this.xml.substring(nameStart, this.index);
-						const curkey =
-							this.stack.length === 0
-								? `${name}[1]`
-								: this.stack.join("/") + `/${name}[1]`;
+						const curkey = this.stack.length === 0 ? `${name}[1]` : this.stack.join('/') + `/${name}[1]`;
 						//const curkey = this.stack.reduce((a, b) => `${a}/${b}`) + `${name}[1]`;
 						if (this.count[curkey]) {
-							this.stack.push(
-								name + `[${this.count[curkey] + 1}]`
-							);
+							this.stack.push(name + `[${this.count[curkey] + 1}]`);
 							this.count[curkey]++;
 						} else {
 							this.stack.push(name + `[1]`);
@@ -94,13 +86,10 @@ export class PolicyMapper {
 				} else {
 					closing = true;
 				}
-			} else if (char === ">") {
+			} else if (char === '>') {
 				if (nameStart > 0 && !name) {
 					name = this.xml.substring(nameStart, this.index);
-					const curkey =
-						this.stack.length === 0
-							? `${name}[1]`
-							: this.stack.join("/") + `/${name}[1]`;
+					const curkey = this.stack.length === 0 ? `${name}[1]` : this.stack.join('/') + `/${name}[1]`;
 					if (this.count[curkey]) {
 						this.stack.push(name + `[${this.count[curkey] + 1}]`);
 						this.count[curkey]++;
@@ -124,7 +113,7 @@ export class PolicyMapper {
 				if (this.elementValue()) {
 					continue;
 				}
-			} else if (char === "<") {
+			} else if (char === '<') {
 				if (end) {
 					closing = true;
 				} else {
@@ -133,10 +122,7 @@ export class PolicyMapper {
 			} else if (PolicyMapper.WhiteSpaceCharacters.indexOf(char) >= 0) {
 				if (nameStart >= 0 && !name) {
 					name = this.xml.substring(nameStart, this.index);
-					const curkey =
-						this.stack.length === 0
-							? `${name}[1]`
-							: this.stack.join("/") + `/${name}[1]`;
+					const curkey = this.stack.length === 0 ? `${name}[1]` : this.stack.join('/') + `/${name}[1]`;
 					if (this.count[curkey]) {
 						this.stack.push(name + `[${this.count[curkey] + 1}]`);
 						this.count[curkey]++;
@@ -173,17 +159,17 @@ export class PolicyMapper {
 		let closeCount = 0;
 		while (this.index < this.xml.length) {
 			const char = this.xml[this.index];
-			if (char === "<") {
+			if (char === '<') {
 				if (openCount === 0) {
 					openCount++;
 				}
-			} else if (char === "!") {
+			} else if (char === '!') {
 				if (openCount === 1) {
 					openCount++;
 				} else {
 					openCount = 0;
 				}
-			} else if (char === "-") {
+			} else if (char === '-') {
 				if (openCount === 2 || openCount === 3) {
 					openCount++;
 				} else if (openCount === 4) {
@@ -195,7 +181,7 @@ export class PolicyMapper {
 				} else {
 					break;
 				}
-			} else if (char === ">") {
+			} else if (char === '>') {
 				if (closeCount === 2) {
 					this.advance();
 					return true;
@@ -237,7 +223,7 @@ export class PolicyMapper {
 		let hasValue = false;
 		while (this.index < this.xml.length) {
 			const char = this.xml[this.index];
-			if (char === "=") {
+			if (char === '=') {
 				if (nameStart >= 0 && !name) {
 					name = this.xml.substring(nameStart, this.index);
 				}
@@ -298,25 +284,25 @@ export class PolicyMapper {
 		while (this.index < this.xml.length) {
 			const char = this.xml[this.index];
 
-			if (char === "@") {
+			if (char === '@') {
 				if (at) {
 					break;
 				}
 
 				at = true;
-			} else if (char === "{" || char === "(") {
+			} else if (char === '{' || char === '(') {
 				if (!at) {
 					break;
 				}
 
 				if (!openingBracket) {
 					openingBracket = char;
-					closingBracket = char === "{" ? "}" : ")";
+					closingBracket = char === '{' ? '}' : ')';
 					bracketDepth = 0;
 				} else if (openingBracket === char) {
 					bracketDepth++;
 				}
-			} else if (char === "}" || char === ")") {
+			} else if (char === '}' || char === ')') {
 				if (!openingBracket) {
 					break;
 				}
@@ -365,19 +351,14 @@ export class PolicyMapper {
 
 	private elementValue() {
 		let flag = false;
-		while (
-			this.expression() ||
-			this.xmlComment() ||
-			this.element() ||
-			this.simpleValue("<", false)
-		) {
+		while (this.expression() || this.xmlComment() || this.element() || this.simpleValue('<', false)) {
 			flag = true;
 		}
 		return flag;
 	}
 
 	private advance() {
-		if (this.xml[this.index] === "\n") {
+		if (this.xml[this.index] === '\n') {
 			this.line++;
 			this.column = 0;
 		} else {
@@ -393,7 +374,7 @@ export class PolicyMapper {
 			line: start[0],
 			endLine: end[0],
 			column: start[1],
-			endColumn: end[1],
+			endColumn: end[1]
 		};
 	}
 
@@ -401,7 +382,7 @@ export class PolicyMapper {
 		this.capturedLocation = {
 			line: this.line,
 			column: this.column,
-			index: this.index,
+			index: this.index
 		};
 	}
 

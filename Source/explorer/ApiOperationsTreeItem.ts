@@ -12,52 +12,39 @@ import { ApiOperationTreeItem } from "./ApiOperationTreeItem";
 import { IApiTreeRoot } from "./IApiTreeRoot";
 
 export class ApiOperationsTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
-	public get iconPath(): { light: string; dark: string } {
-		return treeUtils.getThemedIconPath("list");
-	}
-	public static contextValue: string = "azureApiManagementOperations";
-	public label: string = "Operations";
-	public contextValue: string = ApiOperationsTreeItem.contextValue;
-	public readonly childTypeLabel: string = localize(
-		"azureApiManagement.Operation",
-		"Operation"
-	);
-	private _nextLink: string | undefined;
 
-	public hasMoreChildrenImpl(): boolean {
-		return this._nextLink !== undefined;
-	}
+    public get iconPath(): { light: string, dark: string } {
+        return treeUtils.getThemedIconPath('list');
+    }
+    public static contextValue: string = 'azureApiManagementOperations';
+    public label: string = "Operations";
+    public contextValue: string = ApiOperationsTreeItem.contextValue;
+    public readonly childTypeLabel: string = localize('azureApiManagement.Operation', 'Operation');
+    private _nextLink: string | undefined;
 
-	public async loadMoreChildrenImpl(
-		clearCache: boolean
-	): Promise<AzExtTreeItem[]> {
-		if (clearCache) {
-			this._nextLink = undefined;
-		}
+    public hasMoreChildrenImpl(): boolean {
+        return this._nextLink !== undefined;
+    }
 
-		const operationCollection: ApiManagementModels.OperationCollection =
-			this._nextLink === undefined
-				? await this.root.client.apiOperation.listByApi(
-						this.root.resourceGroupName,
-						this.root.serviceName,
-						this.root.apiName,
-						{ top: topItemCount }
-				  )
-				: await this.root.client.apiOperation.listByApiNext(
-						this._nextLink
-				  );
+    public async loadMoreChildrenImpl(clearCache: boolean): Promise<AzExtTreeItem[]> {
+        if (clearCache) {
+            this._nextLink = undefined;
+        }
 
-		// tslint:disable-next-line: no-unsafe-any
-		this._nextLink = operationCollection.nextLink;
+        const operationCollection: ApiManagementModels.OperationCollection = this._nextLink === undefined ?
+            await this.root.client.apiOperation.listByApi(this.root.resourceGroupName, this.root.serviceName, this.root.apiName, {top: topItemCount}) :
+            await this.root.client.apiOperation.listByApiNext(this._nextLink);
 
-		return this.createTreeItemsWithErrorHandling(
-			operationCollection,
-			"invalidApiManagementApiOperation",
-			async (op: ApiManagementModels.OperationContract) =>
-				new ApiOperationTreeItem(this, op),
-			(op: ApiManagementModels.OperationContract) => {
-				return op.name;
-			}
-		);
-	}
+        // tslint:disable-next-line: no-unsafe-any
+        this._nextLink = operationCollection.nextLink;
+
+        return this.createTreeItemsWithErrorHandling(
+            operationCollection,
+            "invalidApiManagementApiOperation",
+            async (op: ApiManagementModels.OperationContract) => new ApiOperationTreeItem(this, op),
+            (op: ApiManagementModels.OperationContract) => {
+                return op.name;
+            });
+
+    }
 }
