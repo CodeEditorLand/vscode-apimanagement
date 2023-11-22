@@ -2,13 +2,13 @@
   "name": "vscode-apimanagement",
   "displayName": "Azure API Management",
   "description": "An Azure API Management extension for Visual Studio Code.",
-  "version": "1.0.8",
-  "publisher": "ms-azuretools",
+  "version": "0.0.1",
+  "publisher": "playform",
   "icon": "resources/apim-icon-newone.png",
   "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/vscode-apimanagement"
+    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
   },
   "galleryBanner": {
     "color": "#0072c6",
@@ -804,7 +804,8 @@
     "all": "npm i && npm run lint && npm test",
     "webpack": "npm run build && gulp webpack-dev",
     "webpack-prod": "npm run build && gulp webpack-prod",
-    "webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
+    "webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats",
+    "prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'"
   },
   "devDependencies": {
     "@azure/ms-rest-js": "2.7.0",
@@ -831,7 +832,8 @@
     "vscode-debugadapter-testsupport": "1.40.2",
     "vscode-extension-telemetry": "0.0.18",
     "webpack": "5.89.0",
-    "webpack-cli": "5.1.4"
+    "webpack-cli": "5.1.4",
+    "typescript-esbuild": "0.3.1"
   },
   "dependencies": {
     "@azure/arm-apimanagement": "9.1.0",
@@ -862,6 +864,21 @@
     "humao.rest-client"
   ],
   "overrides": {
-    "fsevents": "~2.3.2"
+    "fsevents": "2.3.2"
+  },
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "bugs": {
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
+  },
+  "license": "MIT",
+  "type": "module",
+  "private": "false",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "Nikola Hristov",
+    "email": "nikola@nikolahristov.tech",
+    "url": "https://nikolahristov.tech"
   }
 }
