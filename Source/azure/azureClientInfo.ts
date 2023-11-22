@@ -7,7 +7,7 @@ import { Environment } from "@azure/ms-rest-azure-env";
 import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
 
 export interface IAzureClientInfo {
-    credentials: TokenCredentialsBase;
-    subscriptionId: string;
-    environment: Environment;
+	credentials: TokenCredentialsBase;
+	subscriptionId: string;
+	environment: Environment;
 }

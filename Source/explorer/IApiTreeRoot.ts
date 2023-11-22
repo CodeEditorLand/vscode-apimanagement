@@ -6,5 +6,5 @@
 import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export interface IApiTreeRoot extends IServiceTreeRoot {
-    apiName: string;
+	apiName: string;
 }

@@ -6,5 +6,5 @@
 import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export interface ISubscriptionTreeRoot extends IServiceTreeRoot {
-    subscriptionSid: string;
+	subscriptionSid: string;
 }
