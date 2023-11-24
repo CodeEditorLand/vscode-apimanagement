@@ -13,50 +13,82 @@ import { IServiceTreeRoot } from "../../IServiceTreeRoot";
 import { Editor } from "../Editor";
 
 // tslint:disable:no-any
-export abstract class BaseArmResourceEditor<TRoot extends IServiceTreeRoot> extends Editor<AzureTreeItem<TRoot>> {
-    constructor() {
-        super(showSavePromptConfigKey);
-    }
+export abstract class BaseArmResourceEditor<
+	TRoot extends IServiceTreeRoot,
+> extends Editor<AzureTreeItem<TRoot>> {
+	constructor() {
+		super(showSavePromptConfigKey);
+	}
 
-    public abstract get entityType(): string;
-    public abstract getDataInternal(context: AzureTreeItem<TRoot>): Promise<any>;
-    public abstract updateDataInternal(context: AzureTreeItem<TRoot>, payload: any): Promise<any>;
+	public abstract get entityType(): string;
+	public abstract getDataInternal(
+		context: AzureTreeItem<TRoot>
+	): Promise<any>;
+	public abstract updateDataInternal(
+		context: AzureTreeItem<TRoot>,
+		payload: any
+	): Promise<any>;
 
-    public async getData(context: AzureTreeItem<TRoot>): Promise<string> {
-        try {
-            const response = await this.getDataInternal(context);
-            return JSON.stringify(response, null, "\t");
-        } catch (error) {
-            throw new Error(`${parseError(error).message}`);
-        }
-    }
+	public async getData(context: AzureTreeItem<TRoot>): Promise<string> {
+		try {
+			const response = await this.getDataInternal(context);
+			return JSON.stringify(response, null, "\t");
+		} catch (error) {
+			throw new Error(`${parseError(error).message}`);
+		}
+	}
 
-// tslint:disable: no-unsafe-any
-    public async updateData(context: AzureTreeItem<TRoot>, data: string): Promise<string> {
-        try {
-            const payload = JSON.parse(data);
-            const response = await this.updateDataInternal(context, payload);
-            //await context.refresh();
-            window.showInformationMessage(localize("updateSucceded", `Changes to ${this.entityType} were succefully uploaded to cloud.`));
-            return JSON.stringify(response, null, "\t");
-        } catch (error) {
-            throw new Error(processError(error, localize("updateFailed", `Changes to ${this.entityType} could not be uploaded to cloud.`)));
-        }
-    }
+	// tslint:disable: no-unsafe-any
+	public async updateData(
+		context: AzureTreeItem<TRoot>,
+		data: string
+	): Promise<string> {
+		try {
+			const payload = JSON.parse(data);
+			const response = await this.updateDataInternal(context, payload);
+			//await context.refresh();
+			window.showInformationMessage(
+				localize(
+					"updateSucceded",
+					`Changes to ${this.entityType} were succefully uploaded to cloud.`
+				)
+			);
+			return JSON.stringify(response, null, "\t");
+		} catch (error) {
+			throw new Error(
+				processError(
+					error,
+					localize(
+						"updateFailed",
+						`Changes to ${this.entityType} could not be uploaded to cloud.`
+					)
+				)
+			);
+		}
+	}
 
-    public async getDiffFilename(context: AzureTreeItem<TRoot>): Promise<string> {
-        return `${nameUtil(context.root)}-${this.entityType.toLowerCase()}-arm.json`;
-    }
+	public async getDiffFilename(
+		context: AzureTreeItem<TRoot>
+	): Promise<string> {
+		return `${nameUtil(
+			context.root
+		)}-${this.entityType.toLowerCase()}-arm.json`;
+	}
 
-    public async getFilename(context: AzureTreeItem<TRoot>): Promise<string> {
-        return `${nameUtil(context.root)}-${this.entityType.toLowerCase()}-arm-tempFile.json`;
-    }
+	public async getFilename(context: AzureTreeItem<TRoot>): Promise<string> {
+		return `${nameUtil(
+			context.root
+		)}-${this.entityType.toLowerCase()}-arm-tempFile.json`;
+	}
 
-    public async getSize(): Promise<number> {
-        throw new Error(localize("", "Method not implemented."));
-    }
+	public async getSize(): Promise<number> {
+		throw new Error(localize("", "Method not implemented."));
+	}
 
-    public async getSaveConfirmationText(): Promise<string> {
-        return localize("saveConfirmation", "Do you want to upload the azure resource changes to cloud?");
-    }
+	public async getSaveConfirmationText(): Promise<string> {
+		return localize(
+			"saveConfirmation",
+			"Do you want to upload the azure resource changes to cloud?"
+		);
+	}
 }
