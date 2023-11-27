@@ -815,7 +815,7 @@
   ],
   "dependencies": {
     "@azure/arm-apimanagement": "9.1.0",
-    "@azure/arm-appservice": "14.0.0",
+    "@azure/arm-appservice": "14.1.0",
     "@azure/arm-resources": "5.2.0",
     "@types/xml": "1.0.11",
     "adal-node": "0.2.2",
@@ -842,7 +842,7 @@
     "@types/fs-extra": "11.0.4",
     "@types/gulp": "4.0.17",
     "@types/mocha": "10.0.6",
-    "@types/node": "20.9.4",
+    "@types/node": "20.10.0",
     "@types/request": "2.48.12",
     "@types/request-promise": "4.1.51",
     "@types/request-promise-native": "1.0.21",
