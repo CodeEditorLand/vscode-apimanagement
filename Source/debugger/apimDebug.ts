@@ -451,8 +451,8 @@ export class ApimDebugSession extends LoggingDebugSession {
 			breakpoints.length !== 0
 				? breakpoints
 				: args.breakpoints
-				? args.breakpoints.map((_b) => new Breakpoint(false))
-				: [];
+				  ? args.breakpoints.map((_b) => new Breakpoint(false))
+				  : [];
 		response.body = {
 			breakpoints: nBreakpoints,
 		};
