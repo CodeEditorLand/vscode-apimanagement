@@ -832,7 +832,7 @@
     "vscode-debugadapter": "1.39.1",
     "vscode-debugprotocol": "1.39.0",
     "vscode-nls": "5.2.0",
-    "ws": "8.15.0",
+    "ws": "8.15.1",
     "xregexp": "5.1.1"
   },
   "devDependencies": {
