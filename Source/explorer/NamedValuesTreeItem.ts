@@ -52,10 +52,10 @@ export class NamedValuesTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						{ top: topItemCount }
-				  )
+					)
 				: await this.root.client.namedValue.listByServiceNext(
 						this._nextLink
-				  );
+					);
 
 		this._nextLink = propertyCollection.nextLink;
 

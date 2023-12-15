@@ -36,10 +36,10 @@ export class ProductsTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						{ top: topItemCount }
-				  )
+					)
 				: await this.root.client.product.listByServiceNext(
 						this._nextLink
-				  );
+					);
 
 		this._nextLink = productCollection.nextLink;
 

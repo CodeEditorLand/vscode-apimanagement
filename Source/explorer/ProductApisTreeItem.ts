@@ -51,10 +51,10 @@ export class ProductApisTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 						this.root.serviceName,
 						this.root.productName,
 						{ top: topItemCount }
-				  )
+					)
 				: await this.root.client.productApi.listByProductNext(
 						this._nextLink
-				  );
+					);
 
 		this._nextLink = productApisCollection.nextLink;
 

@@ -421,7 +421,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 						v.nestedCount
 							? this.variablesHandles.create(
 									`${variableScope}|${v.name}`
-							  )
+								)
 							: 0
 					);
 					(<DebugProtocol.Variable>variable).type = v.type;
@@ -451,8 +451,8 @@ export class ApimDebugSession extends LoggingDebugSession {
 			breakpoints.length !== 0
 				? breakpoints
 				: args.breakpoints
-				  ? args.breakpoints.map((_b) => new Breakpoint(false))
-				  : [];
+					? args.breakpoints.map((_b) => new Breakpoint(false))
+					: [];
 		response.body = {
 			breakpoints: nBreakpoints,
 		};

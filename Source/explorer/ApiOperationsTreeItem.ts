@@ -42,10 +42,10 @@ export class ApiOperationsTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 						this.root.serviceName,
 						this.root.apiName,
 						{ top: topItemCount }
-				  )
+					)
 				: await this.root.client.apiOperation.listByApiNext(
 						this._nextLink
-				  );
+					);
 
 		// tslint:disable-next-line: no-unsafe-any
 		this._nextLink = operationCollection.nextLink;

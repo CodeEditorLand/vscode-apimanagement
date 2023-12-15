@@ -32,7 +32,7 @@ export async function addApiFilter(
 					node.root.resourceGroupName,
 					node.root.serviceName,
 					{ expandApiVersionSet: false, top: 100 }
-			  )
+				)
 			: await node.root.client.api.listByServiceNext(nextLink);
 
 	while (nextLink !== undefined) {

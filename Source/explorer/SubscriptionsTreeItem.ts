@@ -36,7 +36,7 @@ export class SubscriptionsTreeItem extends AzureParentTreeItem<IServiceTreeRoot>
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						{ top: topItemCount }
-				  )
+					)
 				: await this.root.client.subscription.listNext(this._nextLink);
 
 		this._nextLink = subscriptionCollection.nextLink;

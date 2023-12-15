@@ -63,10 +63,10 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 							this.root.resourceGroupName,
 							this.root.serviceName,
 							{ expandApiVersionSet: true, top: topItemCount }
-					  )
+						)
 					: await this.root.client.api.listByServiceNext(
 							this._nextLink
-					  );
+						);
 
 			this._nextLink = apiCollection.nextLink;
 

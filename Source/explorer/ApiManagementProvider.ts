@@ -68,7 +68,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 					? await client.apiManagementService.list()
 					: await client.apiManagementService.listNext(
 							this._nextLink
-					  );
+						);
 		} catch (error) {
 			if (parseError(error).errorType.toLowerCase() === "notfound") {
 				// This error type means the 'Microsoft.ApiManagement' provider has not been registered in this subscription

@@ -28,7 +28,7 @@ export class ConsoleOperation {
 			? operationContract.templateParameters.map(
 					(parameterContract) =>
 						new ConsoleParameter(parameterContract)
-			  )
+				)
 			: [];
 		if (
 			this.uriTemplate &&
