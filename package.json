@@ -2,7 +2,7 @@
 	"name": "vscode-apimanagement",
 	"displayName": "Azure API Management",
 	"version": "0.0.1",
-	"private": "false",
+	"private": false,
 	"description": "An Azure API Management extension for Visual Studio Code.",
 	"homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
 	"bugs": {
