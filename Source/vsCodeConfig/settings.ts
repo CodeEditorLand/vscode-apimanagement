@@ -13,7 +13,7 @@ import { extensionPrefix } from "../constants";
 
 export function getGlobalSetting<T>(
 	key: string,
-	prefix: string = extensionPrefix
+	prefix: string = extensionPrefix,
 ): T | undefined {
 	const projectConfiguration: WorkspaceConfiguration =
 		workspace.getConfiguration(prefix);
@@ -25,26 +25,26 @@ export function getGlobalSetting<T>(
 export async function updateGlobalSetting<T = string>(
 	section: string,
 	value: T,
-	prefix: string = extensionPrefix
+	prefix: string = extensionPrefix,
 ): Promise<void> {
 	const projectConfiguration: WorkspaceConfiguration =
 		workspace.getConfiguration(prefix);
 	await projectConfiguration.update(
 		section,
 		value,
-		ConfigurationTarget.Global
+		ConfigurationTarget.Global,
 	);
 }
 
 export function getWorkspaceSetting<T>(
 	key: string,
 	fsPath?: string,
-	prefix: string = extensionPrefix
+	prefix: string = extensionPrefix,
 ): T | undefined {
 	const projectConfiguration: WorkspaceConfiguration =
 		workspace.getConfiguration(
 			prefix,
-			fsPath ? Uri.file(fsPath) : undefined
+			fsPath ? Uri.file(fsPath) : undefined,
 		);
 	return projectConfiguration.get<T>(key);
 }
@@ -53,7 +53,7 @@ export async function updateWorkspaceSetting<T = string>(
 	section: string,
 	value: T,
 	fsPath: string,
-	prefix: string = extensionPrefix
+	prefix: string = extensionPrefix,
 ): Promise<void> {
 	const projectConfiguration: WorkspaceConfiguration =
 		workspace.getConfiguration(prefix, Uri.file(fsPath));

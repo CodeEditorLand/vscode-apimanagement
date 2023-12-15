@@ -66,7 +66,7 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	constructor(
 		parent: AzureParentTreeItem,
 		public readonly apiManagementClient: ApiManagementClient,
-		public readonly apiManagementService: ApiManagementModels.ApiManagementServiceResource
+		public readonly apiManagementService: ApiManagementModels.ApiManagementServiceResource,
 	) {
 		super(parent);
 
@@ -90,12 +90,12 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public static createEnvironmentTreeItem(
 		parent: AzureParentTreeItem,
 		apiManagementClient: ApiManagementClient,
-		apiManagementService: ApiManagementModels.ApiManagementServiceResource
+		apiManagementService: ApiManagementModels.ApiManagementServiceResource,
 	): ServiceTreeItem {
 		return new ServiceTreeItem(
 			parent,
 			apiManagementClient,
-			apiManagementService
+			apiManagementService,
 		);
 	}
 
@@ -130,18 +130,18 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public async deleteTreeItemImpl(): Promise<void> {
 		const message: string = localize(
 			"confirmDeleteService",
-			`Are you sure you want to delete API Management instance '${this.root.serviceName}' and its contents?`
+			`Are you sure you want to delete API Management instance '${this.root.serviceName}' and its contents?`,
 		);
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
-			DialogResponses.cancel
+			DialogResponses.cancel,
 		);
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"deletingService",
-				`Deleting API Management instance "${this.root.serviceName}"...`
+				`Deleting API Management instance "${this.root.serviceName}"...`,
 			);
 			await window.withProgress(
 				{
@@ -151,16 +151,16 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				async () => {
 					await this.root.client.apiManagementService.deleteMethod(
 						this.root.resourceGroupName,
-						this.root.serviceName
+						this.root.serviceName,
 					);
-				}
+				},
 			);
 			// don't wait
 			window.showInformationMessage(
 				localize(
 					"deletedService",
-					`Successfully deleted API Management instance "${this.root.serviceName}".`
-				)
+					`Successfully deleted API Management instance "${this.root.serviceName}".`,
+				),
 			);
 		} else {
 			throw new UserCancelledError();
@@ -172,14 +172,14 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 			await this.root.client.subscription.listSecrets(
 				this.root.resourceGroupName,
 				this.root.serviceName,
-				"master"
+				"master",
 			);
 		if (!subscriptionKeys.secondaryKey) {
 			window.showErrorMessage(
 				localize(
 					"CopySubscriptionKey",
-					`Secondary Subscription Key Unexpectedly null.`
-				)
+					`Secondary Subscription Key Unexpectedly null.`,
+				),
 			);
 		} else {
 			return subscriptionKeys.secondaryKey;
@@ -188,7 +188,7 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	}
 
 	public pickTreeItemImpl(
-		expectedContextValues: (string | RegExp)[]
+		expectedContextValues: (string | RegExp)[],
 	): AzureTreeItem<IServiceTreeRoot> | undefined {
 		for (const expectedContextValue of expectedContextValues) {
 			switch (expectedContextValue) {
@@ -215,13 +215,13 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 
 	private createRoot(
 		subRoot: ISubscriptionContext,
-		client: ApiManagementClient
+		client: ApiManagementClient,
 	): IServiceTreeRoot {
 		return Object.assign({}, subRoot, {
 			client: client,
 			serviceName: nonNullProp(this.apiManagementService, "name"),
 			resourceGroupName: getResourceGroupFromId(
-				nonNullProp(this.apiManagementService, "id")
+				nonNullProp(this.apiManagementService, "id"),
 			),
 		});
 	}

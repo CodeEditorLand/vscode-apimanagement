@@ -33,13 +33,13 @@ let graphService: GraphService;
 export async function createAuthorizationAccessPolicy(
 	context: IActionContext &
 		Partial<IAuthorizationAccessPolicyTreeItemContext>,
-	node?: AuthorizationAccessPoliciesTreeItem
+	node?: AuthorizationAccessPoliciesTreeItem,
 ): Promise<void> {
 	if (!node) {
 		const AuthorizationNode = <AuthorizationTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				AuthorizationTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 		node = AuthorizationNode.authorizationAccessPoliciesTreeItem;
@@ -50,19 +50,19 @@ export async function createAuthorizationAccessPolicy(
 		node.root.environment.resourceManagerEndpointUrl,
 		node.root.subscriptionId,
 		node.root.resourceGroupName,
-		node.root.serviceName
+		node.root.serviceName,
 	);
 
 	resourceGraphService = new ResourceGraphService(
 		node.root.credentials,
 		node.root.environment.resourceManagerEndpointUrl,
-		node.root.subscriptionId
+		node.root.subscriptionId,
 	);
 
 	graphService = new GraphService(
 		node.root.credentials,
 		nonNullValue(node.root.environment.activeDirectoryGraphResourceId),
-		node.root.tenantId
+		node.root.tenantId,
 	);
 
 	await graphService.acquireGraphToken();
@@ -70,7 +70,7 @@ export async function createAuthorizationAccessPolicy(
 	const identityOptions = await populateIdentityOptionsAsync(
 		apimService,
 		node.root.credentials,
-		node.root.environment.resourceManagerEndpointUrl
+		node.root.environment.resourceManagerEndpointUrl,
 	);
 
 	const identitySelected = await ext.ui.showQuickPick(identityOptions, {
@@ -95,7 +95,7 @@ export async function createAuthorizationAccessPolicy(
 				placeHolder: "Select system assigned managed identity ...",
 				canPickMany: false,
 				suppressPersistence: true,
-			}
+			},
 		);
 
 		permissionName = managedIdentitySelected.label;
@@ -114,7 +114,7 @@ export async function createAuthorizationAccessPolicy(
 				placeHolder: "Select user assigned managed identity ...",
 				canPickMany: false,
 				suppressPersistence: true,
-			}
+			},
 		);
 
 		permissionName = managedIdentitySelected.label;
@@ -122,7 +122,7 @@ export async function createAuthorizationAccessPolicy(
 	} else if (identitySelected.label === userEmailIdLabel) {
 		const userId = await askInput(
 			"Enter user emailId ...",
-			"mary@contoso.net"
+			"mary@contoso.net",
 		);
 		const user = await graphService.getUser(userId);
 
@@ -133,14 +133,14 @@ export async function createAuthorizationAccessPolicy(
 			window.showErrorMessage(
 				localize(
 					"invalidUserEmailId",
-					"Please specify a valid user emailId."
-				)
+					"Please specify a valid user emailId.",
+				),
 			);
 		}
 	} else if (identitySelected.label === groupDisplayNameorEmailIdLabel) {
 		const groupDisplayNameOrEmailId = await askInput(
 			"Enter group displayname (or) emailId ...",
-			"myfullgroupname (or) mygroup@contoso.net"
+			"myfullgroupname (or) mygroup@contoso.net",
 		);
 		const group = await graphService.getGroup(groupDisplayNameOrEmailId);
 
@@ -151,18 +151,18 @@ export async function createAuthorizationAccessPolicy(
 			window.showErrorMessage(
 				localize(
 					"invalidGroupDisplayNameorEmailId",
-					"Please specify a valid group display name (or) emailId. Example, myfullgroupname (or) mygroup@contoso.net"
-				)
+					"Please specify a valid group display name (or) emailId. Example, myfullgroupname (or) mygroup@contoso.net",
+				),
 			);
 		}
 	} else if (identitySelected.label === servicePrincipalDisplayNameLabel) {
 		const servicePrincipalDisplayName = await askInput(
 			"Enter service principal display name ...",
-			"myserviceprincipalname"
+			"myserviceprincipalname",
 		);
 
 		const spn = await graphService.getServicePrincipal(
-			servicePrincipalDisplayName
+			servicePrincipalDisplayName,
 		);
 
 		if (spn !== undefined && spn.objectId !== null) {
@@ -172,8 +172,8 @@ export async function createAuthorizationAccessPolicy(
 			window.showErrorMessage(
 				localize(
 					"invalidSpnDisplayName",
-					"Please specify a valid service principal display name."
-				)
+					"Please specify a valid service principal display name.",
+				),
 			);
 		}
 	} else {
@@ -193,7 +193,8 @@ export async function createAuthorizationAccessPolicy(
 function createAccessPolicy(
 	permissionName: string,
 	node: AuthorizationAccessPoliciesTreeItem,
-	context: IActionContext & Partial<IAuthorizationAccessPolicyTreeItemContext>
+	context: IActionContext &
+		Partial<IAuthorizationAccessPolicyTreeItemContext>,
 ): void {
 	window
 		.withProgress(
@@ -201,14 +202,14 @@ function createAccessPolicy(
 				location: ProgressLocation.Notification,
 				title: localize(
 					"creatingAuthorizationPermission",
-					`Creating Access policy '${permissionName}' for Authorization ${node.root.authorizationName} ...`
+					`Creating Access policy '${permissionName}' for Authorization ${node.root.authorizationName} ...`,
 				),
 				cancellable: false,
 			},
 			async () => {
 				// tslint:disable-next-line:no-non-null-assertion
 				return node!.createChild(context);
-			}
+			},
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
@@ -216,8 +217,8 @@ function createAccessPolicy(
 			window.showInformationMessage(
 				localize(
 					"createdAuthorizationPermission",
-					`Created Access policy '${permissionName}' successfully.`
-				)
+					`Created Access policy '${permissionName}' successfully.`,
+				),
 			);
 		});
 }
@@ -225,7 +226,7 @@ function createAccessPolicy(
 async function populateIdentityOptionsAsync(
 	apimService: ApimService,
 	credential: TokenCredentialsBase,
-	resourceManagerEndpointUrl: string
+	resourceManagerEndpointUrl: string,
 ): Promise<QuickPickItem[]> {
 	const options: QuickPickItem[] = [];
 
@@ -275,7 +276,7 @@ async function populateIdentityOptionsAsync(
 
 // tslint:disable-next-line:no-any
 async function populateManageIdentityOptions(
-	data: { name: string; id: string; principalId: string }[]
+	data: { name: string; id: string; principalId: string }[],
 ): Promise<QuickPickItem[]> {
 	const options: QuickPickItem[] = [];
 	const managedIdentityOptions: QuickPickItem[] = data.map((d) => {
@@ -292,7 +293,7 @@ async function populateManageIdentityOptions(
 
 async function askInput(
 	message: string,
-	placeholder: string = ""
+	placeholder: string = "",
 ): Promise<string> {
 	const idPrompt: string = localize("value", message);
 	return (
@@ -300,7 +301,7 @@ async function askInput(
 			prompt: idPrompt,
 			placeHolder: placeholder,
 			validateInput: async (
-				value: string
+				value: string,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
 				if (value === "") {

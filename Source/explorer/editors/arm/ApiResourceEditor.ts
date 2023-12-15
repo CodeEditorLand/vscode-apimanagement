@@ -16,24 +16,24 @@ export class ApiResourceEditor extends BaseArmResourceEditor<IApiTreeRoot> {
 	}
 
 	public async getDataInternal(
-		context: AzureTreeItem<IApiTreeRoot>
+		context: AzureTreeItem<IApiTreeRoot>,
 	): Promise<ApiManagementModels.ApiContract> {
 		return await context.root.client.api.get(
 			context.root.resourceGroupName,
 			context.root.serviceName,
-			context.root.apiName
+			context.root.apiName,
 		);
 	}
 
 	public async updateDataInternal(
 		context: AzureTreeItem<IApiTreeRoot>,
-		payload: ApiManagementModels.ApiCreateOrUpdateParameter
+		payload: ApiManagementModels.ApiCreateOrUpdateParameter,
 	): Promise<ApiManagementModels.ApiContract> {
 		return await context.root.client.api.createOrUpdate(
 			context.root.resourceGroupName,
 			context.root.serviceName,
 			context.root.apiName,
-			payload
+			payload,
 		);
 	}
 }

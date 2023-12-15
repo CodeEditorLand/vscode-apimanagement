@@ -30,5 +30,5 @@ exports["webpack-prod"] = () => gulp_webpack("production");
 exports.test = gulp.series(
 	gulp_installAzureAccount,
 	gulp_installRestClient,
-	test
+	test,
 );

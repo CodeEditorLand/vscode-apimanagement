@@ -14,15 +14,15 @@ export async function openWorkingFolder(): Promise<void> {
 	if (!workingFolderOpenedInWorkspace()) {
 		vscode.commands.executeCommand(
 			"vscode.openFolder",
-			vscode.Uri.file(folderPath)
+			vscode.Uri.file(folderPath),
 		);
 	} else {
 		ext.outputChannel.appendLine(
 			localize(
 				"folderAlreadyInWorkspace",
 				"Folder '{0}' already open in workspace",
-				folderPath
-			)
+				folderPath,
+			),
 		);
 		ext.outputChannel.show();
 	}

@@ -11,7 +11,7 @@ export namespace azUtils {
 				undefined,
 				undefined,
 				"az",
-				"--version"
+				"--version",
 			);
 			return true;
 		} catch (error) {
@@ -23,7 +23,7 @@ export namespace azUtils {
 		if (!(await isAzInstalled())) {
 			const message: string = localize(
 				"azNotInstalled",
-				"You must have the AZ CLI installed to perform this operation."
+				"You must have the AZ CLI installed to perform this operation.",
 			);
 
 			vscode.window
@@ -31,7 +31,7 @@ export namespace azUtils {
 				.then(async (result) => {
 					if (result === DialogResponses.learnMore) {
 						await openUrl(
-							"https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest"
+							"https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest",
 						);
 					}
 				});

@@ -32,7 +32,7 @@ export class AuthorizationTreeItem extends AzureParentTreeItem<IAuthorizationTre
 
 	constructor(
 		parent: AzureParentTreeItem,
-		public authorizationContract: IAuthorizationContract
+		public authorizationContract: IAuthorizationContract,
 	) {
 		super(parent);
 		this._label = nonNullProp(authorizationContract, "name");
@@ -70,7 +70,7 @@ export class AuthorizationTreeItem extends AzureParentTreeItem<IAuthorizationTre
 	}
 
 	public pickTreeItemImpl(
-		expectedContextValues: (string | RegExp)[]
+		expectedContextValues: (string | RegExp)[],
 	): AzureTreeItem<IAuthorizationTreeRoot> | undefined {
 		for (const expectedContextValue of expectedContextValues) {
 			switch (expectedContextValue) {
@@ -85,18 +85,18 @@ export class AuthorizationTreeItem extends AzureParentTreeItem<IAuthorizationTre
 	public async deleteTreeItemImpl(): Promise<void> {
 		const message: string = localize(
 			"confirmAuthorizationRemove",
-			`Are you sure you want to remove Authorization '${this.authorizationContract.name}' from Authorization provider '${this.root.authorizationProviderName}'?`
+			`Are you sure you want to remove Authorization '${this.authorizationContract.name}' from Authorization provider '${this.root.authorizationProviderName}'?`,
 		);
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
-			DialogResponses.cancel
+			DialogResponses.cancel,
 		);
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"removingAuthorization",
-				`Removing Authorization "${this.authorizationContract.name}" from Authorization provider '${this.root.authorizationProviderName}.'`
+				`Removing Authorization "${this.authorizationContract.name}" from Authorization provider '${this.root.authorizationProviderName}.'`,
 			);
 			await window.withProgress(
 				{
@@ -109,20 +109,20 @@ export class AuthorizationTreeItem extends AzureParentTreeItem<IAuthorizationTre
 						this.root.environment.resourceManagerEndpointUrl,
 						this.root.subscriptionId,
 						this.root.resourceGroupName,
-						this.root.serviceName
+						this.root.serviceName,
 					);
 					await apimService.deleteAuthorization(
 						this.root.authorizationProviderName,
-						nonNullProp(this.authorizationContract, "name")
+						nonNullProp(this.authorizationContract, "name"),
 					);
-				}
+				},
 			);
 			// don't wait
 			window.showInformationMessage(
 				localize(
 					"removedAuthorization",
-					`Successfully removed authorization "${this.authorizationContract.name}" from Authorization provider '${this.root.authorizationProviderName}'.`
-				)
+					`Successfully removed authorization "${this.authorizationContract.name}" from Authorization provider '${this.root.authorizationProviderName}'.`,
+				),
 			);
 		} else {
 			throw new UserCancelledError();

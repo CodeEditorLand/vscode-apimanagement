@@ -24,7 +24,7 @@ export class SubscriptionsTreeItem extends AzureParentTreeItem<IServiceTreeRoot>
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean
+		clearCache: boolean,
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -35,8 +35,8 @@ export class SubscriptionsTreeItem extends AzureParentTreeItem<IServiceTreeRoot>
 				? await this.root.client.subscription.list(
 						this.root.resourceGroupName,
 						this.root.serviceName,
-						{ top: topItemCount }
-					)
+						{ top: topItemCount },
+				  )
 				: await this.root.client.subscription.listNext(this._nextLink);
 
 		this._nextLink = subscriptionCollection.nextLink;
@@ -55,7 +55,7 @@ export class SubscriptionsTreeItem extends AzureParentTreeItem<IServiceTreeRoot>
 				} else {
 					return subscription.name;
 				}
-			}
+			},
 		);
 	}
 }

@@ -39,7 +39,7 @@ export class UiThread {
 		operationId: string,
 		apiId: string,
 		productId: string,
-		policySource: PolicySource
+		policySource: PolicySource,
 	) {
 		this.id = id;
 		this.uiId = UiThread.NextThreadId++;
@@ -53,17 +53,17 @@ export class UiThread {
 	private static addPendingSource(
 		pendingSources: PendingSource[],
 		frame: StackFrameContract,
-		stackFrame: StackFrame
+		stackFrame: StackFrame,
 	): void {
 		let pendingSource = pendingSources.find(
-			(s) => s.scopeId === frame.scopeId
+			(s) => s.scopeId === frame.scopeId,
 		);
 		if (!pendingSource) {
 			pendingSources.push(
 				(pendingSource = {
 					scopeId: frame.scopeId,
 					stackFrames: [],
-				})
+				}),
 			);
 		}
 
@@ -82,7 +82,7 @@ export class UiThread {
 
 	// tslint:disable-next-line: cyclomatic-complexity
 	public async getStackFrames(
-		frames: StackFrameContract[]
+		frames: StackFrameContract[],
 	): Promise<StackFrame[]> {
 		if (!frames.length) {
 			return [];
@@ -122,7 +122,7 @@ export class UiThread {
 				stackFrame: this.getStackFrame(
 					frame,
 					stackFrameKey,
-					pendingSources
+					pendingSources,
 				),
 			});
 		}
@@ -130,7 +130,7 @@ export class UiThread {
 		// Fetch any sources if necessary
 		if (pendingSources.length > 0) {
 			await this.policySource.fetchPolicies(
-				pendingSources.map((p) => p.scopeId)
+				pendingSources.map((p) => p.scopeId),
 			);
 		}
 
@@ -146,7 +146,7 @@ export class UiThread {
 
 			const location = this.policySource.getPolicyLocation(
 				frame.scopeId,
-				item.key
+				item.key,
 			);
 			if (location) {
 				stackFrame.line = location.line;
@@ -174,7 +174,7 @@ export class UiThread {
 	}
 
 	private addVirtualStack(
-		frames: StackFrameContract[]
+		frames: StackFrameContract[],
 	): (StackFrameContract & { isVirtual?: true })[] {
 		const allFrames: (StackFrameContract & { isVirtual?: true })[] = [
 			...frames,
@@ -192,14 +192,14 @@ export class UiThread {
 					section: lastFrame.section,
 					index: 0,
 					isVirtual: true,
-				})
+				}),
 			);
 		}
 
 		if (
 			(lastFrame.scopeId === StackFrameScopeContract.tenant ||
 				lastFrame.scopeId.startsWith(
-					StackFrameScopeContract.product
+					StackFrameScopeContract.product,
 				)) &&
 			this.apiId
 		) {
@@ -210,7 +210,7 @@ export class UiThread {
 					section: lastFrame.section,
 					index: 0,
 					isVirtual: true,
-				})
+				}),
 			);
 		}
 
@@ -227,7 +227,7 @@ export class UiThread {
 					section: lastFrame.section,
 					index: 0,
 					isVirtual: true,
-				})
+				}),
 			);
 		}
 
@@ -237,14 +237,14 @@ export class UiThread {
 	private getStackFrame(
 		frame: StackFrameContract,
 		path: string,
-		pendingSources: PendingSource[]
+		pendingSources: PendingSource[],
 	): StackFrame {
 		const frameKey = `${frame.scopeId}/${path}`;
 		let stackFrame = this.stackFrames[frameKey];
 		if (!stackFrame) {
 			this.stackFrames[frameKey] = stackFrame = new StackFrame(
 				UiThread.NextStackFrameId++,
-				frame.name
+				frame.name,
 			);
 			const policy = this.policySource.getPolicy(frame.scopeId);
 			stackFrame.source = policy && policy.source;

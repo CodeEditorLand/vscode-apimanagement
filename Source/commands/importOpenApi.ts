@@ -27,13 +27,13 @@ import { sendRequest } from "../utils/requestUtil";
 export async function importOpenApi(
 	context: IActionContext & Partial<IApiTreeItemContext>,
 	node?: ApisTreeItem,
-	importUsingLink: boolean = false
+	importUsingLink: boolean = false,
 ): Promise<void> {
 	if (!node) {
 		const serviceNode = <ServiceTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ServiceTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 		node = serviceNode.apisTreeItem;
@@ -74,14 +74,14 @@ export async function importOpenApi(
 					location: ProgressLocation.Notification,
 					title: localize(
 						"importingApi",
-						`Importing API '${apiName}' to API Management service ${node.root.serviceName} ...`
+						`Importing API '${apiName}' to API Management service ${node.root.serviceName} ...`,
 					),
 					cancellable: false,
 				},
 				// tslint:disable-next-line:no-non-null-assertion
 				async () => {
 					return node!.createChild(context);
-				}
+				},
 			)
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
@@ -89,8 +89,8 @@ export async function importOpenApi(
 				window.showInformationMessage(
 					localize(
 						"importedApi",
-						`Imported API '${apiName}' to API Management succesfully.`
-					)
+						`Imported API '${apiName}' to API Management succesfully.`,
+					),
 				);
 			});
 	}
@@ -116,14 +116,14 @@ async function askDocument(): Promise<Uri[]> {
 async function askLink(): Promise<string> {
 	const promptStr: string = localize(
 		"apiLinkPrompt",
-		"Specify a OpenAPI 2.0 or 3.0 link."
+		"Specify a OpenAPI 2.0 or 3.0 link.",
 	);
 	return (
 		await ext.ui.showInputBox({
 			prompt: promptStr,
 			placeHolder: "https://",
 			validateInput: async (
-				value: string
+				value: string,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
 				const regexp =
@@ -132,7 +132,7 @@ async function askLink(): Promise<string> {
 				if (!isUrlValid) {
 					return localize(
 						"invalidOpenApiLink",
-						"Provide a valid link. example - https://petstore.swagger.io/v2/swagger.json"
+						"Provide a valid link. example - https://petstore.swagger.io/v2/swagger.json",
 					);
 				} else {
 					return undefined;
@@ -152,9 +152,9 @@ async function parseDocument(documentJson: any): Promise<IOpenApiImportObject> {
 				error,
 				localize(
 					"openApiJsonParseError",
-					"Could not parse the provided OpenAPI document."
-				)
-			)
+					"Could not parse the provided OpenAPI document.",
+				),
+			),
 		);
 	}
 }

@@ -26,7 +26,7 @@ export class GatewayTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 
 	constructor(
 		parent: GatewaysTreeItem,
-		public readonly gatewayContract: IGatewayContract
+		public readonly gatewayContract: IGatewayContract,
 	) {
 		super(parent);
 		this._label = nonNullProp(this.gatewayContract, "name");

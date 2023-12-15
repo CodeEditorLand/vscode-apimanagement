@@ -23,13 +23,13 @@ export class ConsoleRequest {
 		this.queryParameters = requestModel.queryParameters
 			? requestModel.queryParameters.map(
 					(parameterContract) =>
-						new ConsoleParameter(parameterContract)
-				)
+						new ConsoleParameter(parameterContract),
+			  )
 			: [];
 		this.requestHeaders = requestModel.headers
 			? requestModel.headers.map(
-					(headerContract) => new ConsoleHeader(headerContract)
-				)
+					(headerContract) => new ConsoleHeader(headerContract),
+			  )
 			: [];
 		this.headers = this.requestHeaders.filter((header) => header.required);
 		this.body = "";

@@ -107,7 +107,7 @@ export async function activateInternal(context: vscode.ExtensionContext) {
 	//ext.reporter = createTelemetryReporter(context);
 	ext.outputChannel = createAzExtOutputChannel(
 		"Azure API Management",
-		ext.prefix
+		ext.prefix,
 	);
 	context.subscriptions.push(ext.outputChannel);
 	ext.ui = new AzureUserInput(context.globalState);
@@ -124,13 +124,13 @@ export async function activateInternal(context: vscode.ExtensionContext) {
 
 			ext.tree = new AzExtTreeDataProvider(
 				ext.azureAccountTreeItem,
-				"azureApiManagement.LoadMore"
+				"azureApiManagement.LoadMore",
 			);
 			context.subscriptions.push(
 				vscode.window.registerTreeDataProvider(
 					"azureApiManagementExplorer",
-					ext.tree
-				)
+					ext.tree,
+				),
 			);
 
 			registerCommands(ext.tree);
@@ -138,11 +138,11 @@ export async function activateInternal(context: vscode.ExtensionContext) {
 
 			const handler = new UriEventHandler();
 			context.subscriptions.push(
-				vscode.window.registerUriHandler(handler)
+				vscode.window.registerUriHandler(handler),
 			);
 
 			activate(context); // activeta debug context
-		}
+		},
 	);
 }
 
@@ -150,143 +150,143 @@ function registerCommands(tree: AzExtTreeDataProvider): void {
 	registerCommand(
 		"azureApiManagement.Refresh",
 		async (context: IActionContext, node?: AzureTreeItem) =>
-			await tree.refresh(context, node)
+			await tree.refresh(context, node),
 	); // need to double check
 	registerCommand("azureApiManagement.selectSubscriptions", () =>
-		vscode.commands.executeCommand("azure-account.selectSubscriptions")
+		vscode.commands.executeCommand("azure-account.selectSubscriptions"),
 	);
 	registerCommand(
 		"azureApiManagement.LoadMore",
 		async (context: IActionContext, node: AzureTreeItem) =>
-			await tree.loadMore(node, context)
+			await tree.loadMore(node, context),
 	); // need to double check
 	registerCommand("azureApiManagement.openInPortal", openInPortal);
 	registerCommand("azureApiManagement.createService", createService);
 	registerCommand(
 		"azureApiManagement.copySubscriptionKey",
-		copySubscriptionKey
+		copySubscriptionKey,
 	);
 	registerCommand(
 		"azureApiManagement.deleteService",
 		async (context: IActionContext, node?: AzureParentTreeItem) =>
-			await deleteNode(context, ServiceTreeItem.contextValue, node)
+			await deleteNode(context, ServiceTreeItem.contextValue, node),
 	);
 	registerCommand(
 		"azureApiManagement.deleteApi",
 		async (context: IActionContext, node?: AzureTreeItem) =>
-			await deleteNode(context, ApiTreeItem.contextValue, node)
+			await deleteNode(context, ApiTreeItem.contextValue, node),
 	);
 	registerCommand(
 		"azureApiManagement.deleteOperation",
 		async (context: IActionContext, node?: AzureTreeItem) =>
-			await deleteNode(context, ApiOperationTreeItem.contextValue, node)
+			await deleteNode(context, ApiOperationTreeItem.contextValue, node),
 	);
 	registerCommand("azureApiManagement.testOperation", testOperation);
 	registerCommand(
 		"azureApiManagement.importOpenApiByFile",
 		async (context: IActionContext, node?: ApisTreeItem) => {
 			await importOpenApi(context, node, false);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.importOpenApiByLink",
 		async (context: IActionContext, node?: ApisTreeItem) => {
 			await importOpenApi(context, node, true);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.createNamedValue",
 		async (context: IActionContext, node?: NamedValuesTreeItem) => {
 			await createNamedValue(context, node);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.deleteNamedValue",
 		async (context: IActionContext, node?: AzureTreeItem) =>
-			await deleteNode(context, NamedValueTreeItem.contextValue, node)
+			await deleteNode(context, NamedValueTreeItem.contextValue, node),
 	);
 	registerCommand("azureApiManagement.updateNamedValue", updateNamedValue);
 	registerCommand(
 		"azureApiManagement.removeApiFromProduct",
 		async (context: IActionContext, node?: AzureTreeItem) =>
-			await deleteNode(context, ProductApiTreeItem.contextValue, node)
+			await deleteNode(context, ProductApiTreeItem.contextValue, node),
 	);
 	registerCommand(
 		"azureApiManagement.addApiToProduct",
 		async (context: IActionContext, node?: ProductApisTreeItem) => {
 			await addApiToProduct(context, node);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.removeApiFromGateway",
 		async (context: IActionContext, node?: AzureTreeItem) =>
-			await deleteNode(context, GatewayApiTreeItem.contextValue, node)
+			await deleteNode(context, GatewayApiTreeItem.contextValue, node),
 	);
 	registerCommand(
 		"azureApiManagement.addApiToGateway",
 		async (context: IActionContext, node?: GatewayApisTreeItem) => {
 			await addApiToGateway(context, node);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.extractService",
 		async (context: IActionContext, node: ServiceTreeItem) =>
-			await extractService(context, node)
+			await extractService(context, node),
 	);
 	registerCommand(
 		"azureApiManagement.extractApi",
 		async (context: IActionContext, node: ApiTreeItem) =>
-			await extractAPI(context, node)
+			await extractAPI(context, node),
 	);
 	registerCommand(
 		"azureApiManagement.importFunctionApp",
 		async (context: IActionContext, node: ApisTreeItem) =>
-			await importFunctionApp(context, node)
+			await importFunctionApp(context, node),
 	);
 	registerCommand(
 		"azureApiManagement.importFunctionAppToApi",
 		async (context: IActionContext, node: ApiTreeItem) =>
-			await importFunctionAppToApi(context, node)
+			await importFunctionAppToApi(context, node),
 	);
 	registerCommand(
 		"azureApiManagement.importWebApp",
 		async (context: IActionContext, node: ApisTreeItem) =>
-			await importWebApp(context, node)
+			await importWebApp(context, node),
 	);
 	registerCommand(
 		"azureApiManagement.importWebAppToApi",
 		async (context: IActionContext, node: ApiTreeItem) =>
-			await importWebAppToApi(context, node)
+			await importWebAppToApi(context, node),
 	);
 	registerCommand("azureApiManagement.addApiFilter", addApiFilter);
 	registerCommand("azureApiManagement.setApiFilter", addApiFilter);
 	registerCommand(
 		"azureApiManagement.copyDockerRunCommand",
 		async (context: IActionContext, node: GatewayTreeItem) =>
-			await copyDockerRunCommand(context, node)
+			await copyDockerRunCommand(context, node),
 	);
 	registerCommand(
 		"azureApiManagement.generateKubernetesDeployment",
-		generateKubernetesDeployment
+		generateKubernetesDeployment,
 	);
 	registerCommand(
 		"azureApiManagement.generateNewGatewayToken",
-		generateNewGatewayToken
+		generateNewGatewayToken,
 	);
 	registerCommand("azureApiManagement.debugPolicy", debugPolicy);
 
 	registerCommand(
 		"azureApiManagement.openExtensionWorkspaceFolder",
-		openWorkingFolder
+		openWorkingFolder,
 	);
 	registerCommand(
 		"azureApiManagement.initializeExtensionWorkspaceFolder",
-		setupWorkingFolder
+		setupWorkingFolder,
 	);
 	registerCommand(
 		"azureApiManagement.openDiffEditor",
 		async (context: IActionContext, uri: vscode.Uri) =>
-			await openDiffEditor(context, uri)
+			await openDiffEditor(context, uri),
 	);
 
 	registerCommand("azureApiManagement.generateFunctions", generateFunctions);
@@ -294,37 +294,37 @@ function registerCommands(tree: AzExtTreeDataProvider): void {
 	registerCommand("azureApiManagement.setCustomHostName", setCustomHostName);
 	registerCommand(
 		"azureApiManagement.createSubscription",
-		createSubscription
+		createSubscription,
 	);
 	registerCommand(
 		"azureApiManagement.deleteSubscription",
 		async (context: IActionContext, node?: AzureTreeItem) =>
-			await deleteNode(context, SubscriptionTreeItem.contextValue, node)
+			await deleteNode(context, SubscriptionTreeItem.contextValue, node),
 	);
 
 	registerCommand(
 		"azureApiManagement.createAuthorizationProvider",
 		async (
 			context: IActionContext,
-			node?: AuthorizationProvidersTreeItem
+			node?: AuthorizationProvidersTreeItem,
 		) => {
 			await createAuthorizationProvider(context, node);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.createAuthorization",
 		async (context: IActionContext, node?: AuthorizationsTreeItem) => {
 			await createAuthorization(context, node);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.createAuthorizationAccessPolicy",
 		async (
 			context: IActionContext,
-			node?: AuthorizationAccessPoliciesTreeItem
+			node?: AuthorizationAccessPoliciesTreeItem,
 		) => {
 			await createAuthorizationAccessPolicy(context, node);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.deleteAuthorizationProvider",
@@ -332,30 +332,30 @@ function registerCommands(tree: AzExtTreeDataProvider): void {
 			await deleteNode(
 				context,
 				AuthorizationProviderTreeItem.contextValue,
-				node
-			)
+				node,
+			),
 	);
 	registerCommand(
 		"azureApiManagement.copyAuthorizationProviderRedirectUrl",
 		async (context: IActionContext, node?: AuthorizationProviderTreeItem) =>
-			await copyAuthorizationProviderRedirectUrl(context, node)
+			await copyAuthorizationProviderRedirectUrl(context, node),
 	);
 	registerCommand(
 		"azureApiManagement.authorizeAuthorization",
 		async (context: IActionContext, node?: AuthorizationTreeItem) => {
 			await authorizeAuthorization(context, node);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.copyAuthorizationPolicy",
 		async (context: IActionContext, node?: AuthorizationTreeItem) => {
 			await copyAuthorizationPolicy(context, node);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.deleteAuthorization",
 		async (context: IActionContext, node?: AzureTreeItem) =>
-			await deleteNode(context, AuthorizationTreeItem.contextValue, node)
+			await deleteNode(context, AuthorizationTreeItem.contextValue, node),
 	);
 	registerCommand(
 		"azureApiManagement.deleteAuthorizationAccessPolicy",
@@ -363,8 +363,8 @@ function registerCommands(tree: AzExtTreeDataProvider): void {
 			await deleteNode(
 				context,
 				AuthorizationAccessPolicyTreeItem.contextValue,
-				node
-			)
+				node,
+			),
 	);
 }
 
@@ -379,9 +379,9 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await apiResourceEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.showArmApi",
@@ -390,7 +390,7 @@ function registerEditors(context: vscode.ExtensionContext): void {
 				node = <ApiTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						ApiTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 			}
@@ -398,10 +398,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const operationResourceEditor: OperationResourceEditor =
@@ -414,9 +414,9 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await operationResourceEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 
 	registerCommand(
@@ -426,7 +426,7 @@ function registerEditors(context: vscode.ExtensionContext): void {
 				node = <ApiOperationTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						ApiOperationTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 			}
@@ -434,10 +434,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const productResourceEditor: ProductResourceEditor =
@@ -450,9 +450,9 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await productResourceEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 
 	registerCommand(
@@ -462,7 +462,7 @@ function registerEditors(context: vscode.ExtensionContext): void {
 				node = <ProductTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						ProductTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 			}
@@ -470,10 +470,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const apiEditor: OpenApiEditor = new OpenApiEditor();
@@ -485,9 +485,9 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await apiEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.showApi",
@@ -496,7 +496,7 @@ function registerEditors(context: vscode.ExtensionContext): void {
 				node = <ApiTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						ApiTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 			}
@@ -504,10 +504,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const servicePolicyEditor: ServicePolicyEditor = new ServicePolicyEditor();
@@ -519,9 +519,9 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await servicePolicyEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 
 	registerCommand(
@@ -531,7 +531,7 @@ function registerEditors(context: vscode.ExtensionContext): void {
 				const serviceNode = <ServiceTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						ServiceTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 				node = serviceNode.servicePolicyTreeItem;
@@ -540,10 +540,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const apiPolicyEditor: ApiPolicyEditor = new ApiPolicyEditor();
@@ -555,9 +555,9 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await apiPolicyEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.showApiPolicy",
@@ -566,7 +566,7 @@ function registerEditors(context: vscode.ExtensionContext): void {
 				const apiNode = <ApiTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						ApiTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 				node = apiNode.policyTreeItem;
@@ -575,10 +575,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const operationPolicyEditor: OperationPolicyEditor =
@@ -591,21 +591,21 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await operationPolicyEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.showOperationPolicy",
 		async (
 			actionContext: IActionContext,
-			node?: OperationPolicyTreeItem
+			node?: OperationPolicyTreeItem,
 		) => {
 			if (!node) {
 				const operationNode = <ApiOperationTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						ApiOperationTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 				node = operationNode.policyTreeItem;
@@ -614,10 +614,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const productPolicyEditor: ProductPolicyEditor = new ProductPolicyEditor();
@@ -629,9 +629,9 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await productPolicyEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 	registerCommand(
 		"azureApiManagement.showProductPolicy",
@@ -640,7 +640,7 @@ function registerEditors(context: vscode.ExtensionContext): void {
 				const productNode = <ProductTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						ProductTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 				node = productNode.policyTreeItem;
@@ -649,10 +649,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const authorizationProviderResourceEditor: AuthorizationProviderResourceEditor =
@@ -665,22 +665,22 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await authorizationProviderResourceEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 
 	registerCommand(
 		"azureApiManagement.showArmAuthorizationProvider",
 		async (
 			actionContext: IActionContext,
-			node?: AuthorizationProviderTreeItem
+			node?: AuthorizationProviderTreeItem,
 		) => {
 			if (!node) {
 				node = <AuthorizationProviderTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						AuthorizationProviderTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 			}
@@ -688,10 +688,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const authorizationResourceEditor: AuthorizationResourceEditor =
@@ -704,9 +704,9 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await authorizationResourceEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 
 	registerCommand(
@@ -716,7 +716,7 @@ function registerEditors(context: vscode.ExtensionContext): void {
 				node = <AuthorizationTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						AuthorizationTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 			}
@@ -724,10 +724,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 
 	const authorizationAccessPolicyResourceEditor: AuthorizationAccessPolicyResourceEditor =
@@ -740,22 +740,22 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			await authorizationAccessPolicyResourceEditor.onDidSaveTextDocument(
 				actionContext,
 				context.globalState,
-				doc
+				doc,
 			);
-		}
+		},
 	);
 
 	registerCommand(
 		"azureApiManagement.showArmAuthorizationAccessPolicy",
 		async (
 			actionContext: IActionContext,
-			node?: AuthorizationAccessPolicyTreeItem
+			node?: AuthorizationAccessPolicyTreeItem,
 		) => {
 			if (!node) {
 				node = <AuthorizationAccessPolicyTreeItem>(
 					await ext.tree.showTreeItemPicker(
 						AuthorizationAccessPolicyTreeItem.contextValue,
-						actionContext
+						actionContext,
 					)
 				);
 			}
@@ -763,10 +763,10 @@ function registerEditors(context: vscode.ExtensionContext): void {
 			vscode.commands.executeCommand(
 				"setContext",
 				"isEditorEnabled",
-				true
+				true,
 			);
 		},
-		doubleClickDebounceDelay
+		doubleClickDebounceDelay,
 	);
 }
 
@@ -792,38 +792,38 @@ class UriEventHandler
 					localize(
 						"authFailed",
 						`Authorization failed. ${errorDecoded.toString(
-							"utf8"
-						)}.`
-					)
+							"utf8",
+						)}.`,
+					),
 				);
 				vscode.window.showInformationMessage(
 					localize(
 						"authFailed",
 						`Authorization failed. ${errorDecoded.toString(
-							"utf8"
-						)}.`
-					)
+							"utf8",
+						)}.`,
+					),
 				);
 			} else {
 				ext.outputChannel.appendLine(
 					localize(
 						"authComplete",
-						`Authorization success. ${uri.path}`
-					)
+						`Authorization success. ${uri.path}`,
+					),
 				);
 				const authProvider = uri.path.split("/")[2];
 				const authorization = uri.path.split("/")[3];
 				vscode.window.showInformationMessage(
 					localize(
 						"authSuccess",
-						`Authorized '${authorization}' under Authorization Provider '${authProvider}'.`
-					)
+						`Authorized '${authorization}' under Authorization Provider '${authProvider}'.`,
+					),
 				);
 				vscode.window.showInformationMessage(
 					localize(
 						"closeBrowserWindow",
-						`You can now close the browser window that was launched during the authorization process.`
-					)
+						`You can now close the browser window that was launched during the authorization process.`,
+					),
 				);
 			}
 		}

@@ -29,7 +29,7 @@ export class ProductApisTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 	public contextValue: string = ProductApisTreeItem.contextValue;
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.ProductApi",
-		"Product API"
+		"Product API",
 	);
 	private _nextLink: string | undefined;
 
@@ -38,7 +38,7 @@ export class ProductApisTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean
+		clearCache: boolean,
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -50,11 +50,11 @@ export class ProductApisTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						this.root.productName,
-						{ top: topItemCount }
-					)
+						{ top: topItemCount },
+				  )
 				: await this.root.client.productApi.listByProductNext(
-						this._nextLink
-					);
+						this._nextLink,
+				  );
 
 		this._nextLink = productApisCollection.nextLink;
 
@@ -65,12 +65,12 @@ export class ProductApisTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 				new ProductApiTreeItem(this, api),
 			(api: ApiManagementModels.ApiContract) => {
 				return api.name;
-			}
+			},
 		);
 	}
 
 	public async createChildImpl(
-		context: IProductTreeItemContext
+		context: IProductTreeItemContext,
 	): Promise<ProductApiTreeItem> {
 		if (context.apiName) {
 			context.showCreatingTreeItem(context.apiName);
@@ -81,7 +81,7 @@ export class ProductApisTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						this.root.productName,
-						context.apiName
+						context.apiName,
 					);
 
 				return new ProductApiTreeItem(this, product);
@@ -91,9 +91,9 @@ export class ProductApisTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 						error,
 						localize(
 							"addApiToProductFailed",
-							`Failed to add '${context.apiName}' to product '${this.root.productName}'.`
-						)
-					)
+							`Failed to add '${context.apiName}' to product '${this.root.productName}'.`,
+						),
+					),
 				);
 			}
 		} else {

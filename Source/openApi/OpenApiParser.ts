@@ -19,7 +19,7 @@ export class OpenApiParser {
 		} catch (e) {
 			const message: string = localize(
 				"openApiParseError",
-				"Could not parse the OpenAPI document."
+				"Could not parse the OpenAPI document.",
 			);
 			ext.outputChannel.appendLine(message);
 			ext.outputChannel.show();
@@ -48,10 +48,10 @@ export class OpenApiParser {
 			if (oai30.servers.length > 0) {
 				importObject.schemes = oai30.servers
 					.map((item) =>
-						item.url.substring(0, item.url.indexOf("://"))
+						item.url.substring(0, item.url.indexOf("://")),
 					)
 					.filter(
-						(value, index, self) => self.indexOf(value) === index
+						(value, index, self) => self.indexOf(value) === index,
 					);
 				const url = Uri.parse(oai30.servers[0].url);
 				importObject.host = url.authority;
@@ -65,7 +65,7 @@ export class OpenApiParser {
 	public updateBasePath(
 		source: object,
 		basePath: string,
-		proxyHostName: string
+		proxyHostName: string,
 	): void {
 		const version = this.getOpenApiVersion(source);
 

@@ -16,24 +16,24 @@ export class ProductResourceEditor extends BaseArmResourceEditor<IProductTreeRoo
 	}
 
 	public async getDataInternal(
-		context: AzureTreeItem<IProductTreeRoot>
+		context: AzureTreeItem<IProductTreeRoot>,
 	): Promise<ApiManagementModels.ProductContract> {
 		return await context.root.client.product.get(
 			context.root.resourceGroupName,
 			context.root.serviceName,
-			context.root.productName
+			context.root.productName,
 		);
 	}
 
 	public async updateDataInternal(
 		context: AzureTreeItem<IProductTreeRoot>,
-		payload: ApiManagementModels.ProductContract
+		payload: ApiManagementModels.ProductContract,
 	): Promise<ApiManagementModels.ProductContract> {
 		return await context.root.client.product.createOrUpdate(
 			context.root.resourceGroupName,
 			context.root.serviceName,
 			context.root.productName,
-			payload
+			payload,
 		);
 	}
 }

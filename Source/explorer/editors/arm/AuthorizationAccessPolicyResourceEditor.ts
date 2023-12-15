@@ -18,41 +18,41 @@ export class AuthorizationAccessPolicyResourceEditor extends BaseArmResourceEdit
 	}
 
 	public async getDataInternal(
-		context: AzureTreeItem<IAuthorizationAccessPolicyTreeRoot>
+		context: AzureTreeItem<IAuthorizationAccessPolicyTreeRoot>,
 	): Promise<IAuthorizationAccessPolicyContract> {
 		const apimService = new ApimService(
 			context.root.credentials,
 			context.root.environment.resourceManagerEndpointUrl,
 			context.root.subscriptionId,
 			context.root.resourceGroupName,
-			context.root.serviceName
+			context.root.serviceName,
 		);
 
 		const response = await apimService.getAuthorizationAccessPolicy(
 			context.root.authorizationProviderName,
 			context.root.authorizationName,
-			context.root.accessPolicyName
+			context.root.accessPolicyName,
 		);
 		return nonNullValue(response);
 	}
 
 	public async updateDataInternal(
 		context: AzureTreeItem<IAuthorizationAccessPolicyTreeRoot>,
-		payload: IAuthorizationAccessPolicyContract
+		payload: IAuthorizationAccessPolicyContract,
 	): Promise<IAuthorizationAccessPolicyContract> {
 		const apimService = new ApimService(
 			context.root.credentials,
 			context.root.environment.resourceManagerEndpointUrl,
 			context.root.subscriptionId,
 			context.root.resourceGroupName,
-			context.root.serviceName
+			context.root.serviceName,
 		);
 
 		const response = await apimService.createAuthorizationAccessPolicy(
 			context.root.authorizationProviderName,
 			context.root.authorizationName,
 			context.root.accessPolicyName,
-			payload.properties
+			payload.properties,
 		);
 		return nonNullValue(response);
 	}

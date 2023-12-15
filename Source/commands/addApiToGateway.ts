@@ -20,14 +20,14 @@ import { nonNullProp } from "../utils/nonNull";
 // tslint:disable: no-any
 export async function addApiToGateway(
 	context: IActionContext & Partial<IGatewayTreeItemContext>,
-	node?: GatewayApisTreeItem
+	node?: GatewayApisTreeItem,
 ): Promise<void> {
 	let gatewayNode: GatewayTreeItem;
 	if (!node) {
 		gatewayNode = <GatewayTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				GatewayTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 		node = gatewayNode.gatewayApisTreeItem;
@@ -43,7 +43,7 @@ export async function addApiToGateway(
 		await ext.tree.showTreeItemPicker(
 			ApiTreeItem.contextValue,
 			context,
-			serviceTreeItem
+			serviceTreeItem,
 		)
 	);
 
@@ -55,14 +55,14 @@ export async function addApiToGateway(
 				location: ProgressLocation.Notification,
 				title: localize(
 					"addApiToGateway",
-					`Adding API '${apiName}' to gateway ${node.root.gatewayName} ...`
+					`Adding API '${apiName}' to gateway ${node.root.gatewayName} ...`,
 				),
 				cancellable: false,
 			},
 			// tslint:disable-next-line: no-non-null-assertion
 			async () => {
 				return node!.createChild(context);
-			}
+			},
 		)
 		.then(async () => {
 			// tslint:disable:no-non-null-assertion
@@ -72,8 +72,8 @@ export async function addApiToGateway(
 					"addedApiToGateway",
 					`Added API '${apiName}' to gateway ${
 						node!.root.gatewayName
-					}.`
-				)
+					}.`,
+				),
 			);
 		});
 }

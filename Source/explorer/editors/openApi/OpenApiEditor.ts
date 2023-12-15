@@ -43,17 +43,17 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 			const schemas = await context.root.client.apiSchema.listByApi(
 				context.root.resourceGroupName,
 				context.root.serviceName,
-				context.root.apiName
+				context.root.apiName,
 			);
 			let exportFormat: string = openApiExport;
 			let exportAcceptHeader: string = openApiAcceptHeader;
 			if (schemas.length > 0) {
 				const openApiSchemaSupported = schemas.find(
-					(s) => s.contentType === openApiSchema
+					(s) => s.contentType === openApiSchema,
 				);
 				if (openApiSchemaSupported === undefined) {
 					const swaggerSchemaSupported = schemas.find(
-						(s) => s.contentType === swaggerSchema
+						(s) => s.contentType === swaggerSchema,
 					);
 					if (swaggerSchemaSupported !== undefined) {
 						exportFormat = swaggerExport;
@@ -62,8 +62,8 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 						throw Error(
 							localize(
 								"unSupportedSchema",
-								`'${context.root.apiName}' does not support OpenAPI 2.0 or OpenAPI 3.0 schema.`
-							)
+								`'${context.root.apiName}' does not support OpenAPI 2.0 or OpenAPI 3.0 schema.`,
+							),
 						);
 					}
 				}
@@ -72,11 +72,11 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 			const responseDocument = await this.requestOpenAPIDocument(
 				context,
 				exportFormat,
-				exportAcceptHeader
+				exportAcceptHeader,
 			);
 			const sourceDocument = await this.processDocument(
 				context,
-				responseDocument
+				responseDocument,
 			);
 			return JSON.stringify(sourceDocument, null, "\t");
 		} catch (error) {
@@ -85,9 +85,9 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 					error,
 					localize(
 						"getOpenAPIDocumentFailed",
-						`Failed to retriev OpenAPI document for API ${context.root.apiName}.`
-					)
-				)
+						`Failed to retriev OpenAPI document for API ${context.root.apiName}.`,
+					),
+				),
 			);
 		}
 	}
@@ -95,7 +95,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 	// tslint:disable: no-unsafe-any
 	public async updateData(
 		context: ApiTreeItem,
-		data: string
+		data: string,
 	): Promise<string> {
 		let openApiDocument: IOpenApiImportObject | undefined;
 		try {
@@ -109,7 +109,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 			) {
 				openApiparser.updateBackend(
 					openApiDocument.sourceDocument,
-					nonNullProp(context.apiContract, "serviceUrl")
+					nonNullProp(context.apiContract, "serviceUrl"),
 				);
 			}
 
@@ -126,7 +126,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 						location: ProgressLocation.Notification,
 						title: localize(
 							"updatingAPI",
-							`Applying changes to API '${context.root.apiName}' in API Management instance ${context.root.serviceName}...`
+							`Applying changes to API '${context.root.apiName}' in API Management instance ${context.root.serviceName}...`,
 						),
 						cancellable: false,
 					},
@@ -135,15 +135,15 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 							context.root.resourceGroupName,
 							context.root.serviceName,
 							context.root.apiName,
-							payload
-						)
+							payload,
+						),
 				)
 				.then(async () => {
 					window.showInformationMessage(
 						localize(
 							"updateOpenApiSucceded",
-							`Changes to API '${context.apiContract.name}' were succefully uploaded to cloud.`
-						)
+							`Changes to API '${context.apiContract.name}' were succefully uploaded to cloud.`,
+						),
 					);
 					//await context.refresh();
 					return this.getData(context);
@@ -154,9 +154,9 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 					error,
 					localize(
 						"updateOpenApiFailed",
-						`Changes to the OpenAPI document could not be uploaded to cloud.`
-					)
-				)
+						`Changes to the OpenAPI document could not be uploaded to cloud.`,
+					),
+				),
 			);
 		}
 	}
@@ -174,21 +174,21 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 	}
 
 	public async getSaveConfirmationText(
-		context: ApiTreeItem
+		context: ApiTreeItem,
 	): Promise<string> {
 		return localize(
 			"",
-			`Saving will update the API '${context.apiContract.name}'.`
+			`Saving will update the API '${context.apiContract.name}'.`,
 		);
 	}
 
 	private async requestOpenAPIDocument(
 		context: ApiTreeItem,
 		exportFormat: string,
-		exportAcceptHeader: string
+		exportAcceptHeader: string,
 	): Promise<string> {
 		const client: ServiceClient = await createGenericClient(
-			context.root.credentials
+			context.root.credentials,
 		);
 		const options: RequestPrepareOptions = {
 			method: "GET",
@@ -204,7 +204,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 
 	private buildAPIExportUrl(
 		context: ApiTreeItem,
-		exportFormat: string
+		exportFormat: string,
 	): string {
 		let url = `${context.root.environment.resourceManagerEndpointUrl}/subscriptions/${context.root.subscriptionId}/resourceGroups/${context.root.resourceGroupName}/providers/Microsoft.ApiManagement/service/${context.root.serviceName}/apis/${context.root.apiName}`;
 		url = `${url}?export=true&format=${exportFormat}&api-version=${Constants.apimApiVersion}`;
@@ -214,7 +214,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 	// tslint:disable-next-line:no-any
 	private async processDocument(
 		context: ApiTreeItem,
-		swaggerDocument: string
+		swaggerDocument: string,
 	): Promise<any> {
 		const openApiparser = new OpenApiParser();
 		const swagger = JSON.parse(swaggerDocument);
@@ -238,13 +238,13 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 		}
 		const service = await context.root.client.apiManagementService.get(
 			context.root.resourceGroupName,
-			context.root.serviceName
+			context.root.serviceName,
 		);
 		// tslint:disable-next-line: no-unsafe-any
 		openApiparser.updateBasePath(
 			sourceDocument,
 			basePath,
-			nonNullProp(service, "gatewayUrl")
+			nonNullProp(service, "gatewayUrl"),
 		);
 		return sourceDocument;
 	}

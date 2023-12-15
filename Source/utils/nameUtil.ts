@@ -13,7 +13,7 @@ export function nameUtil(
 		| IServiceTreeRoot
 		| IApiTreeRoot
 		| IOperationTreeRoot
-		| IProductTreeRoot
+		| IProductTreeRoot,
 ): string {
 	let name = root.serviceName;
 
@@ -37,7 +37,7 @@ function isApiRoot(
 		| IServiceTreeRoot
 		| IApiTreeRoot
 		| IOperationTreeRoot
-		| IProductTreeRoot
+		| IProductTreeRoot,
 ): root is IApiTreeRoot {
 	return (<IApiTreeRoot>root).apiName !== undefined;
 }
@@ -47,7 +47,7 @@ function isOperationRoot(
 		| IServiceTreeRoot
 		| IApiTreeRoot
 		| IOperationTreeRoot
-		| IProductTreeRoot
+		| IProductTreeRoot,
 ): root is IOperationTreeRoot {
 	return (<IOperationTreeRoot>root).opName !== undefined;
 }
@@ -57,7 +57,7 @@ function isProductRoot(
 		| IServiceTreeRoot
 		| IApiTreeRoot
 		| IOperationTreeRoot
-		| IProductTreeRoot
+		| IProductTreeRoot,
 ): root is IProductTreeRoot {
 	return (<IProductTreeRoot>root).productName !== undefined;
 }

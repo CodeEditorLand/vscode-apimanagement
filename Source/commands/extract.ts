@@ -24,13 +24,13 @@ import { dotnetUtils } from "../utils/dotnetUtils";
 
 export async function extractService(
 	context: IActionContext,
-	node?: ServiceTreeItem
+	node?: ServiceTreeItem,
 ): Promise<void> {
 	if (!node) {
 		node = <ServiceTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ServiceTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 	}
@@ -40,7 +40,7 @@ export async function extractService(
 
 export async function extractAPI(
 	context: IActionContext,
-	node?: ApiTreeItem
+	node?: ApiTreeItem,
 ): Promise<void> {
 	if (!node) {
 		node = <ApiTreeItem>(
@@ -56,7 +56,7 @@ export async function extractAPI(
 
 async function extract(
 	node: ApiTreeItem | ServiceTreeItem,
-	apiName?: string
+	apiName?: string,
 ): Promise<void> {
 	const uris = await askFolder();
 	const templatesFolder = await createTemplatesFolder(uris);
@@ -66,7 +66,7 @@ async function extract(
 		sourceApimName,
 		resourceGroup,
 		templatesFolder,
-		apiName
+		apiName,
 	);
 	const subscriptionId = node.root.subscriptionId;
 
@@ -77,13 +77,13 @@ async function extract(
 		configFile = path.join(uris[0].fsPath, `${apiName}.json`);
 		noticeContent = localize(
 			"Extract",
-			`Extracting API ARM template '${apiName}' to '${templatesFolder}'`
+			`Extracting API ARM template '${apiName}' to '${templatesFolder}'`,
 		);
 	} else {
 		configFile = path.join(uris[0].fsPath, `${sourceApimName}.json`);
 		noticeContent = localize(
 			"Extract",
-			`Extracting service '${sourceApimName}' to '${templatesFolder}'`
+			`Extracting service '${sourceApimName}' to '${templatesFolder}'`,
 		);
 	}
 
@@ -100,11 +100,11 @@ async function extract(
 				await azUtils.checkAzInstalled();
 				await dotnetUtils.validateDotnetInstalled();
 				await runExtractor(configFile, subscriptionId);
-			}
+			},
 		)
 		.then(() => {
 			window.showInformationMessage(
-				localize("Extracted", `Extraction completed!`)
+				localize("Extracted", `Extraction completed!`),
 			);
 		});
 }
@@ -122,10 +122,10 @@ async function createTemplatesFolder(uris: Uri[]): Promise<string> {
 
 async function runExtractor(
 	filePath: string,
-	subscriptionId: string
+	subscriptionId: string,
 ): Promise<void> {
 	const workingFolderPath = ext.context.asAbsolutePath(
-		path.join("resources", "devops")
+		path.join("resources", "devops"),
 	);
 	ext.outputChannel.show();
 
@@ -133,7 +133,7 @@ async function runExtractor(
 		ext.outputChannel,
 		workingFolderPath,
 		"az",
-		"login"
+		"login",
 	);
 
 	await cpUtils.executeCommand(
@@ -143,7 +143,7 @@ async function runExtractor(
 		"account",
 		"set",
 		"--subscription",
-		subscriptionId
+		subscriptionId,
 	);
 
 	await dotnetUtils.validateDotnetInstalled();
@@ -154,7 +154,7 @@ async function runExtractor(
 		"apimtemplate.dll",
 		"extract",
 		"--extractorConfig",
-		`"${filePath}"`
+		`"${filePath}"`,
 	);
 }
 
@@ -177,7 +177,7 @@ function generateExtractConfig(
 	sourceApimName: string,
 	resourceGroup: string,
 	fileFolder: string,
-	apiName?: string
+	apiName?: string,
 ): string {
 	const extractorConfig = {
 		sourceApimName: sourceApimName,

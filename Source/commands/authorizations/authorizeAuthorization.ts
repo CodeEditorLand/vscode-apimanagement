@@ -20,13 +20,13 @@ import { askAuthorizationParameterValues } from "./common";
 
 export async function authorizeAuthorization(
 	context: IActionContext,
-	node?: AuthorizationTreeItem
+	node?: AuthorizationTreeItem,
 ): Promise<void> {
 	if (!node) {
 		const authorizationNode = <AuthorizationTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				AuthorizationTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 		node = authorizationNode;
@@ -37,7 +37,7 @@ export async function authorizeAuthorization(
 		node.root.environment.resourceManagerEndpointUrl,
 		node.root.subscriptionId,
 		node.root.resourceGroupName,
-		node.root.serviceName
+		node.root.serviceName,
 	);
 
 	if (
@@ -50,7 +50,7 @@ export async function authorizeAuthorization(
 		const loginLinks = await apimService.listAuthorizationLoginLinks(
 			node.root.authorizationProviderName,
 			node.authorizationContract.name,
-			{ postLoginRedirectUrl: redirectUrl }
+			{ postLoginRedirectUrl: redirectUrl },
 		);
 
 		vscode.env.openExternal(vscode.Uri.parse(loginLinks.loginLink));
@@ -63,13 +63,13 @@ export async function authorizeAuthorization(
 		>node.parent?.parent).authorizationProviderContract;
 		const identityProvider: ITokenStoreIdentityProviderContract =
 			await apimService.getTokenStoreIdentityProvider(
-				authorizationProvider.properties.identityProvider
+				authorizationProvider.properties.identityProvider,
 			);
 		const grant =
 			identityProvider.properties.oauth2.grantTypes.clientCredentials;
 
 		const parameterValues = await askAuthorizationParameterValues(
-			nonNullValue(grant)
+			nonNullValue(grant),
 		);
 
 		const authorization = node.authorizationContract;
@@ -81,7 +81,7 @@ export async function authorizeAuthorization(
 					location: vscode.ProgressLocation.Notification,
 					title: localize(
 						"authorizeAuthorization",
-						`Updating Authorization '${authorization.name}' ...`
+						`Updating Authorization '${authorization.name}' ...`,
 					),
 					cancellable: false,
 				},
@@ -90,9 +90,9 @@ export async function authorizeAuthorization(
 					return apimService.createAuthorization(
 						authorizationProvider.name,
 						authorization.name,
-						authorization.properties
+						authorization.properties,
 					);
-				}
+				},
 			)
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
@@ -100,8 +100,8 @@ export async function authorizeAuthorization(
 				window.showInformationMessage(
 					localize(
 						"updatedAuthorization",
-						`Updated Authorization '${authorization.name}' succesfully.`
-					)
+						`Updated Authorization '${authorization.name}' succesfully.`,
+					),
 				);
 			});
 	}
