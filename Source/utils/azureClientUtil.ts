@@ -15,7 +15,7 @@ export namespace azureClientUtil {
 	export function getClient(
 		credentials: TokenCredentialsBase,
 		subscriptionId: string,
-		environment: Environment,
+		environment: Environment
 	): WebSiteManagementClient {
 		const clientInfo: IAzureClientInfo = {
 			credentials: credentials,
@@ -28,7 +28,7 @@ export namespace azureClientUtil {
 	// tslint:disable: no-unsafe-any
 	export async function selectSubscription(): Promise<string> {
 		const azureAccountExtension = vscode.extensions.getExtension(
-			"ms-vscode.azure-account",
+			"ms-vscode.azure-account"
 		);
 		// tslint:disable-next-line: no-non-null-assertion
 		const azureAccount = azureAccountExtension!.exports;
@@ -52,9 +52,9 @@ export namespace azureClientUtil {
 				canPickMany: false,
 				placeHolder: localize(
 					"",
-					"Please choose the Azure subscription",
+					"Please choose the Azure subscription"
 				),
-			},
+			}
 		);
 		return subscriptionId.subscriptionId;
 	}

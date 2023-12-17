@@ -30,7 +30,7 @@ export abstract class BasePolicyEditor<
 	public abstract getPolicy(context: AzureTreeItem<TRoot>): Promise<string>;
 	public abstract updatePolicy(
 		context: AzureTreeItem<TRoot>,
-		policy: ApiManagementModels.PolicyContract,
+		policy: ApiManagementModels.PolicyContract
 	): Promise<string>;
 
 	public async getData(context: AzureTreeItem<TRoot>): Promise<string> {
@@ -58,7 +58,7 @@ export abstract class BasePolicyEditor<
 	}
 
 	public async getDiffFilename(
-		context: AzureTreeItem<TRoot>,
+		context: AzureTreeItem<TRoot>
 	): Promise<string> {
 		return `${nameUtil(context.root)}.policy.cshtml`;
 	}
@@ -69,7 +69,7 @@ export abstract class BasePolicyEditor<
 
 	public async updateData(
 		context: AzureTreeItem<TRoot>,
-		data: string,
+		data: string
 	): Promise<string> {
 		try {
 			await this.updatePolicy(context, <
@@ -78,8 +78,8 @@ export abstract class BasePolicyEditor<
 			window.showInformationMessage(
 				localize(
 					"updatePolicySucceded",
-					`Changes to policy were uploaded to cloud.`,
-				),
+					`Changes to policy were uploaded to cloud.`
+				)
 			);
 			return await this.getPolicy(context);
 		} catch (error) {
@@ -88,9 +88,9 @@ export abstract class BasePolicyEditor<
 					error,
 					localize(
 						"updatePolicyFailed",
-						`Changes to policy were not uploaded to cloud.`,
-					),
-				),
+						`Changes to policy were not uploaded to cloud.`
+					)
+				)
 			);
 		}
 	}
@@ -101,13 +101,13 @@ export abstract class BasePolicyEditor<
 	public async getSaveConfirmationText(): Promise<string> {
 		return localize(
 			"saveConfirmation",
-			"Do you want to upload changes to cloud?",
+			"Do you want to upload changes to cloud?"
 		);
 	}
 
 	public async showEditor(
 		context: AzureTreeItem<TRoot>,
-		sizeLimit?: number /* in Megabytes */,
+		sizeLimit?: number /* in Megabytes */
 	): Promise<void> {
 		await super.showEditor(context, sizeLimit);
 		await promptOpenWorkingFolder();

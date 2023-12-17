@@ -18,39 +18,39 @@ export class AuthorizationResourceEditor extends BaseArmResourceEditor<IAuthoriz
 	}
 
 	public async getDataInternal(
-		context: AzureTreeItem<IAuthorizationTreeRoot>,
+		context: AzureTreeItem<IAuthorizationTreeRoot>
 	): Promise<IAuthorizationContract> {
 		const apimService = new ApimService(
 			context.root.credentials,
 			context.root.environment.resourceManagerEndpointUrl,
 			context.root.subscriptionId,
 			context.root.resourceGroupName,
-			context.root.serviceName,
+			context.root.serviceName
 		);
 
 		const response = await apimService.getAuthorization(
 			context.root.authorizationProviderName,
-			context.root.authorizationName,
+			context.root.authorizationName
 		);
 		return nonNullValue(response);
 	}
 
 	public async updateDataInternal(
 		context: AzureTreeItem<IAuthorizationTreeRoot>,
-		payload: IAuthorizationContract,
+		payload: IAuthorizationContract
 	): Promise<IAuthorizationContract> {
 		const apimService = new ApimService(
 			context.root.credentials,
 			context.root.environment.resourceManagerEndpointUrl,
 			context.root.subscriptionId,
 			context.root.resourceGroupName,
-			context.root.serviceName,
+			context.root.serviceName
 		);
 
 		const response = await apimService.createAuthorization(
 			context.root.authorizationProviderName,
 			context.root.authorizationName,
-			payload.properties,
+			payload.properties
 		);
 		return nonNullValue(response);
 	}

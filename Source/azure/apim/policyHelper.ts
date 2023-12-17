@@ -26,7 +26,7 @@ export function getRewriteUrlPolicy(triggerUrl: string): Object {
 export function getSetHeaderPolicy(
 	name: string,
 	existsAction: string,
-	headerValues: string[],
+	headerValues: string[]
 ): Object {
 	const setHeaderChildren: Object[] = [];
 	setHeaderChildren.push({

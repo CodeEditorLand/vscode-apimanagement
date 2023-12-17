@@ -13,25 +13,25 @@ import { localize } from "../localize";
 // tslint:disable-next-line: export-name
 export async function setCustomHostName(
 	context: IActionContext,
-	node?: ServiceTreeItem,
+	node?: ServiceTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = <ServiceTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ServiceTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 	}
 
 	const service = await node.root.client.apiManagementService.get(
 		node.root.resourceGroupName,
-		node.root.serviceName,
+		node.root.serviceName
 	);
 	// tslint:disable-next-line: no-non-null-assertion
 	const hostNameConfigs = service.hostnameConfigurations!;
 	const customHostName: string | undefined = ext.context.globalState.get(
-		node.root.serviceName + gatewayHostName,
+		node.root.serviceName + gatewayHostName
 	);
 	let allHostNames: { label: string; hostName: string }[];
 	if (customHostName === undefined) {
@@ -57,30 +57,30 @@ export async function setCustomHostName(
 	}
 	const selfDefined = localize(
 		"",
-		"Input a hostname (for self-hosted gateway)",
+		"Input a hostname (for self-hosted gateway)"
 	);
 	allHostNames.push({ label: selfDefined, hostName: "" });
 	window.showInformationMessage(
 		localize(
 			"",
-			"Select the gateway hostname for testing and debugging APIs.",
-		),
+			"Select the gateway hostname for testing and debugging APIs."
+		)
 	);
 	const pick = await ext.ui.showQuickPick(
 		allHostNames.map((s) => {
 			return { label: s.label, gateway: s };
 		}),
-		{ canPickMany: false },
+		{ canPickMany: false }
 	);
 	if (pick.label === selfDefined) {
 		const namespacePrompt: string = localize(
 			"urlPrompt",
-			"Enter Custom Host Name.",
+			"Enter Custom Host Name."
 		);
 		const input = await ext.ui.showInputBox({
 			prompt: namespacePrompt,
 			validateInput: async (
-				value: string | undefined,
+				value: string | undefined
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
 				return undefined;
@@ -88,18 +88,18 @@ export async function setCustomHostName(
 		});
 		ext.context.globalState.update(
 			node.root.serviceName + gatewayHostName,
-			input,
+			input
 		);
 	} else {
 		ext.context.globalState.update(
 			node.root.serviceName + gatewayHostName,
-			pick.gateway.hostName,
+			pick.gateway.hostName
 		);
 	}
 	window.showInformationMessage(
 		localize(
 			"",
-			`Gateway swithed to host name ${pick.gateway.hostName} successfully.`,
-		),
+			`Gateway swithed to host name ${pick.gateway.hostName} successfully.`
+		)
 	);
 }

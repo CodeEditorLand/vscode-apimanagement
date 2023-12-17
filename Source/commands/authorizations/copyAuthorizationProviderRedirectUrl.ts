@@ -12,28 +12,28 @@ import { nonNullValue } from "../../utils/nonNull";
 
 export async function copyAuthorizationProviderRedirectUrl(
 	context: IActionContext,
-	node?: AuthorizationProviderTreeItem,
+	node?: AuthorizationProviderTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = <AuthorizationProviderTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				AuthorizationProviderTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 	}
 
 	const redirectUrl = nonNullValue(
-		node.authorizationProviderContract.properties.oauth2?.redirectUrl,
+		node.authorizationProviderContract.properties.oauth2?.redirectUrl
 	);
 	vscode.env.clipboard.writeText(redirectUrl);
 	vscode.window.showInformationMessage(
 		localize(
 			"copyRedirect",
-			`RedirectUrl for Authorization provider '${node.authorizationProviderContract.name}' copied to clipboard. value - ${redirectUrl}`,
-		),
+			`RedirectUrl for Authorization provider '${node.authorizationProviderContract.name}' copied to clipboard. value - ${redirectUrl}`
+		)
 	);
 	ext.outputChannel.appendLine(
-		`RedirectUrl for Authorization provider '${node.authorizationProviderContract.name}' copied to clipboard. value - ${redirectUrl}`,
+		`RedirectUrl for Authorization provider '${node.authorizationProviderContract.name}' copied to clipboard. value - ${redirectUrl}`
 	);
 }

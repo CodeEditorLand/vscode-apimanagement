@@ -9,12 +9,12 @@ import { ext } from "../extensionVariables";
 
 export async function openInPortal(
 	context: IActionContext,
-	node?: AzureTreeItem,
+	node?: AzureTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = await ext.tree.showTreeItemPicker<AzureTreeItem>(
 			ServiceTreeItem.contextValue,
-			context,
+			context
 		);
 	}
 	await node.openInPortal();

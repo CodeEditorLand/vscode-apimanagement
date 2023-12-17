@@ -38,7 +38,7 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	constructor(
 		parent: AzureParentTreeItem,
 		public apiContract: ApiManagementModels.ApiContract,
-		apiVersion?: string,
+		apiVersion?: string
 	) {
 		super(parent);
 
@@ -83,18 +83,18 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	public async deleteTreeItemImpl(): Promise<void> {
 		const message: string = localize(
 			"confirmDeleteApi",
-			`Are you sure you want to delete API '${this.root.apiName}' and its contents?`,
+			`Are you sure you want to delete API '${this.root.apiName}' and its contents?`
 		);
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
-			DialogResponses.cancel,
+			DialogResponses.cancel
 		);
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"deletingApi",
-				`Deleting API "${this.root.apiName}"...`,
+				`Deleting API "${this.root.apiName}"...`
 			);
 			await window.withProgress(
 				{
@@ -106,16 +106,16 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						this.root.apiName,
-						"*",
+						"*"
 					);
-				},
+				}
 			);
 			// don't wait
 			window.showInformationMessage(
 				localize(
 					"deletedApi",
-					`Successfully deleted API "${this.root.apiName}".`,
-				),
+					`Successfully deleted API "${this.root.apiName}".`
+				)
 			);
 		} else {
 			throw new UserCancelledError();
@@ -123,7 +123,7 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	}
 
 	public pickTreeItemImpl(
-		expectedContextValues: (string | RegExp)[],
+		expectedContextValues: (string | RegExp)[]
 	): AzureTreeItem<IApiTreeRoot> | undefined {
 		for (const expectedContextValue of expectedContextValues) {
 			switch (expectedContextValue) {
@@ -156,7 +156,7 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 
 	private createRoot(
 		subRoot: ISubscriptionContext,
-		apiName: string,
+		apiName: string
 	): IApiTreeRoot {
 		return Object.assign({}, <IServiceTreeRoot>subRoot, {
 			apiName: apiName,

@@ -12,7 +12,7 @@ export class ResourceGraphService {
 	constructor(
 		public credentials: TokenCredentialsBase,
 		public endPointUrl: string,
-		public subscriptionId: string,
+		public subscriptionId: string
 	) {
 		this.credentials = credentials;
 		this.endPointUrl = endPointUrl;
@@ -26,7 +26,7 @@ export class ResourceGraphService {
 		{ name: string; id: string; type: string; principalId: string }[]
 	> {
 		const client: ServiceClient = await createGenericClient(
-			this.credentials,
+			this.credentials
 		);
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "POST",
@@ -49,7 +49,7 @@ export class ResourceGraphService {
 		{ name: string; id: string; principalId: string }[]
 	> {
 		const client: ServiceClient = await createGenericClient(
-			this.credentials,
+			this.credentials
 		);
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "POST",

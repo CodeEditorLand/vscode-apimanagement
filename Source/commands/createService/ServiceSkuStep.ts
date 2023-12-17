@@ -20,7 +20,7 @@ export class ServiceSkuStep extends AzureWizardPromptStep<IServiceWizardContext>
 			skus.map((s) => {
 				return { label: s, description: "", detail: "" };
 			}),
-			{ canPickMany: false },
+			{ canPickMany: false }
 		);
 		wizardContext.sku = sku.label;
 	}

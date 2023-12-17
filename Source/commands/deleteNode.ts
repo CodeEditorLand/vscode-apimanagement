@@ -9,12 +9,12 @@ import { ext } from "../extensionVariables";
 export async function deleteNode(
 	context: IActionContext,
 	expectedContextValue: string | RegExp,
-	node?: AzureTreeItem,
+	node?: AzureTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = await ext.tree.showTreeItemPicker<AzureTreeItem>(
 			expectedContextValue,
-			context,
+			context
 		);
 	}
 

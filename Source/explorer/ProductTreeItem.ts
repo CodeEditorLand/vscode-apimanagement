@@ -29,7 +29,7 @@ export class ProductTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 
 	constructor(
 		parent: ProductsTreeItem,
-		public readonly productContract: ApiManagementModels.ProductContract,
+		public readonly productContract: ApiManagementModels.ProductContract
 	) {
 		super(parent);
 		this._label = nonNullProp(this.productContract, "displayName");

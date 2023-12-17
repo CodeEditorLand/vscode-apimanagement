@@ -9,7 +9,7 @@ import { ext } from "../extensionVariables";
 
 export async function openDiffEditor(
 	_context: IActionContext,
-	uri: vscode.Uri,
+	uri: vscode.Uri
 ): Promise<void> {
 	const localPath = uri.fsPath.replace("-tempFile", "");
 	ext.outputChannel.show();
@@ -17,6 +17,6 @@ export async function openDiffEditor(
 		"vscode.diff",
 		vscode.Uri.file(localPath),
 		vscode.Uri.file(uri.fsPath),
-		"Original -> Current",
+		"Original -> Current"
 	);
 }

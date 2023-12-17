@@ -36,12 +36,12 @@ export namespace treeUtils {
 
 	export async function getSubscriptionNode(
 		tree: AzExtTreeDataProvider,
-		subscriptionId: string,
+		subscriptionId: string
 	): Promise<AzureParentTreeItem> {
 		const node: AzureParentTreeItem | undefined = <
 			AzureParentTreeItem | undefined
 		>(await tree.getChildren()).find(
-			(n: AzureTreeItem) => n.root.subscriptionId === subscriptionId,
+			(n: AzureTreeItem) => n.root.subscriptionId === subscriptionId
 		);
 		if (node) {
 			return node;
@@ -50,20 +50,20 @@ export namespace treeUtils {
 				localize(
 					"noMatchingSubscription",
 					'Failed to find a subscription matching id "{0}".',
-					subscriptionId,
-				),
+					subscriptionId
+				)
 			);
 		}
 	}
 
 	export async function getRootNode(
-		tree: AzExtTreeDataProvider,
+		tree: AzExtTreeDataProvider
 	): Promise<AzureParentTreeItem> {
 		// need to double check
 		return <AzureParentTreeItem>(
 			(await tree.getChildren()).find(
 				(n: AzureParentTreeItem) =>
-					n instanceof SubscriptionTreeItemBase,
+					n instanceof SubscriptionTreeItemBase
 			)
 		);
 	}

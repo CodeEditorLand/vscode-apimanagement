@@ -52,8 +52,8 @@ export class DebuggerConnection extends EventEmitter {
 							"end",
 							localize(
 								"",
-								`Can't connect to gateway: ${e.message}.`,
-							),
+								`Can't connect to gateway: ${e.message}.`
+							)
 						);
 					}
 					reject();
@@ -74,7 +74,7 @@ export class DebuggerConnection extends EventEmitter {
 	public async getRequests() {
 		return this.waitForResponse<RequestContract[]>(
 			() => this.sendCommand("getRequests"),
-			"requests",
+			"requests"
 		);
 	}
 
@@ -85,14 +85,14 @@ export class DebuggerConnection extends EventEmitter {
 					requestId: requestId,
 					threadId: threadId,
 				}),
-			"stackTrace",
+			"stackTrace"
 		);
 	}
 
 	public async getVariables(
 		requestId: string,
 		threadId: number,
-		path?: string,
+		path?: string
 	) {
 		return this.waitForResponse<VariableContract[]>(
 			() =>
@@ -101,13 +101,13 @@ export class DebuggerConnection extends EventEmitter {
 					threadId: threadId,
 					path: path,
 				}),
-			"variables",
+			"variables"
 		);
 	}
 
 	public async setBreakpoints(
 		breakpoints: { path: string; scopeId: string }[],
-		scopeId: string,
+		scopeId: string
 	) {
 		this.sendCommand("setBreakpoints", {
 			scopeId: scopeId,
@@ -165,7 +165,7 @@ export class DebuggerConnection extends EventEmitter {
 			JSON.stringify({
 				name: name,
 				arguments: args,
-			}),
+			})
 		);
 	}
 
@@ -173,7 +173,7 @@ export class DebuggerConnection extends EventEmitter {
 		try {
 			// tslint:disable-next-line: no-banned-terms
 			const event: { name: string; arguments: any } = JSON.parse(
-				data.trim(),
+				data.trim()
 			);
 			// tslint:disable-next-line: switch-default
 			switch (event.name) {
@@ -184,7 +184,7 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.threadId,
 						event.arguments.operationId,
 						event.arguments.apiId,
-						event.arguments.productId,
+						event.arguments.productId
 					);
 					break;
 				case "stopOnStep":
@@ -194,7 +194,7 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.threadId,
 						event.arguments.operationId,
 						event.arguments.apiId,
-						event.arguments.productId,
+						event.arguments.productId
 					);
 					break;
 				case "stopOnException":
@@ -205,7 +205,7 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.operationId,
 						event.arguments.apiId,
 						event.arguments.productId,
-						event.arguments.message,
+						event.arguments.message
 					);
 					break;
 				case "stopOnBreakpoint":
@@ -215,7 +215,7 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.threadId,
 						event.arguments.operationId,
 						event.arguments.apiId,
-						event.arguments.productId,
+						event.arguments.productId
 					);
 					break;
 				case "threadExited":
@@ -225,7 +225,7 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.threadId,
 						event.arguments.operationId,
 						event.arguments.apiId,
-						event.arguments.productId,
+						event.arguments.productId
 					);
 					break;
 			}

@@ -15,7 +15,7 @@ import { getDefaultWorkspacePath } from "../utils/fsUtil";
 
 export async function setupWorkingFolder(this: IActionContext): Promise<void> {
 	ext.outputChannel.appendLine(
-		localize("folderInitialized", "Initialization started..."),
+		localize("folderInitialized", "Initialization started...")
 	);
 	ext.outputChannel.show();
 	// make sure dotnet tools are installed.
@@ -35,14 +35,14 @@ export async function setupWorkingFolder(this: IActionContext): Promise<void> {
 		workingFolderPath,
 		"dotnet",
 		"new",
-		"web",
+		"web"
 	);
 
 	// Copy the supporting files.
 	await fse.copy(
 		ext.context.asAbsolutePath(path.join("resources", "projectFiles")),
 		workingFolderPath,
-		{ overwrite: true, recursive: false },
+		{ overwrite: true, recursive: false }
 	);
 
 	await cpUtils.executeCommand(
@@ -51,7 +51,7 @@ export async function setupWorkingFolder(this: IActionContext): Promise<void> {
 		"dotnet",
 		"add",
 		"package",
-		"Newtonsoft.Json",
+		"Newtonsoft.Json"
 	);
 
 	// run dotnet build atleast once to get the intellisense working in razor files.
@@ -59,17 +59,17 @@ export async function setupWorkingFolder(this: IActionContext): Promise<void> {
 		ext.outputChannel,
 		workingFolderPath,
 		"dotnet",
-		"build",
+		"build"
 	);
 
 	ext.outputChannel.appendLine(
-		localize("folderInitialized", "Initialization completed!"),
+		localize("folderInitialized", "Initialization completed!")
 	);
 	ext.outputChannel.appendLine(
 		localize(
 			"closePolicyFiles",
-			"Please close and reopen any open policy files.",
-		),
+			"Please close and reopen any open policy files."
+		)
 	);
 	ext.outputChannel.show();
 }

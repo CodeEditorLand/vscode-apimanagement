@@ -16,13 +16,13 @@ import { localize } from "../localize";
 
 export async function createNamedValue(
 	context: IActionContext & Partial<INamedValuesTreeItemContext>,
-	node?: NamedValuesTreeItem,
+	node?: NamedValuesTreeItem
 ): Promise<void> {
 	if (!node) {
 		const serviceNode = <ServiceTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ServiceTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 		node = serviceNode.namedValuesTreeItem;
@@ -38,14 +38,14 @@ export async function createNamedValue(
 				location: ProgressLocation.Notification,
 				title: localize(
 					"createNamedValue",
-					`Creating named value '${context.key}' in API Management service ${node.root.serviceName} ...`,
+					`Creating named value '${context.key}' in API Management service ${node.root.serviceName} ...`
 				),
 				cancellable: false,
 			},
 			// tslint:disable-next-line:no-non-null-assertion
 			async () => {
 				return node!.createChild(context);
-			},
+			}
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
@@ -53,21 +53,21 @@ export async function createNamedValue(
 			window.showInformationMessage(
 				localize(
 					"creatededNamedValue",
-					`Created named value '${context.key}' succesfully.`,
-				),
+					`Created named value '${context.key}' succesfully.`
+				)
 			);
 		});
 }
 
 export async function updateNamedValue(
 	context: IActionContext,
-	node?: NamedValueTreeItem,
+	node?: NamedValueTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = <NamedValueTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				NamedValueTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 	}
@@ -83,14 +83,14 @@ export async function updateNamedValue(
 				location: ProgressLocation.Notification,
 				title: localize(
 					"updateNamedValue",
-					`Updating value for '${displayName}' ...`,
+					`Updating value for '${displayName}' ...`
 				),
 				cancellable: false,
 			},
 			// tslint:disable-next-line:no-non-null-assertion
 			async () => {
 				return node!.updateValue(context, value, secret);
-			},
+			}
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
@@ -98,8 +98,8 @@ export async function updateNamedValue(
 			window.showInformationMessage(
 				localize(
 					"updatedNamedValue",
-					`Updated value for '${displayName}' succesfully.`,
-				),
+					`Updated value for '${displayName}' succesfully.`
+				)
 			);
 		});
 }
@@ -110,7 +110,7 @@ async function isSecret(): Promise<boolean | undefined> {
 		options.map((s) => {
 			return { label: s, description: "", detail: "" };
 		}),
-		{ placeHolder: "Is this a secret?", canPickMany: false },
+		{ placeHolder: "Is this a secret?", canPickMany: false }
 	);
 	if (option.label === options[0]) {
 		return true;
@@ -124,7 +124,7 @@ async function askId(): Promise<string> {
 		await ext.ui.showInputBox({
 			prompt: idPrompt,
 			validateInput: async (
-				value: string,
+				value: string
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
 				return validateId(value);

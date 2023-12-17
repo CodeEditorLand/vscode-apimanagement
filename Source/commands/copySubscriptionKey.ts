@@ -9,13 +9,13 @@ import { ext } from "../extensionVariables";
 
 export async function copySubscriptionKey(
 	context: IActionContext,
-	node?: ServiceTreeItem,
+	node?: ServiceTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = <ServiceTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ServiceTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 	}

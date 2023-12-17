@@ -29,13 +29,13 @@ export class FunctionAppService {
 		endPointUrl: string,
 		subscriptionId: string,
 		resourceGroup: string,
-		functionName: string,
+		functionName: string
 	) {
 		this.baseUrl = this.genSiteUrl(
 			endPointUrl,
 			subscriptionId,
 			resourceGroup,
-			functionName,
+			functionName
 		);
 		this.credentials = credentials;
 		this.endPointUrl = endPointUrl;
@@ -48,7 +48,7 @@ export class FunctionAppService {
 	public async listAllFunctions(): Promise<IFunctionContract[]> {
 		const result = await this.request(
 			`${this.baseUrl}/functions?api-version=${Constants.functionAppApiVersion}`,
-			"GET",
+			"GET"
 		);
 		// tslint:disable-next-line: no-unsafe-any
 		return <IFunctionContract[]>result.parsedBody.value;
@@ -72,7 +72,7 @@ export class FunctionAppService {
 	public async getWebAppConfig(
 		resourceGroup: string,
 		serviceName: string,
-		apiName: string,
+		apiName: string
 	): Promise<void> {
 		const webAppConfig: IWebAppContract = await this.getFuncAppConfig();
 		const apiConfigId = `/subscriptions/${this.subscriptionId}/resourceGroups/${resourceGroup}/providers/Microsoft.ApiManagement/service/${serviceName}/apis/${apiName}`;
@@ -87,7 +87,7 @@ export class FunctionAppService {
 			`${this.baseUrl}/config/web?api-version=${Constants.functionAppApiVersion}`,
 			"PUT",
 			undefined,
-			webAppConfig,
+			webAppConfig
 		);
 	}
 
@@ -110,7 +110,7 @@ export class FunctionAppService {
 		endPointUrl: string,
 		subscriptionId: string,
 		resourceGroup: string,
-		functionName: string,
+		functionName: string
 	): string {
 		return `${endPointUrl}/subscriptions/${subscriptionId}/resourceGroups/${resourceGroup}/providers/Microsoft.Web/sites/${functionName}`;
 	}
@@ -130,10 +130,10 @@ export class FunctionAppService {
 		url: string,
 		method: HttpMethods,
 		queryParameters?: { [key: string]: any | ParameterValue },
-		body?: any,
+		body?: any
 	): Promise<HttpOperationResponse> {
 		const client: ServiceClient = await createGenericClient(
-			this.credentials,
+			this.credentials
 		);
 		return await client.sendRequest({
 			method: method,

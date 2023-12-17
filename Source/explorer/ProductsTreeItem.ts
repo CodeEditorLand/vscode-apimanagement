@@ -24,7 +24,7 @@ export class ProductsTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean,
+		clearCache: boolean
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -35,11 +35,11 @@ export class ProductsTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				? await this.root.client.product.listByService(
 						this.root.resourceGroupName,
 						this.root.serviceName,
-						{ top: topItemCount },
-				  )
+						{ top: topItemCount }
+					)
 				: await this.root.client.product.listByServiceNext(
-						this._nextLink,
-				  );
+						this._nextLink
+					);
 
 		this._nextLink = productCollection.nextLink;
 
@@ -50,7 +50,7 @@ export class ProductsTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				new ProductTreeItem(this, product),
 			(product: ApiManagementModels.ProductContract) => {
 				return product.name;
-			},
+			}
 		);
 	}
 }

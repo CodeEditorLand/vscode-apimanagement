@@ -41,7 +41,7 @@ import { ServiceTreeItem } from "./ServiceTreeItem";
 export class ApiManagementProvider extends SubscriptionTreeItemBase {
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.ApimService",
-		"API Management Service",
+		"API Management Service"
 	);
 
 	private _nextLink: string | undefined;
@@ -51,7 +51,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean,
+		clearCache: boolean
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -59,7 +59,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 
 		const client: ApiManagementClient = createAzureClient(
 			this.root,
-			ApiManagementClient,
+			ApiManagementClient
 		);
 		let apiManagementServiceListResponse: ApiManagementServiceListResponse;
 		try {
@@ -67,8 +67,8 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 				this._nextLink === undefined
 					? await client.apiManagementService.list()
 					: await client.apiManagementService.listNext(
-							this._nextLink,
-					  );
+							this._nextLink
+						);
 		} catch (error) {
 			if (parseError(error).errorType.toLowerCase() === "notfound") {
 				// This error type means the 'Microsoft.ApiManagement' provider has not been registered in this subscription
@@ -90,18 +90,18 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 				new ServiceTreeItem(this, client, service),
 			(service: ApiManagementModels.ApiManagementServiceResource) => {
 				return service.name;
-			},
+			}
 		);
 	}
 
 	// what are we doing here
 	public async createChildImpl(
-		context: ICreateChildImplContext,
+		context: ICreateChildImplContext
 	): Promise<AzureParentTreeItem> {
 		//const actionContext: ICreateChildImplContext = context;
 		const client: ApiManagementClient = createAzureClient(
 			this.root,
-			ApiManagementClient,
+			ApiManagementClient
 		);
 
 		const errorhandler: IErrorHandlingContext = {
@@ -149,11 +149,11 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 
 		const title: string = localize(
 			"serviceCreatingTitle",
-			"Create new API Management instance in Azure",
+			"Create new API Management instance in Azure"
 		);
 		const wizard: AzureWizard<IServiceWizardContext> = new AzureWizard(
 			wizardContext,
-			{ promptSteps, executeSteps, title },
+			{ promptSteps, executeSteps, title }
 		);
 
 		await wizard.prompt();
@@ -166,8 +166,8 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 				throw new Error(
 					localize(
 						"noUniqueName",
-						"Failed to generate unique name for resources.",
-					),
+						"Failed to generate unique name for resources."
+					)
 				);
 			}
 			wizardContext.newResourceGroupName = newName;
@@ -181,7 +181,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 					"tryAdvancedCreate",
 					'Modify the setting "{0}.{1}" if you want to change the default values when creating a API Management Instance in Azure.',
 					extensionPrefix,
-					advancedCreationKey,
+					advancedCreationKey
 				);
 				const btn: MessageItem = {
 					title: localize("turnOn", "Turn on advanced creation"),

@@ -13,13 +13,13 @@ import { writeToEditor } from "../utils/vscodeUtils";
 
 export async function testOperation(
 	context: IActionContext,
-	node?: ApiOperationTreeItem,
+	node?: ApiOperationTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = <ApiOperationTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ApiOperationTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 	}
@@ -29,7 +29,7 @@ export async function testOperation(
 
 export async function createOperationTestFile(
 	node: ApiOperationTreeItem,
-	mode: OperationRunMode,
+	mode: OperationRunMode
 ): Promise<vscode.TextEditor> {
 	// using https://github.com/Huachao/vscode-restclient
 	const fileName = `${nameUtil(node.root)}.http`;

@@ -24,7 +24,7 @@ export class GatewaysTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean,
+		clearCache: boolean
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -35,7 +35,7 @@ export class GatewaysTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 			this.root.environment.resourceManagerEndpointUrl,
 			this.root.subscriptionId,
 			this.root.resourceGroupName,
-			this.root.serviceName,
+			this.root.serviceName
 		);
 
 		const gateways: IGatewayContract[] = await apimService.listGateways();
@@ -47,7 +47,7 @@ export class GatewaysTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				new GatewayTreeItem(this, gateway),
 			(gateway: IGatewayContract) => {
 				return gateway.name;
-			},
+			}
 		);
 	}
 }

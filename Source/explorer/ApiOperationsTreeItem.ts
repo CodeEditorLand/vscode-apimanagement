@@ -20,7 +20,7 @@ export class ApiOperationsTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	public contextValue: string = ApiOperationsTreeItem.contextValue;
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.Operation",
-		"Operation",
+		"Operation"
 	);
 	private _nextLink: string | undefined;
 
@@ -29,7 +29,7 @@ export class ApiOperationsTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean,
+		clearCache: boolean
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -41,11 +41,11 @@ export class ApiOperationsTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						this.root.apiName,
-						{ top: topItemCount },
-				  )
+						{ top: topItemCount }
+					)
 				: await this.root.client.apiOperation.listByApiNext(
-						this._nextLink,
-				  );
+						this._nextLink
+					);
 
 		// tslint:disable-next-line: no-unsafe-any
 		this._nextLink = operationCollection.nextLink;
@@ -57,7 +57,7 @@ export class ApiOperationsTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 				new ApiOperationTreeItem(this, op),
 			(op: ApiManagementModels.OperationContract) => {
 				return op.name;
-			},
+			}
 		);
 	}
 }

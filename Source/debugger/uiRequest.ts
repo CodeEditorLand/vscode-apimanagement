@@ -15,7 +15,7 @@ export class UiRequest {
 		id: string,
 		operationId: string,
 		apiId: string,
-		productId: string,
+		productId: string
 	) {
 		this.id = id;
 		this.threads = [];
@@ -27,7 +27,7 @@ export class UiRequest {
 
 	public addNewThread(
 		gatewayThread: number,
-		policySource: PolicySource,
+		policySource: PolicySource
 	): UiThread {
 		let thread: UiThread;
 		this.threads.push(
@@ -36,8 +36,8 @@ export class UiRequest {
 				this.operationId,
 				this.apiId,
 				this.productId,
-				policySource,
-			)),
+				policySource
+			))
 		);
 		return thread;
 	}

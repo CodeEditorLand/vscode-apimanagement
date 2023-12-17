@@ -32,7 +32,7 @@ export class PolicySource {
 	constructor(
 		managementAddress: string,
 		credential?: TokenCredentialsBase,
-		auth?: string,
+		auth?: string
 	) {
 		this.managementAddress = managementAddress;
 		this.credential = credential;
@@ -44,7 +44,7 @@ export class PolicySource {
 
 	public getPolicyLocation(
 		scopeId: string,
-		path: string,
+		path: string
 	): PolicyLocation | null {
 		const policy = this.policies[this.normalizeScopeId(scopeId)];
 		if (!policy) {
@@ -86,8 +86,8 @@ export class PolicySource {
 			// Batching goes here
 			await Promise.all(
 				policiesToRequest.map((s) =>
-					this.fetchPolicy(s).catch((_e) => null),
-				),
+					this.fetchPolicy(s).catch((_e) => null)
+				)
 			);
 		}
 	}
@@ -125,7 +125,7 @@ export class PolicySource {
 			authToken = await getBearerToken(
 				policyUrl,
 				"GET",
-				this.credential!,
+				this.credential!
 			);
 		}
 		const policyContract: PolicyContract = await request
@@ -151,7 +151,7 @@ export class PolicySource {
 				source: new Source(
 					scopeId,
 					path.normalize(scopeId),
-					PolicySource.NextSourceReference++,
+					PolicySource.NextSourceReference++
 				),
 				map: {},
 			});

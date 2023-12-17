@@ -11,7 +11,7 @@ import { ext } from "../../extensionVariables";
 import { localize } from "../../localize";
 
 export async function askAuthorizationProviderParameterValues(
-	grant: ITokenStoreGrantTypeParameterContract,
+	grant: ITokenStoreGrantTypeParameterContract
 ): Promise<IParameterValues> {
 	const parameterValues: IParameterValues = {};
 	// tslint:disable-next-line:forin no-for-in
@@ -26,7 +26,7 @@ export async function askAuthorizationProviderParameterValues(
 			parameterValues[parameter] = await askParam(
 				parameterUIMetadata,
 				parameterUIMetadata.uidefinition
-					.atAuthorizationProviderLevel === "REQUIRED",
+					.atAuthorizationProviderLevel === "REQUIRED"
 			);
 		}
 	}
@@ -35,7 +35,7 @@ export async function askAuthorizationProviderParameterValues(
 }
 
 export async function askAuthorizationParameterValues(
-	grant: ITokenStoreGrantTypeParameterContract,
+	grant: ITokenStoreGrantTypeParameterContract
 ): Promise<IParameterValues> {
 	const parameterValues: IParameterValues = {};
 	// tslint:disable-next-line:forin no-for-in
@@ -49,7 +49,7 @@ export async function askAuthorizationParameterValues(
 		) {
 			parameterValues[parameter] = await askParam(
 				parameterUIMetadata,
-				true,
+				true
 			);
 		}
 	}
@@ -59,28 +59,28 @@ export async function askAuthorizationParameterValues(
 
 async function askParam(
 	parameterUIMetadata: ITokenStoreGrantTypeParameterDefinitionContract,
-	isRequired: boolean,
+	isRequired: boolean
 ): Promise<string> {
 	return await ext.ui.showInputBox({
 		placeHolder: localize(
 			"parameterDisplayName",
-			`Enter ${parameterUIMetadata.displayName} ...`,
+			`Enter ${parameterUIMetadata.displayName} ...`
 		),
 		prompt: localize(
 			"parameterDescription",
-			`${parameterUIMetadata.description}`,
+			`${parameterUIMetadata.description}`
 		),
 		value: parameterUIMetadata.default,
 		password: parameterUIMetadata.type === "securestring",
 		validateInput: async (
-			value: string | undefined,
+			value: string | undefined
 		): Promise<string | undefined> => {
 			value = value ? value.trim() : "";
 
 			if (isRequired && value.length < 1) {
 				return localize(
 					"parameterRequired",
-					`${parameterUIMetadata.displayName} is required.`,
+					`${parameterUIMetadata.displayName} is required.`
 				);
 			}
 
@@ -92,7 +92,7 @@ async function askParam(
 export async function askId(
 	prompt: string,
 	errorMessage: string,
-	defaultValue: string = "",
+	defaultValue: string = ""
 ): Promise<string> {
 	const idPrompt: string = localize("idPrompt", prompt);
 	return (
@@ -100,7 +100,7 @@ export async function askId(
 			prompt: idPrompt,
 			value: defaultValue,
 			validateInput: async (
-				value: string,
+				value: string
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
 				return validateId(value, errorMessage);

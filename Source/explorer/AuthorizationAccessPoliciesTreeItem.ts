@@ -36,7 +36,7 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 		AuthorizationAccessPoliciesTreeItem.contextValue;
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.AuthorizationAccessPolicy",
-		"AuthorizationAccessPolicy",
+		"AuthorizationAccessPolicy"
 	);
 	private _nextLink: string | undefined;
 
@@ -45,7 +45,7 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean,
+		clearCache: boolean
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -56,13 +56,13 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 			this.root.environment.resourceManagerEndpointUrl,
 			this.root.subscriptionId,
 			this.root.resourceGroupName,
-			this.root.serviceName,
+			this.root.serviceName
 		);
 
 		const authorizationAccessPolicies: IAuthorizationAccessPolicyContract[] =
 			await apimService.listAuthorizationAccessPolicies(
 				this.root.authorizationProviderName,
-				this.root.authorizationName,
+				this.root.authorizationName
 			);
 
 		return this.createTreeItemsWithErrorHandling(
@@ -72,12 +72,12 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 				new AuthorizationAccessPolicyTreeItem(this, accessPolicy),
 			(accessPolicy: IAuthorizationAccessPolicyContract) => {
 				return accessPolicy.name;
-			},
+			}
 		);
 	}
 
 	public async createChildImpl(
-		context: IAuthorizationAccessPolicyTreeItemContext,
+		context: IAuthorizationAccessPolicyTreeItemContext
 	): Promise<AuthorizationAccessPolicyTreeItem> {
 		if (
 			context.authorizationAccessPolicyName &&
@@ -93,13 +93,13 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 					this.root.environment.resourceManagerEndpointUrl,
 					this.root.subscriptionId,
 					this.root.resourceGroupName,
-					this.root.serviceName,
+					this.root.serviceName
 				);
 				let authorizationAccessPolicy =
 					await apimService.getAuthorizationAccessPolicy(
 						this.root.authorizationProviderName,
 						this.root.authorizationName,
-						authorizationAccessPolicyName,
+						authorizationAccessPolicyName
 					);
 				if (authorizationAccessPolicy === undefined) {
 					authorizationAccessPolicy =
@@ -107,18 +107,18 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 							this.root.authorizationProviderName,
 							this.root.authorizationName,
 							authorizationAccessPolicyName,
-							context.authorizationAccessPolicy,
+							context.authorizationAccessPolicy
 						);
 					return new AuthorizationAccessPolicyTreeItem(
 						this,
-						authorizationAccessPolicy,
+						authorizationAccessPolicy
 					);
 				} else {
 					throw new Error(
 						localize(
 							"createAuthorizationAccessPolicy",
-							`Access policy '${authorizationAccessPolicyName}' already exists.`,
-						),
+							`Access policy '${authorizationAccessPolicyName}' already exists.`
+						)
 					);
 				}
 			} catch (error) {
@@ -127,9 +127,9 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 						error,
 						localize(
 							"createAuthorizationAccessPolicy",
-							`Failed to access policy '${authorizationAccessPolicyName}' to Authorization '${this.root.authorizationName}'.`,
-						),
-					),
+							`Failed to access policy '${authorizationAccessPolicyName}' to Authorization '${this.root.authorizationName}'.`
+						)
+					)
 				);
 			}
 		} else {

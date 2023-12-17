@@ -11,26 +11,26 @@ import { BasePolicyEditor } from "./BasePolicyEditor";
 
 export class ApiPolicyEditor extends BasePolicyEditor<IApiTreeRoot> {
 	public async getPolicy(
-		context: AzureTreeItem<IApiTreeRoot>,
+		context: AzureTreeItem<IApiTreeRoot>
 	): Promise<string> {
 		const policy = await context.root.client.apiPolicy.get(
 			context.root.resourceGroupName,
 			context.root.serviceName,
 			context.root.apiName,
-			{ format: policyFormat },
+			{ format: policyFormat }
 		);
 		return policy._response.bodyAsText;
 	}
 
 	public async updatePolicy(
 		context: AzureTreeItem<IApiTreeRoot>,
-		policy: ApiManagementModels.PolicyContract,
+		policy: ApiManagementModels.PolicyContract
 	): Promise<string> {
 		const policyResult = await context.root.client.apiPolicy.createOrUpdate(
 			context.root.resourceGroupName,
 			context.root.serviceName,
 			context.root.apiName,
-			policy,
+			policy
 		);
 		return policyResult._response.bodyAsText;
 	}

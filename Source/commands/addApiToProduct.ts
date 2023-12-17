@@ -20,14 +20,14 @@ import { nonNullProp } from "../utils/nonNull";
 // tslint:disable: no-any
 export async function addApiToProduct(
 	context: IActionContext & Partial<IProductTreeItemContext>,
-	node?: ProductApisTreeItem,
+	node?: ProductApisTreeItem
 ): Promise<void> {
 	let productNode: ProductTreeItem;
 	if (!node) {
 		productNode = <ProductTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ProductTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 		node = productNode.productApisTreeItem;
@@ -43,7 +43,7 @@ export async function addApiToProduct(
 		await ext.tree.showTreeItemPicker(
 			ApiTreeItem.contextValue,
 			context,
-			serviceTreeItem,
+			serviceTreeItem
 		)
 	);
 
@@ -56,14 +56,14 @@ export async function addApiToProduct(
 				location: ProgressLocation.Notification,
 				title: localize(
 					"addApiToProduct",
-					`Adding API '${apiName}' to product ${node.root.productName} ...`,
+					`Adding API '${apiName}' to product ${node.root.productName} ...`
 				),
 				cancellable: false,
 			},
 			// tslint:disable-next-line:no-non-null-assertion
 			async () => {
 				return node!.createChild(context);
-			},
+			}
 		)
 		.then(async () => {
 			// tslint:disable:no-non-null-assertion
@@ -73,8 +73,8 @@ export async function addApiToProduct(
 					"addedApiToProduct",
 					`Added API '${apiName}' to product ${
 						node!.root.productName
-					}.`,
-				),
+					}.`
+				)
 			);
 		});
 }

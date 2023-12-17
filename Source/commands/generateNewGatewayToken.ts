@@ -14,13 +14,13 @@ import { localize } from "../localize";
 
 export async function generateNewGatewayToken(
 	context: IActionContext,
-	node?: GatewayTreeItem,
+	node?: GatewayTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = <GatewayTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				GatewayTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 	}
@@ -29,21 +29,21 @@ export async function generateNewGatewayToken(
 	ext.outputChannel.appendLine(
 		localize(
 			"genGatewayToken",
-			"Please specify the expiry date for the Gateway token...",
-		),
+			"Please specify the expiry date for the Gateway token..."
+		)
 	);
 	const numOfDaysResponse = (
 		await ext.ui.showInputBox({
 			prompt: localize("gatewayPrompt", "Enter days to expire."),
 			value: Constants.maxTokenValidTimeSpan.toString(),
 			validateInput: async (
-				value: string,
+				value: string
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
 				if (!validateDays(value)) {
 					return localize(
 						"InvalidDays",
-						"Input is not valid. Value must be less than 30 days.",
+						"Input is not valid. Value must be less than 30 days."
 					);
 				}
 				return undefined;
@@ -55,7 +55,7 @@ export async function generateNewGatewayToken(
 		options.map((s) => {
 			return { label: s, description: "", detail: "" };
 		}),
-		{ placeHolder: "Pick key to generate token?", canPickMany: false },
+		{ placeHolder: "Pick key to generate token?", canPickMany: false }
 	);
 	const numOfDays = Number.parseInt(numOfDaysResponse);
 	// tslint:disable: no-non-null-assertion
@@ -64,19 +64,19 @@ export async function generateNewGatewayToken(
 		node!.root.environment.resourceManagerEndpointUrl,
 		node!.root.subscriptionId,
 		node!.root.resourceGroupName,
-		node!.root.serviceName,
+		node!.root.serviceName
 	);
 	const gatewayToken = await apimService.generateNewGatewayToken(
 		node!.root.gatewayName,
 		numOfDays,
-		keyType.label,
+		keyType.label
 	);
 	env.clipboard.writeText(gatewayToken);
 	window.showInformationMessage(
 		localize(
 			"genGatewayToken",
-			"New Gateway token generated and copied to clipboard successfully.",
-		),
+			"New Gateway token generated and copied to clipboard successfully."
+		)
 	);
 }
 

@@ -22,11 +22,11 @@ export abstract class BaseArmResourceEditor<
 
 	public abstract get entityType(): string;
 	public abstract getDataInternal(
-		context: AzureTreeItem<TRoot>,
+		context: AzureTreeItem<TRoot>
 	): Promise<any>;
 	public abstract updateDataInternal(
 		context: AzureTreeItem<TRoot>,
-		payload: any,
+		payload: any
 	): Promise<any>;
 
 	public async getData(context: AzureTreeItem<TRoot>): Promise<string> {
@@ -41,7 +41,7 @@ export abstract class BaseArmResourceEditor<
 	// tslint:disable: no-unsafe-any
 	public async updateData(
 		context: AzureTreeItem<TRoot>,
-		data: string,
+		data: string
 	): Promise<string> {
 		try {
 			const payload = JSON.parse(data);
@@ -50,8 +50,8 @@ export abstract class BaseArmResourceEditor<
 			window.showInformationMessage(
 				localize(
 					"updateSucceded",
-					`Changes to ${this.entityType} were succefully uploaded to cloud.`,
-				),
+					`Changes to ${this.entityType} were succefully uploaded to cloud.`
+				)
 			);
 			return JSON.stringify(response, null, "\t");
 		} catch (error) {
@@ -60,24 +60,24 @@ export abstract class BaseArmResourceEditor<
 					error,
 					localize(
 						"updateFailed",
-						`Changes to ${this.entityType} could not be uploaded to cloud.`,
-					),
-				),
+						`Changes to ${this.entityType} could not be uploaded to cloud.`
+					)
+				)
 			);
 		}
 	}
 
 	public async getDiffFilename(
-		context: AzureTreeItem<TRoot>,
+		context: AzureTreeItem<TRoot>
 	): Promise<string> {
 		return `${nameUtil(
-			context.root,
+			context.root
 		)}-${this.entityType.toLowerCase()}-arm.json`;
 	}
 
 	public async getFilename(context: AzureTreeItem<TRoot>): Promise<string> {
 		return `${nameUtil(
-			context.root,
+			context.root
 		)}-${this.entityType.toLowerCase()}-arm-tempFile.json`;
 	}
 
@@ -88,7 +88,7 @@ export abstract class BaseArmResourceEditor<
 	public async getSaveConfirmationText(): Promise<string> {
 		return localize(
 			"saveConfirmation",
-			"Do you want to upload the azure resource changes to cloud?",
+			"Do you want to upload the azure resource changes to cloud?"
 		);
 	}
 }

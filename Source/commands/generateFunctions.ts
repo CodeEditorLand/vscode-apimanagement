@@ -118,7 +118,7 @@ const keywords: string[] = [
 // tslint:disable-next-line: max-func-body-length
 export async function generateFunctions(
 	context: IActionContext,
-	node?: ApiTreeItem,
+	node?: ApiTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = <ApiTreeItem>(
@@ -137,21 +137,21 @@ export async function generateFunctions(
 
 	// tslint:disable-next-line: no-unsafe-any
 	const languages: string[] = Object.keys(languageTypes).map(
-		(key) => languageTypes[key],
+		(key) => languageTypes[key]
 	);
 	const language = await ext.ui.showQuickPick(
 		languages.map((s) => {
 			return { label: s, description: "", detail: "" };
 		}),
-		{ placeHolder: "Select language", canPickMany: false },
+		{ placeHolder: "Select language", canPickMany: false }
 	);
 
 	if (!(await checkEnvironmentInstalled(language.label))) {
 		throw new Error(
 			localize(
 				"genFunction",
-				`'${language.label}' is not installed on your machine, please install '${language.label}' to continue.`,
-			),
+				`'${language.label}' is not installed on your machine, please install '${language.label}' to continue.`
+			)
 		);
 	}
 
@@ -166,7 +166,7 @@ export async function generateFunctions(
 
 	const openAPIFilePath = path.join(
 		uris[0].fsPath,
-		`${node!.apiContract.name}.json`,
+		`${node!.apiContract.name}.json`
 	);
 
 	let isSucceeded = false;
@@ -177,13 +177,13 @@ export async function generateFunctions(
 				location: ProgressLocation.Notification,
 				title: localize(
 					"openAPI",
-					`Downloading OpenAPI Specification for API '${node.apiContract.name}'...`,
+					`Downloading OpenAPI Specification for API '${node.apiContract.name}'...`
 				),
 				cancellable: false,
 			},
 			async () => {
 				await fse.writeFile(openAPIFilePath, openAPIDocString);
-			},
+			}
 		)
 		.then(async () => {
 			window.showInformationMessage(
@@ -191,8 +191,8 @@ export async function generateFunctions(
 					"openAPIDownloaded",
 					`Downloaded OpenAPI Specification for API '${
 						node!.apiContract.name
-					} successfully.`,
-				),
+					} successfully.`
+				)
 			);
 		});
 
@@ -202,19 +202,17 @@ export async function generateFunctions(
 				location: ProgressLocation.Notification,
 				title: localize(
 					"generateFunctions",
-					`Scaffolding Azure Functions for API '${node.apiContract.name}'...`,
+					`Scaffolding Azure Functions for API '${node.apiContract.name}'...`
 				),
 				cancellable: false,
 			},
 			async () => {
 				const args: string[] = [];
 				args.push(
-					`--input-file:${cpUtils.wrapArgInQuotes(openAPIFilePath)}`,
+					`--input-file:${cpUtils.wrapArgInQuotes(openAPIFilePath)}`
 				);
 				args.push(
-					`--output-folder:${cpUtils.wrapArgInQuotes(
-						uris[0].fsPath,
-					)}`,
+					`--output-folder:${cpUtils.wrapArgInQuotes(uris[0].fsPath)}`
 				);
 
 				switch (language.label) {
@@ -239,8 +237,8 @@ export async function generateFunctions(
 						throw new Error(
 							localize(
 								"notSupported",
-								"Only C#, Java, Python, and Typescript are supported",
-							),
+								"Only C#, Java, Python, and Typescript are supported"
+							)
 						);
 				}
 
@@ -248,15 +246,15 @@ export async function generateFunctions(
 					const versionResult = await cpUtils.executeCommand(
 						undefined,
 						undefined,
-						"dotnet --version",
+						"dotnet --version"
 					);
 					const versionNumber = Number(versionResult.charAt(0));
 					if (versionNumber < 3) {
 						throw new Error(
 							localize(
 								"genFunction",
-								"Failed to generate Functions. Please update dotnet version to 3.0.0 and above.",
-							),
+								"Failed to generate Functions. Please update dotnet version to 3.0.0 and above."
+							)
 						);
 					}
 				}
@@ -267,7 +265,7 @@ export async function generateFunctions(
 						ext.outputChannel,
 						undefined,
 						"autorest",
-						...args,
+						...args
 					);
 					await promptOpenFileFolder(uris[0].fsPath);
 					isSucceeded = true;
@@ -275,24 +273,24 @@ export async function generateFunctions(
 					if (language.label === languageTypes.CSharp) {
 						const message: string = localize(
 							"genFunction",
-							'Failed to generate Functions using C# generator due to a known Issue. Click "Learn more" for more details on installation steps.',
+							'Failed to generate Functions using C# generator due to a known Issue. Click "Learn more" for more details on installation steps.'
 						);
 						// tslint:disable-next-line: no-shadowed-variable
 						window
 							.showErrorMessage(
 								message,
-								DialogResponses.learnMore,
+								DialogResponses.learnMore
 							)
 							.then(async (result) => {
 								if (result === DialogResponses.learnMore) {
 									await openUrl(
-										"https://github.com/Azure/autorest.azure-functions/issues",
+										"https://github.com/Azure/autorest.azure-functions/issues"
 									);
 								}
 							});
 					}
 				}
-			},
+			}
 		)
 		.then(async () => {
 			if (isSucceeded) {
@@ -301,8 +299,8 @@ export async function generateFunctions(
 						"openAPIDownloaded",
 						`Scaffolded Azure Functions for API '${
 							node!.apiContract.name
-						} successfully.`,
-					),
+						} successfully.`
+					)
 				);
 			}
 		});
@@ -328,7 +326,7 @@ async function askFolder(): Promise<Uri[]> {
 async function askJavaNamespace(): Promise<string> {
 	const namespacePrompt: string = localize(
 		"namespacePrompt",
-		"Enter Java Package Name.",
+		"Enter Java Package Name."
 	);
 	const defaultName = "com.function";
 	return (
@@ -336,7 +334,7 @@ async function askJavaNamespace(): Promise<string> {
 			prompt: namespacePrompt,
 			value: defaultName,
 			validateInput: async (
-				value: string | undefined,
+				value: string | undefined
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
 				return undefined;
@@ -348,7 +346,7 @@ async function askJavaNamespace(): Promise<string> {
 async function askCSharpNamespace(): Promise<string> {
 	const namespacePrompt: string = localize(
 		"namespacePrompt",
-		"Enter CSharp namespace folder.",
+		"Enter CSharp namespace folder."
 	);
 	const defaultName = "Company.Function";
 	return (
@@ -361,12 +359,12 @@ async function askCSharpNamespace(): Promise<string> {
 }
 
 function validateCSharpNamespace(
-	value: string | undefined,
+	value: string | undefined
 ): string | undefined {
 	if (!value) {
 		return localize(
 			"cSharpNamespacError",
-			"The CSharp namespace cannot be empty.",
+			"The CSharp namespace cannot be empty."
 		);
 	}
 
@@ -375,13 +373,13 @@ function validateCSharpNamespace(
 		if (identifier === "") {
 			return localize(
 				"cSharpExtraPeriod",
-				'Leading or trailing "." character is not allowed.',
+				'Leading or trailing "." character is not allowed.'
 			);
 		} else if (!identifierRegex.test(identifier)) {
 			return localize(
 				"cSharpInvalidCharacters",
 				'The identifier "{0}" contains invalid characters.',
-				identifier,
+				identifier
 			);
 		} else if (
 			keywords.find((s: string) => s === identifier.toLowerCase()) !==
@@ -390,7 +388,7 @@ function validateCSharpNamespace(
 			return localize(
 				"cSharpKeywordWarning",
 				'The identifier "{0}" is a reserved keyword.',
-				identifier,
+				identifier
 			);
 		}
 	}
@@ -404,12 +402,12 @@ async function validateAutorestInstalled(): Promise<boolean> {
 			undefined,
 			undefined,
 			"autorest",
-			"--info",
+			"--info"
 		);
 	} catch (error) {
 		const message: string = localize(
 			"autorestNotFound",
-			'Failed to find "autorest" | Extension needs AutoRest to generate a function app from an OpenAPI specification. Click "Learn more" for more details on installation steps.',
+			'Failed to find "autorest" | Extension needs AutoRest to generate a function app from an OpenAPI specification. Click "Learn more" for more details on installation steps.'
 		);
 		window
 			.showErrorMessage(message, DialogResponses.learnMore)
@@ -430,14 +428,14 @@ async function promptOpenFileFolder(filePath: string): Promise<void> {
 	const no: vscode.MessageItem = { title: localize("notOpen", "No") };
 	const message: string = localize(
 		"openFolder",
-		"Do you want to open the folder for the generated files?",
+		"Do you want to open the folder for the generated files?"
 	);
 	window.showInformationMessage(message, yes, no).then(async (result) => {
 		if (result === yes) {
 			vscode.commands.executeCommand(
 				"vscode.openFolder",
 				vscode.Uri.file(filePath),
-				true,
+				true
 			);
 		}
 	});

@@ -26,7 +26,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 	public abstract getData(context: ContextT): Promise<string>;
 	public abstract updateData(
 		context: ContextT,
-		data: string,
+		data: string
 	): Promise<string>;
 	public abstract getFilename(context: ContextT): Promise<string>;
 	public abstract getDiffFilename(context: ContextT): Promise<string>;
@@ -34,12 +34,12 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 	public abstract getSize(context: ContextT): Promise<number>;
 	public async showEditor(
 		context: ContextT,
-		sizeLimit?: number /* in Megabytes */,
+		sizeLimit?: number /* in Megabytes */
 	): Promise<void> {
 		const fileName: string = await this.getFilename(context);
 		const originFileName: string = await this.getDiffFilename(context);
 		this.appendLineToOutput(
-			localize("opening", 'Opening "{0}"...', fileName),
+			localize("opening", 'Opening "{0}"...', fileName)
 		);
 		if (sizeLimit !== undefined) {
 			const size: number = await this.getSize(context);
@@ -47,7 +47,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 				const message: string = localize(
 					"tooLargeError",
 					'"{0}" is too large to download.',
-					fileName,
+					fileName
 				);
 				throw new Error(message);
 			}
@@ -62,11 +62,11 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 			const overwriteFlag = await vscode.window.showWarningMessage(
 				localize(
 					"",
-					`You are about to overwrite "${fileName}", which has unsaved changes. Do you want to continue?`,
+					`You are about to overwrite "${fileName}", which has unsaved changes. Do you want to continue?`
 				),
 				{ modal: true },
 				DialogResponses.yes,
-				DialogResponses.cancel,
+				DialogResponses.cancel
 			);
 			if (overwriteFlag !== DialogResponses.yes) {
 				throw new UserCancelledError();
@@ -86,7 +86,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 
 	public async updateMatchingContext(doc: vscode.Uri): Promise<void> {
 		const filePath: string | undefined = Object.keys(this.fileMap).find(
-			(fsPath: string) => path.relative(doc.fsPath, fsPath) === "",
+			(fsPath: string) => path.relative(doc.fsPath, fsPath) === ""
 		);
 		if (filePath) {
 			const [textDocument, context]: [vscode.TextDocument, ContextT] =
@@ -97,18 +97,18 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 
 	public async dispose(): Promise<void> {
 		Object.keys(this.fileMap).forEach(
-			async (key: string) => await fse.remove(path.dirname(key)),
+			async (key: string) => await fse.remove(path.dirname(key))
 		);
 	}
 
 	public async onDidSaveTextDocument(
 		actionContext: IActionContext,
 		globalState: vscode.Memento,
-		doc: vscode.TextDocument,
+		doc: vscode.TextDocument
 	): Promise<void> {
 		actionContext.telemetry.suppressIfSuccessful = true;
 		const filePath: string | undefined = Object.keys(this.fileMap).find(
-			(fsPath: string) => path.relative(doc.uri.fsPath, fsPath) === "",
+			(fsPath: string) => path.relative(doc.uri.fsPath, fsPath) === ""
 		);
 		if (!this.ignoreSave && filePath) {
 			actionContext.telemetry.suppressIfSuccessful = false;
@@ -125,7 +125,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 						message,
 						DialogResponses.upload,
 						DialogResponses.alwaysUpload,
-						DialogResponses.dontUpload,
+						DialogResponses.dontUpload
 					);
 				if (result === DialogResponses.alwaysUpload) {
 					await vscode.workspace
@@ -133,7 +133,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 						.update(
 							this.showSavePromptKey,
 							false,
-							vscode.ConfigurationTarget.Global,
+							vscode.ConfigurationTarget.Global
 						);
 					await globalState.update(this.showSavePromptKey, true);
 				} else if (result === DialogResponses.dontUpload) {
@@ -153,15 +153,15 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 
 	private async updateRemote(
 		context: ContextT,
-		doc: vscode.TextDocument,
+		doc: vscode.TextDocument
 	): Promise<void> {
 		const filename: string = await this.getFilename(context);
 		this.appendLineToOutput(
-			localize("updating", 'Updating "{0}" ...', filename),
+			localize("updating", 'Updating "{0}" ...', filename)
 		);
 		const updatedData: string = await this.updateData(
 			context,
-			doc.getText(),
+			doc.getText()
 		);
 		this.appendLineToOutput(localize("done", 'Updated "{0}".', filename));
 		await this.updateEditor(updatedData, vscode.window.activeTextEditor);
@@ -169,7 +169,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 
 	private async updateEditor(
 		data: string,
-		textEditor?: vscode.TextEditor,
+		textEditor?: vscode.TextEditor
 	): Promise<void> {
 		if (!!textEditor) {
 			await writeToEditor(textEditor, data);

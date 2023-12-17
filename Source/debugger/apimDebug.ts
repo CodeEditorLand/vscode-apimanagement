@@ -83,8 +83,8 @@ export class ApimDebugSession extends LoggingDebugSession {
 					threadId,
 					operationId,
 					apiId,
-					productId,
-				),
+					productId
+				)
 		);
 		this.runtime.on(
 			"stopOnStep",
@@ -95,8 +95,8 @@ export class ApimDebugSession extends LoggingDebugSession {
 					threadId,
 					operationId,
 					apiId,
-					productId,
-				),
+					productId
+				)
 		);
 		this.runtime.on(
 			"stopOnBreakpoint",
@@ -107,8 +107,8 @@ export class ApimDebugSession extends LoggingDebugSession {
 					threadId,
 					operationId,
 					apiId,
-					productId,
-				),
+					productId
+				)
 		);
 		this.runtime.on(
 			"stopOnException",
@@ -120,11 +120,11 @@ export class ApimDebugSession extends LoggingDebugSession {
 					operationId,
 					apiId,
 					productId,
-					message,
-				),
+					message
+				)
 		);
 		this.runtime.on("threadExited", (requestId, threadId) =>
-			this.onThreadExited(requestId, threadId),
+			this.onThreadExited(requestId, threadId)
 		);
 		this.runtime.on("end", (message) => {
 			this.requests = [];
@@ -137,7 +137,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected initializeRequest(
 		response: DebugProtocol.InitializeResponse,
-		_args: DebugProtocol.InitializeRequestArguments,
+		_args: DebugProtocol.InitializeRequestArguments
 	): void {
 		response.body = response.body || {};
 		response.body.supportsConfigurationDoneRequest = true;
@@ -149,7 +149,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected configurationDoneRequest(
 		response: DebugProtocol.ConfigurationDoneResponse,
-		args: DebugProtocol.ConfigurationDoneArguments,
+		args: DebugProtocol.ConfigurationDoneArguments
 	): void {
 		super.configurationDoneRequest(response, args);
 		this.configurationDone.notify();
@@ -157,7 +157,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async launchRequest(
 		response: DebugProtocol.LaunchResponse,
-		args: ILaunchRequestArguments,
+		args: ILaunchRequestArguments
 	): Promise<void> {
 		logger.setup(Logger.LogLevel.Verbose, false);
 		let masterKey;
@@ -165,40 +165,40 @@ export class ApimDebugSession extends LoggingDebugSession {
 			this.policySource = new PolicySource(
 				args.managementAddress,
 				undefined,
-				args.managementAuth,
+				args.managementAuth
 			);
 			masterKey = await this.getMasterSubscriptionKey(
 				args.managementAddress,
 				undefined,
-				args.managementAuth,
+				args.managementAuth
 			);
 			this.availablePolicies = await this.getAvailablePolicies(
 				args.managementAddress,
 				undefined,
-				args.managementAuth,
+				args.managementAuth
 			);
 		} else {
 			const credential = await this.getAccountCredentials(
-				args.subscriptionId,
+				args.subscriptionId
 			);
 			this.policySource = new PolicySource(
 				args.managementAddress,
-				credential,
+				credential
 			);
 			masterKey = await this.getMasterSubscriptionKey(
 				args.managementAddress,
-				credential,
+				credential
 			);
 			this.availablePolicies = await this.getAvailablePolicies(
 				args.managementAddress,
-				credential,
+				credential
 			);
 		}
 
 		await this.runtime.attach(
 			args.gatewayAddress,
 			masterKey,
-			!!args.stopOnEntry,
+			!!args.stopOnEntry
 		);
 		this.sendEvent(new InitializedEvent());
 		await this.configurationDone.wait(1000);
@@ -216,7 +216,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		for (const nRequest of this.requests) {
 			for (const thread of nRequest.threads) {
 				threads.push(
-					new Thread(thread.uiId, `${nRequest.id} (${thread.id})`),
+					new Thread(thread.uiId, `${nRequest.id} (${thread.id})`)
 				);
 			}
 		}
@@ -231,7 +231,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 	protected async terminateThreadsRequest(
 		response: DebugProtocol.TerminateThreadsResponse,
 		args: DebugProtocol.TerminateThreadsArguments,
-		_request?: DebugProtocol.Request,
+		_request?: DebugProtocol.Request
 	) {
 		const requests = args.threadIds!.map((id) => this.findThreadByUiId(id));
 
@@ -240,8 +240,8 @@ export class ApimDebugSession extends LoggingDebugSession {
 				requests
 					.map((r) => r![0].id)
 					.filter(
-						(value, index, self) => self.indexOf(value) === index,
-					),
+						(value, index, self) => self.indexOf(value) === index
+					)
 			);
 		}
 
@@ -250,7 +250,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async stackTraceRequest(
 		response: DebugProtocol.StackTraceResponse,
-		args: DebugProtocol.StackTraceArguments,
+		args: DebugProtocol.StackTraceArguments
 	) {
 		let stack: StackFrame[] = [];
 		if (this.runtime.isConnected()) {
@@ -258,7 +258,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 			if (nRequest) {
 				const requestStack = await this.runtime.getStackTrace(
 					nRequest[0].id,
-					nRequest[1].id,
+					nRequest[1].id
 				);
 				stack = await nRequest[1].getStackFrames(requestStack);
 
@@ -268,12 +268,12 @@ export class ApimDebugSession extends LoggingDebugSession {
 					}
 					if (item.column) {
 						item.column = this.convertDebuggerColumnToClient(
-							item.column,
+							item.column
 						);
 					}
 					if (item.endLine) {
 						item.endLine = this.convertDebuggerLineToClient(
-							item.endLine,
+							item.endLine
 						);
 					}
 					if (item.endColumn) {
@@ -294,10 +294,10 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async sourceRequest(
 		response: DebugProtocol.SourceResponse,
-		args: DebugProtocol.SourceArguments,
+		args: DebugProtocol.SourceArguments
 	) {
 		const policy = this.policySource.getPolicyBySourceReference(
-			args.sourceReference,
+			args.sourceReference
 		);
 
 		if (policy !== null && policy.xml !== null) {
@@ -311,7 +311,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async continueRequest(
 		response: DebugProtocol.ContinueResponse,
-		args: DebugProtocol.ContinueArguments,
+		args: DebugProtocol.ContinueArguments
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
 		if (nRequest && this.runtime.isConnected()) {
@@ -326,7 +326,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async nextRequest(
 		response: DebugProtocol.NextResponse,
-		args: DebugProtocol.NextArguments,
+		args: DebugProtocol.NextArguments
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
 		if (nRequest && this.runtime.isConnected()) {
@@ -338,7 +338,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async stepInRequest(
 		response: DebugProtocol.StepInResponse,
-		args: DebugProtocol.StepInArguments,
+		args: DebugProtocol.StepInArguments
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
 		if (nRequest && this.runtime.isConnected()) {
@@ -350,7 +350,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async stepOutRequest(
 		response: DebugProtocol.StepOutResponse,
-		args: DebugProtocol.StepOutArguments,
+		args: DebugProtocol.StepOutArguments
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
 		if (nRequest && this.runtime.isConnected()) {
@@ -362,7 +362,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async pauseRequest(
 		response: DebugProtocol.PauseResponse,
-		args: DebugProtocol.PauseArguments,
+		args: DebugProtocol.PauseArguments
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
 		if (nRequest && this.runtime.isConnected()) {
@@ -374,7 +374,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected scopesRequest(
 		response: DebugProtocol.ScopesResponse,
-		args: DebugProtocol.ScopesArguments,
+		args: DebugProtocol.ScopesArguments
 	) {
 		let scopes: Scope[] = [];
 
@@ -384,9 +384,9 @@ export class ApimDebugSession extends LoggingDebugSession {
 				new Scope(
 					"Request",
 					this.variablesHandles.create(
-						`${nRequest[0].id}|${nRequest[1].id}`,
+						`${nRequest[0].id}|${nRequest[1].id}`
 					),
-					true,
+					true
 				),
 			];
 		}
@@ -399,20 +399,20 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async variablesRequest(
 		response: DebugProtocol.VariablesResponse,
-		args: DebugProtocol.VariablesArguments,
+		args: DebugProtocol.VariablesArguments
 	) {
 		let variables: Variable[] = [];
 
 		if (this.runtime.isConnected()) {
 			const variableScope = this.variablesHandles.get(
-				args.variablesReference,
+				args.variablesReference
 			);
 			const scopeParts = variableScope.split("|");
 			if (scopeParts.length >= 2) {
 				const vars = await this.runtime.getVariables(
 					scopeParts[0],
 					+scopeParts[1],
-					scopeParts.slice(2).join("."),
+					scopeParts.slice(2).join(".")
 				);
 				variables = vars.map((v) => {
 					const variable = new Variable(
@@ -420,9 +420,9 @@ export class ApimDebugSession extends LoggingDebugSession {
 						v.value || "",
 						v.nestedCount
 							? this.variablesHandles.create(
-									`${variableScope}|${v.name}`,
-							  )
-							: 0,
+									`${variableScope}|${v.name}`
+								)
+							: 0
 					);
 					(<DebugProtocol.Variable>variable).type = v.type;
 					(<DebugProtocol.Variable>variable).namedVariables =
@@ -444,15 +444,15 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	protected async setBreakPointsRequest(
 		response: DebugProtocol.SetBreakpointsResponse,
-		args: DebugProtocol.SetBreakpointsArguments,
+		args: DebugProtocol.SetBreakpointsArguments
 	) {
 		const breakpoints = await this.setBreakpoints(args);
 		const nBreakpoints: Breakpoint[] =
 			breakpoints.length !== 0
 				? breakpoints
 				: args.breakpoints
-				  ? args.breakpoints.map((_b) => new Breakpoint(false))
-				  : [];
+					? args.breakpoints.map((_b) => new Breakpoint(false))
+					: [];
 		response.body = {
 			breakpoints: nBreakpoints,
 		};
@@ -461,7 +461,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 	private async createTestOperationFile(
 		operationData: string,
-		fileName: string,
+		fileName: string
 	) {
 		const localFilePath: string = await createTemporaryFile(fileName);
 		const document: vscode.TextDocument =
@@ -473,7 +473,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 	}
 
 	private async setBreakpoints(
-		args: DebugProtocol.SetBreakpointsArguments,
+		args: DebugProtocol.SetBreakpointsArguments
 	): Promise<Breakpoint[]> {
 		let breakpoints: Breakpoint[] = [];
 		const breakpointsToSet: {
@@ -481,7 +481,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 			scopeId: string;
 		}[] = [];
 		let policy = this.policySource.getPolicyBySourceReference(
-			args.source.sourceReference,
+			args.source.sourceReference
 		);
 		if (!policy && args.source.name) {
 			policy =
@@ -501,7 +501,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 					let path: string | null = null;
 					const breakpointLine = this.convertClientLineToDebugger(
-						b.line,
+						b.line
 					);
 					const breakpointColumn =
 						b.column &&
@@ -531,7 +531,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 					if (policyName.indexOf("[") !== -1) {
 						policyName = policyName.substring(
 							0,
-							policyName.lastIndexOf("["),
+							policyName.lastIndexOf("[")
 						);
 					}
 
@@ -547,7 +547,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 						true,
 						this.convertDebuggerLineToClient(position.line),
 						this.convertDebuggerColumnToClient(position.column),
-						policy!.source,
+						policy!.source
 					);
 					(<DebugProtocol.Breakpoint>breakpoint).endLine =
 						this.convertDebuggerLineToClient(position.endLine);
@@ -578,7 +578,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		operationId: string,
 		apiId: string,
 		productId: string,
-		exceptionText?: string,
+		exceptionText?: string
 	) {
 		this.updateRequests(
 			[
@@ -590,7 +590,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 					productId: productId,
 				},
 			],
-			false,
+			false
 		);
 		const nRequest = this.requests.find((r) => r.id === requestId);
 		const thread = nRequest && nRequest.findThreadById(threadId);
@@ -601,10 +601,10 @@ export class ApimDebugSession extends LoggingDebugSession {
 	}
 
 	private async getAccountCredentials(
-		subscriptionId: string,
+		subscriptionId: string
 	): Promise<TokenCredentialsBase> {
 		const azureAccountExtension = vscode.extensions.getExtension(
-			"ms-vscode.azure-account",
+			"ms-vscode.azure-account"
 		);
 		const azureAccount = azureAccountExtension!.exports;
 		await azureAccount.waitForFilters();
@@ -614,7 +614,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		const creds = azureAccount.filters
 			.filter(
 				(filter) =>
-					filter.subscription.subscriptionId === subscriptionId,
+					filter.subscription.subscriptionId === subscriptionId
 			)
 			.map((filter) => filter.session.credentials);
 		return creds[0];
@@ -623,7 +623,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 	private async getMasterSubscriptionKey(
 		managementAddress: string,
 		credential?: TokenCredentialsBase,
-		managementAuth?: string,
+		managementAuth?: string
 	) {
 		const resourceUrl = `${managementAddress}/subscriptions/master/listSecrets?api-version=${Constants.apimApiVersion}`;
 		const authToken = managementAuth
@@ -647,9 +647,9 @@ export class ApimDebugSession extends LoggingDebugSession {
 							localize(
 								"",
 								`Error fetching master subscription: ${e.statusCode} ${e.statusMessage}`,
-								"stderr",
-							),
-						),
+								"stderr"
+							)
+						)
 					);
 					this.sendEvent(new TerminatedEvent());
 				}
@@ -661,7 +661,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 	private async getAvailablePolicies(
 		managementAddress: string,
 		credential?: TokenCredentialsBase,
-		managementAuth?: string,
+		managementAuth?: string
 	) {
 		const resourceUrl = `${managementAddress}/policyDescriptions?api-version=${Constants.apimApiVersion}`;
 		const authToken = managementAuth
@@ -685,9 +685,9 @@ export class ApimDebugSession extends LoggingDebugSession {
 							localize(
 								"",
 								`Error fetching policy definitions: ${e.statusCode} ${e.statusMessage}`,
-								"stderr",
-							),
-						),
+								"stderr"
+							)
+						)
 					);
 					this.sendEvent(new TerminatedEvent());
 				}
@@ -724,7 +724,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 			while (requestIndex < this.requests.length) {
 				const uiRequest = this.requests[requestIndex];
 				const gatewayRequest = gatewayRequests.find(
-					(r) => r.id === uiRequest.id,
+					(r) => r.id === uiRequest.id
 				);
 				if (!gatewayRequest) {
 					for (const thread of uiRequest.threads) {
@@ -740,7 +740,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 					const uiThread = uiRequest.threads[threadIndex];
 					if (gatewayRequest.threads.indexOf(uiThread.id) < 0) {
 						this.sendEvent(
-							new ThreadEvent("exited", uiThread.uiId),
+							new ThreadEvent("exited", uiThread.uiId)
 						);
 						uiRequest.threads.splice(threadIndex, 1);
 						continue;
@@ -760,7 +760,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 		for (const gatewayRequest of gatewayRequests) {
 			let uiRequest = this.requests.find(
-				(r) => r.id === gatewayRequest.id,
+				(r) => r.id === gatewayRequest.id
 			);
 			if (!uiRequest) {
 				this.requests.push(
@@ -768,19 +768,19 @@ export class ApimDebugSession extends LoggingDebugSession {
 						gatewayRequest.id,
 						gatewayRequest.operationId,
 						gatewayRequest.apiId,
-						gatewayRequest.productId,
-					)),
+						gatewayRequest.productId
+					))
 				);
 			}
 
 			for (const gatewayThread of gatewayRequest.threads) {
 				let uiThread = uiRequest.threads.find(
-					(t) => t.id === gatewayThread,
+					(t) => t.id === gatewayThread
 				);
 				if (!uiThread) {
 					uiThread = uiRequest.addNewThread(
 						gatewayThread,
-						this.policySource,
+						this.policySource
 					);
 
 					this.sendEvent(new ThreadEvent("started", uiThread.uiId));

@@ -44,7 +44,7 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 	public contextValue: string = AuthorizationsTreeItem.contextValue;
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.Authorization",
-		"Authorization",
+		"Authorization"
 	);
 	private _nextLink: string | undefined;
 	private apimService: ApimService;
@@ -54,7 +54,7 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean,
+		clearCache: boolean
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -65,12 +65,12 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 			this.root.environment.resourceManagerEndpointUrl,
 			this.root.subscriptionId,
 			this.root.resourceGroupName,
-			this.root.serviceName,
+			this.root.serviceName
 		);
 
 		const authorizations: IAuthorizationContract[] =
 			await this.apimService.listAuthorizations(
-				this.root.authorizationProviderName,
+				this.root.authorizationProviderName
 			);
 
 		return this.createTreeItemsWithErrorHandling(
@@ -80,12 +80,12 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 				new AuthorizationTreeItem(this, authorization),
 			(authorization: IAuthorizationContract) => {
 				return authorization.name;
-			},
+			}
 		);
 	}
 
 	public async createChildImpl(
-		context: IAuthorizationTreeItemContext,
+		context: IAuthorizationTreeItemContext
 	): Promise<AuthorizationTreeItem> {
 		await this.buildContext(context);
 		if (
@@ -97,7 +97,7 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 					location: ProgressLocation.Notification,
 					title: localize(
 						"creatingAuthorization",
-						`Creating Authorization '${context.authorizationName}' under Authorization Provider ${this.root.authorizationProviderName} ...`,
+						`Creating Authorization '${context.authorizationName}' under Authorization Provider ${this.root.authorizationProviderName} ...`
 					),
 					cancellable: false,
 				},
@@ -111,35 +111,35 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 							this.root.environment.resourceManagerEndpointUrl,
 							this.root.subscriptionId,
 							this.root.resourceGroupName,
-							this.root.serviceName,
+							this.root.serviceName
 						);
 						let authorization = await apimService.getAuthorization(
 							this.root.authorizationProviderName,
-							authorizationName,
+							authorizationName
 						);
 						if (authorization === undefined) {
 							authorization =
 								await apimService.createAuthorization(
 									this.root.authorizationProviderName,
 									authorizationName,
-									context.authorization,
+									context.authorization
 								);
 							window.showInformationMessage(
 								localize(
 									"createdAuthorization",
-									`Created Authorization '${authorizationName}' succesfully.`,
-								),
+									`Created Authorization '${authorizationName}' succesfully.`
+								)
 							);
 							return new AuthorizationTreeItem(
 								this,
-								authorization,
+								authorization
 							);
 						} else {
 							throw new Error(
 								localize(
 									"createAuthorization",
-									`Authorization '${authorizationName}' already exists.`,
-								),
+									`Authorization '${authorizationName}' already exists.`
+								)
 							);
 						}
 					} catch (error) {
@@ -148,12 +148,12 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 								error,
 								localize(
 									"createAuthorization",
-									`Failed to add authorization '${authorizationName}' to Authorization provider '${this.root.authorizationProviderName}'.`,
-								),
-							),
+									`Failed to add authorization '${authorizationName}' to Authorization provider '${this.root.authorizationProviderName}'.`
+								)
+							)
 						);
 					}
-				},
+				}
 			);
 		} else {
 			throw Error("Expected Authorization name.");
@@ -161,14 +161,14 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 	}
 
 	private async buildContext(
-		context: IAuthorizationTreeItemContext,
+		context: IAuthorizationTreeItemContext
 	): Promise<void> {
 		const authorizationProvider: IAuthorizationProviderContract = (<
 			AuthorizationProviderTreeItem
 		>this.parent).authorizationProviderContract;
 		const authorizationName = await askId(
 			"Enter Authorization name ...",
-			"Invalid Authorization name ...",
+			"Invalid Authorization name ..."
 		);
 		context.authorizationName = authorizationName;
 		let parameterValues: IParameterValues = {};
@@ -180,12 +180,12 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 			grantType = IGrantTypesContract.clientCredentials;
 			const identityProvider: ITokenStoreIdentityProviderContract =
 				await this.apimService.getTokenStoreIdentityProvider(
-					authorizationProvider.properties.identityProvider,
+					authorizationProvider.properties.identityProvider
 				);
 			const grant =
 				identityProvider.properties.oauth2.grantTypes.clientCredentials;
 			parameterValues = await askAuthorizationParameterValues(
-				nonNullValue(grant),
+				nonNullValue(grant)
 			);
 		}
 		context.authorization = {

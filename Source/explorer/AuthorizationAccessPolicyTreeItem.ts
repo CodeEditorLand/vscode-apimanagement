@@ -31,7 +31,7 @@ export class AuthorizationAccessPolicyTreeItem extends AzureTreeItem<IAuthorizat
 
 	constructor(
 		parent: AzureParentTreeItem,
-		public readonly authorizationAccessPolicyContract: IAuthorizationAccessPolicyContract,
+		public readonly authorizationAccessPolicyContract: IAuthorizationAccessPolicyContract
 	) {
 		super(parent);
 
@@ -59,18 +59,18 @@ export class AuthorizationAccessPolicyTreeItem extends AzureTreeItem<IAuthorizat
 	public async deleteTreeItemImpl(): Promise<void> {
 		const message: string = localize(
 			"confirmAccessPolicyRemove",
-			`Are you sure you want to remove Access Policy '${this.authorizationAccessPolicyContract.name}' from Authorization '${this.root.authorizationName}'?`,
+			`Are you sure you want to remove Access Policy '${this.authorizationAccessPolicyContract.name}' from Authorization '${this.root.authorizationName}'?`
 		);
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
-			DialogResponses.cancel,
+			DialogResponses.cancel
 		);
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"removingAuthorizationAccessPolicy",
-				`Removing Access Policy "${this.authorizationAccessPolicyContract.name}" from Authorization '${this.root.authorizationName}.'`,
+				`Removing Access Policy "${this.authorizationAccessPolicyContract.name}" from Authorization '${this.root.authorizationName}.'`
 			);
 			await window.withProgress(
 				{
@@ -83,24 +83,24 @@ export class AuthorizationAccessPolicyTreeItem extends AzureTreeItem<IAuthorizat
 						this.root.environment.resourceManagerEndpointUrl,
 						this.root.subscriptionId,
 						this.root.resourceGroupName,
-						this.root.serviceName,
+						this.root.serviceName
 					);
 					await apimService.deleteAuthorizationAccessPolicy(
 						this.root.authorizationProviderName,
 						this.root.authorizationName,
 						nonNullProp(
 							this.authorizationAccessPolicyContract,
-							"name",
-						),
+							"name"
+						)
 					);
-				},
+				}
 			);
 			// don't wait
 			window.showInformationMessage(
 				localize(
 					"removedAuthorizationAccessPolicy",
-					`Successfully removed Access Policy "${this.authorizationAccessPolicyContract.name}" from Authorization '${this.root.authorizationName}'.`,
-				),
+					`Successfully removed Access Policy "${this.authorizationAccessPolicyContract.name}" from Authorization '${this.root.authorizationName}'.`
+				)
 			);
 		} else {
 			throw new UserCancelledError();
@@ -108,12 +108,12 @@ export class AuthorizationAccessPolicyTreeItem extends AzureTreeItem<IAuthorizat
 	}
 
 	private createRoot(
-		subRoot: ISubscriptionContext,
+		subRoot: ISubscriptionContext
 	): IAuthorizationAccessPolicyTreeRoot {
 		return Object.assign({}, <IAuthorizationAccessPolicyTreeRoot>subRoot, {
 			accessPolicyName: nonNullProp(
 				this.authorizationAccessPolicyContract,
-				"name",
+				"name"
 			),
 		});
 	}

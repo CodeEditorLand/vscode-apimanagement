@@ -25,7 +25,7 @@ export async function request(
 	url: string,
 	method: HttpMethods,
 	queryParameters?: { [key: string]: any | ParameterValue },
-	body?: any,
+	body?: any
 ): Promise<HttpOperationResponse> {
 	const client: ServiceClient = await createGenericClient(credentials);
 	return await client.sendRequest({
@@ -44,7 +44,7 @@ export async function sendRequest<T>(httpReq: nRequest): Promise<T> {
 export async function getBearerToken(
 	url: string,
 	method: HttpMethods,
-	credentials: TokenCredentialsBase,
+	credentials: TokenCredentialsBase
 ): Promise<string> {
 	const requestOptions: WebResource = new WebResource();
 	requestOptions.headers.set("User-Agent", appendExtensionUserAgent());

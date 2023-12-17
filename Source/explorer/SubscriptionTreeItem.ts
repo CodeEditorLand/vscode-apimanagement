@@ -27,7 +27,7 @@ export class SubscriptionTreeItem extends AzureTreeItem<ISubscriptionTreeRoot> {
 
 	constructor(
 		parent: SubscriptionsTreeItem,
-		public readonly subscriptionContract: SubscriptionContract,
+		public readonly subscriptionContract: SubscriptionContract
 	) {
 		super(parent);
 		if (
@@ -61,18 +61,18 @@ export class SubscriptionTreeItem extends AzureTreeItem<ISubscriptionTreeRoot> {
 	public async deleteTreeItemImpl(): Promise<void> {
 		const message: string = localize(
 			"confirmDeleteSubscription",
-			`Are you sure you want to delete subscription '${this.root.subscriptionSid}'?`,
+			`Are you sure you want to delete subscription '${this.root.subscriptionSid}'?`
 		);
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
-			DialogResponses.cancel,
+			DialogResponses.cancel
 		);
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"",
-				`Deleting subscription "${this.root.subscriptionSid}"...`,
+				`Deleting subscription "${this.root.subscriptionSid}"...`
 			);
 			await window.withProgress(
 				{
@@ -84,15 +84,15 @@ export class SubscriptionTreeItem extends AzureTreeItem<ISubscriptionTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						this.root.subscriptionSid,
-						"*",
+						"*"
 					);
-				},
+				}
 			);
 			window.showInformationMessage(
 				localize(
 					"deletedSubscription",
-					`Successfully deleted Subscription "${this.root.subscriptionSid}".`,
-				),
+					`Successfully deleted Subscription "${this.root.subscriptionSid}".`
+				)
 			);
 		} else {
 			throw new UserCancelledError();

@@ -24,7 +24,7 @@ export class GatewayApiTreeItem extends AzureTreeItem<IGatewayTreeRoot> {
 
 	constructor(
 		parent: AzureParentTreeItem,
-		public readonly gatewayApiContract: IGatewayApiContract,
+		public readonly gatewayApiContract: IGatewayApiContract
 	) {
 		super(parent);
 		this._label = nonNullProp(gatewayApiContract, "name");
@@ -41,18 +41,18 @@ export class GatewayApiTreeItem extends AzureTreeItem<IGatewayTreeRoot> {
 	public async deleteTreeItemImpl(): Promise<void> {
 		const message: string = localize(
 			"confirmGatewayAPIRemove",
-			`Are you sure you want to remove API '${this.gatewayApiContract.name}' from gateway '${this.root.gatewayName}'?`,
+			`Are you sure you want to remove API '${this.gatewayApiContract.name}' from gateway '${this.root.gatewayName}'?`
 		);
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
-			DialogResponses.cancel,
+			DialogResponses.cancel
 		);
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"removingGatewayAPI",
-				`Removing API "${this.gatewayApiContract.name}" from gateway '${this.root.gatewayName}.'`,
+				`Removing API "${this.gatewayApiContract.name}" from gateway '${this.root.gatewayName}.'`
 			);
 			await window.withProgress(
 				{
@@ -65,20 +65,20 @@ export class GatewayApiTreeItem extends AzureTreeItem<IGatewayTreeRoot> {
 						this.root.environment.resourceManagerEndpointUrl,
 						this.root.subscriptionId,
 						this.root.resourceGroupName,
-						this.root.serviceName,
+						this.root.serviceName
 					);
 					await apimService.deleteGatewayApi(
 						this.root.gatewayName,
-						nonNullProp(this.gatewayApiContract, "name"),
+						nonNullProp(this.gatewayApiContract, "name")
 					);
-				},
+				}
 			);
 			// don't wait
 			window.showInformationMessage(
 				localize(
 					"removedGatewayApi",
-					`Successfully removed API "${this.gatewayApiContract.name}" from gateway '${this.root.gatewayName}'.`,
-				),
+					`Successfully removed API "${this.gatewayApiContract.name}" from gateway '${this.root.gatewayName}'.`
+				)
 			);
 		} else {
 			throw new UserCancelledError();

@@ -43,7 +43,7 @@ import { parseUrlTemplate } from "./parseUrlTemplate";
 // tslint:disable: no-unsafe-any
 export async function importFunctionAppToApi(
 	context: IActionContext,
-	node?: ApiTreeItem,
+	node?: ApiTreeItem
 ): Promise<void> {
 	if (!node) {
 		node = <ApiTreeItem>(
@@ -53,17 +53,17 @@ export async function importFunctionAppToApi(
 
 	ext.outputChannel.show();
 	ext.outputChannel.appendLine(
-		localize("importFunctionApp", `Import Function App started...`),
+		localize("importFunctionApp", `Import Function App started...`)
 	);
 
 	ext.outputChannel.appendLine(
-		localize("importFunctionApp", "Getting Function Apps..."),
+		localize("importFunctionApp", "Getting Function Apps...")
 	);
 	const functionSubscriptionId = await azureClientUtil.selectSubscription();
 	const functionApp = await getPickedWebApp(
 		node,
 		webAppKind.functionApp,
-		functionSubscriptionId,
+		functionSubscriptionId
 	);
 	const funcName = nonNullOrEmptyValue(functionApp.name);
 	const funcAppResourceGroup = nonNullOrEmptyValue(functionApp.resourceGroup);
@@ -73,7 +73,7 @@ export async function importFunctionAppToApi(
 		node.root.environment.resourceManagerEndpointUrl,
 		functionSubscriptionId,
 		funcAppResourceGroup,
-		funcName,
+		funcName
 	);
 	const pickedFuncs = await pickFunctions(funcAppService);
 	window
@@ -82,7 +82,7 @@ export async function importFunctionAppToApi(
 				location: ProgressLocation.Notification,
 				title: localize(
 					"importFunctionApp",
-					`Importing Function App '${funcName}' to API Management service ${node.root.serviceName} ...`,
+					`Importing Function App '${funcName}' to API Management service ${node.root.serviceName} ...`
 				),
 				cancellable: false,
 			},
@@ -95,21 +95,21 @@ export async function importFunctionAppToApi(
 						pickedFuncs,
 						funcName,
 						node.root.apiName,
-						funcAppService,
+						funcAppService
 					);
 					ext.outputChannel.appendLine(
 						localize(
 							"importFunctionApp",
-							`Linking API Management instance to Function App...`,
-						),
+							`Linking API Management instance to Function App...`
+						)
 					);
 					await funcAppService.getWebAppConfig(
 						node.root.resourceGroupName,
 						node.root.serviceName,
-						node.root.apiName,
+						node.root.apiName
 					);
 				}
-			},
+			}
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
@@ -117,21 +117,21 @@ export async function importFunctionAppToApi(
 			window.showInformationMessage(
 				localize(
 					"importFunctionApp",
-					`Imported Function App succesfully.`,
-				),
+					`Imported Function App succesfully.`
+				)
 			);
 		});
 }
 
 export async function importFunctionApp(
 	context: IActionContext & Partial<IApiTreeItemContext>,
-	node?: ApisTreeItem,
+	node?: ApisTreeItem
 ): Promise<void> {
 	if (!node) {
 		const serviceNode = <ServiceTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ServiceTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 		node = serviceNode.apisTreeItem;
@@ -139,13 +139,13 @@ export async function importFunctionApp(
 
 	ext.outputChannel.show();
 	ext.outputChannel.appendLine(
-		localize("importFunctionApp", "Getting Function Apps..."),
+		localize("importFunctionApp", "Getting Function Apps...")
 	);
 	const functionSubscriptionId = await azureClientUtil.selectSubscription();
 	const functionApp = await getPickedWebApp(
 		node,
 		webAppKind.functionApp,
-		functionSubscriptionId,
+		functionSubscriptionId
 	);
 	const funcName = nonNullOrEmptyValue(functionApp.name);
 	const funcAppResourceGroup = nonNullOrEmptyValue(functionApp.resourceGroup);
@@ -155,7 +155,7 @@ export async function importFunctionApp(
 		node!.root.environment.resourceManagerEndpointUrl,
 		functionSubscriptionId,
 		funcAppResourceGroup,
-		funcName,
+		funcName
 	);
 	const funcConfig: IWebAppContract = (
 		await request(node.root.credentials, webConfigbaseUrl, "GET")
@@ -168,15 +168,15 @@ export async function importFunctionApp(
 		ext.outputChannel.appendLine(
 			localize(
 				"importFuncApp",
-				"Importing Function App from swagger object...",
-			),
+				"Importing Function App from swagger object..."
+			)
 		);
 		const funcAppService = new FunctionAppService(
 			node.root.credentials,
 			node.root.environment.resourceManagerEndpointUrl,
 			functionSubscriptionId,
 			funcAppResourceGroup,
-			funcName,
+			funcName
 		);
 		await importFromSwagger(
 			funcAppService,
@@ -184,7 +184,7 @@ export async function importFunctionApp(
 			funcConfig,
 			funcName,
 			apiName,
-			node,
+			node
 		);
 	} else {
 		const funcAppService = new FunctionAppService(
@@ -192,7 +192,7 @@ export async function importFunctionApp(
 			node.root.environment.resourceManagerEndpointUrl,
 			functionSubscriptionId,
 			funcAppResourceGroup,
-			funcName,
+			funcName
 		);
 		const pickedFuncs = await pickFunctions(funcAppService);
 		const apiId = apiUtil.genApiId(apiName);
@@ -203,19 +203,19 @@ export async function importFunctionApp(
 					location: ProgressLocation.Notification,
 					title: localize(
 						"importFunctionApp",
-						`Importing Function App '${funcName}' to API Management service ${node.root.serviceName} ...`,
+						`Importing Function App '${funcName}' to API Management service ${node.root.serviceName} ...`
 					),
 					cancellable: false,
 				},
 				async () => {
 					if (node) {
 						ext.outputChannel.appendLine(
-							localize("importFunctionApp", `Creating API...`),
+							localize("importFunctionApp", `Creating API...`)
 						);
 						const nApi = await constructApiFromFunctionApp(
 							apiId,
 							functionApp,
-							apiName,
+							apiName
 						);
 
 						context.apiName = apiName;
@@ -224,8 +224,8 @@ export async function importFunctionApp(
 						ext.outputChannel.appendLine(
 							localize(
 								"importFunctionApp",
-								`New API with name ${apiName} created...`,
-							),
+								`New API with name ${apiName} created...`
+							)
 						);
 						await addOperationsToExistingApi(
 							node,
@@ -233,27 +233,27 @@ export async function importFunctionApp(
 							pickedFuncs,
 							funcName,
 							apiName,
-							funcAppService,
+							funcAppService
 						);
 						ext.outputChannel.appendLine(
 							localize(
 								"importFunctionApp",
-								`Linking API Management instance to Function App...`,
-							),
+								`Linking API Management instance to Function App...`
+							)
 						);
 						await funcAppService.getWebAppConfig(
 							node.root.resourceGroupName,
 							node.root.serviceName,
-							apiName,
+							apiName
 						);
 						ext.outputChannel.appendLine(
 							localize(
 								"importFunctionApp",
-								`Imported Function App successfully!`,
-							),
+								`Imported Function App successfully!`
+							)
 						);
 					}
-				},
+				}
 			)
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
@@ -261,8 +261,8 @@ export async function importFunctionApp(
 				window.showInformationMessage(
 					localize(
 						"importFunctionApp",
-						`Imported Function App successfully.`,
-					),
+						`Imported Function App successfully.`
+					)
 				);
 			});
 	}
@@ -275,7 +275,7 @@ async function importFromSwagger(
 	webAppConfig: IWebAppContract,
 	funcAppName: string,
 	apiName: string,
-	node: ApiTreeItem | ApisTreeItem,
+	node: ApiTreeItem | ApisTreeItem
 ): Promise<void> {
 	const webResource = new WebResource();
 	webResource.url = webAppConfig.properties.apiDefinition!.url!;
@@ -291,7 +291,7 @@ async function importFromSwagger(
 					location: ProgressLocation.Notification,
 					title: localize(
 						"importFunctionApp",
-						`Importing Function App '${funcAppName}' to API Management service ${node.root.serviceName} ...`,
+						`Importing Function App '${funcAppName}' to API Management service ${node.root.serviceName} ...`
 					),
 					cancellable: false,
 				},
@@ -301,27 +301,24 @@ async function importFromSwagger(
 						let curApi: ApiContract;
 						if (node instanceof ApiTreeItem) {
 							ext.outputChannel.appendLine(
-								localize(
-									"importFunctionApp",
-									"Updating API...",
-								),
+								localize("importFunctionApp", "Updating API...")
 							);
 							await apiUtil.createOrUpdateApiWithSwaggerObject(
 								node,
 								apiName,
-								document,
+								document
 							);
 							curApi = await node!.root.client.api.get(
 								node!.root.resourceGroupName,
 								node!.root.serviceName,
-								apiName,
+								apiName
 							);
 						} else {
 							ext.outputChannel.appendLine(
 								localize(
 									"importFunctionApp",
-									"Creating new API...",
-								),
+									"Creating new API..."
+								)
 							);
 							context.apiName = apiName;
 							context.document = document;
@@ -330,7 +327,7 @@ async function importFromSwagger(
 							curApi = await node!.root.client.api.get(
 								node!.root.resourceGroupName,
 								node!.root.serviceName,
-								apiName,
+								apiName
 							);
 							//curApi.serviceUrl = "";
 							//await node!.root.client.api.createOrUpdate(node!.root.resourceGroupName, node!.root.serviceName, apiName, curApi);
@@ -338,21 +335,21 @@ async function importFromSwagger(
 						ext.outputChannel.appendLine(
 							localize(
 								"importFunctionApp",
-								"Setting up backend and policies...",
-							),
+								"Setting up backend and policies..."
+							)
 						);
 						const hostKey =
 							await funcAppService.addFuncHostKeyForApim(
-								node.root.serviceName,
+								node.root.serviceName
 							);
 						const namedValueId = apiUtil.displayNameToIdentifier(
-							`${funcAppName}-key`,
+							`${funcAppName}-key`
 						);
 						ext.outputChannel.appendLine(
 							localize(
 								"importFunctionApp",
-								`Creating new named value for the Function host key ${namedValueId}...`,
-							),
+								`Creating new named value for the Function host key ${namedValueId}...`
+							)
 						);
 						await createPropertyItem(node, namedValueId, hostKey);
 
@@ -367,8 +364,8 @@ async function importFromSwagger(
 						ext.outputChannel.appendLine(
 							localize(
 								"importFunctionApp",
-								`Creating new backend entity for the function app...`,
-							),
+								`Creating new backend entity for the function app...`
+							)
 						);
 						await setAppBackendEntity(
 							node,
@@ -377,20 +374,20 @@ async function importFromSwagger(
 							curApi.serviceUrl!,
 							funcAppService.resourceGroup,
 							funcAppName,
-							backendCredentials,
+							backendCredentials
 						);
 						const allOperations =
 							await node!.root.client.apiOperation.listByApi(
 								node!.root.resourceGroupName,
 								node!.root.serviceName,
-								apiName,
+								apiName
 							);
 						for (const operation of allOperations) {
 							ext.outputChannel.appendLine(
 								localize(
 									"importFunctionApp",
-									`Creating policy for operations ${operation.name}...`,
-								),
+									`Creating policy for operations ${operation.name}...`
+								)
 							);
 							await node.root.client.apiOperationPolicy.createOrUpdate(
 								node.root.resourceGroupName,
@@ -402,14 +399,14 @@ async function importFromSwagger(
 									value: createImportXmlPolicy([
 										getSetBackendPolicy(backendId),
 									]),
-								},
+								}
 							);
 						}
 						ext.outputChannel.appendLine(
 							localize(
 								"importFunctionApp",
-								`Creating policy for API ${apiName}...`,
-							),
+								`Creating policy for API ${apiName}...`
+							)
 						);
 						await node.root.client.apiPolicy.createOrUpdate(
 							node.root.resourceGroupName,
@@ -420,23 +417,23 @@ async function importFromSwagger(
 								value: createImportXmlPolicy([
 									getSetBackendPolicy(backendId),
 								]),
-							},
+							}
 						);
 						ext.outputChannel.appendLine(
 							localize(
 								"importFuncApp",
-								"Imported Function App successfully!...",
-							),
+								"Imported Function App successfully!..."
+							)
 						);
 					} catch (error) {
 						ext.outputChannel.appendLine(
 							localize(
 								"importFuncApp",
-								`Import failed with error ${String(error)}}`,
-							),
+								`Import failed with error ${String(error)}}`
+							)
 						);
 					}
-				},
+				}
 			)
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
@@ -444,8 +441,8 @@ async function importFromSwagger(
 				window.showInformationMessage(
 					localize(
 						"importFuncApp",
-						`Imported Function App '${funcAppName}' to API Management succesfully.`,
-					),
+						`Imported Function App '${funcAppName}' to API Management succesfully.`
+					)
 				);
 			});
 	}
@@ -462,9 +459,9 @@ async function parseDocument(documentJson: any): Promise<IOpenApiImportObject> {
 				error,
 				localize(
 					"openApiJsonParseError",
-					"Could not parse the provided OpenAPI document.",
-				),
-			),
+					"Could not parse the provided OpenAPI document."
+				)
+			)
 		);
 	}
 }
@@ -473,7 +470,7 @@ function getWebConfigbaseUrl(
 	endpointUrl: string,
 	subscriptionId: string,
 	webAppResourceGroup: string,
-	webAppName: string,
+	webAppName: string
 ): string {
 	return `${endpointUrl}/subscriptions/${subscriptionId}/resourceGroups/${webAppResourceGroup}/providers/Microsoft.web/sites/${webAppName}/config/web?api-version=${Constants.webAppApiVersion20190801}`;
 }
@@ -484,10 +481,10 @@ async function addOperationsToExistingApi(
 	funcs: IFunctionContract[],
 	funcAppName: string,
 	apiName: string,
-	funcAppService: FunctionAppService,
+	funcAppService: FunctionAppService
 ): Promise<void> {
 	ext.outputChannel.appendLine(
-		localize("importFunctionApp", "Creating operations..."),
+		localize("importFunctionApp", "Creating operations...")
 	);
 	let allOperations: OperationContract[] = [];
 	let functionAppBase: string = "";
@@ -495,13 +492,13 @@ async function addOperationsToExistingApi(
 		ext.outputChannel.appendLine(
 			localize(
 				"importFunctionApp",
-				`Creating operation for Function ${func.name}...`,
-			),
+				`Creating operation for Function ${func.name}...`
+			)
 		);
 		const bindings = func.properties.config.bindings.find(
 			(b) =>
 				!b.direction ||
-				b.direction === Constants.HttpTriggerDirectionContract.in,
+				b.direction === Constants.HttpTriggerDirectionContract.in
 		);
 		const trigger = func.properties.name;
 		const route =
@@ -513,12 +510,12 @@ async function addOperationsToExistingApi(
 				bindings && bindings.route
 					? getFunctionAppBase(
 							func.properties.invoke_url_template,
-							nonNullOrEmptyValue(bindings.route),
-					  )
+							nonNullOrEmptyValue(bindings.route)
+						)
 					: getFunctionAppBase(
 							func.properties.invoke_url_template,
-							trigger,
-					  );
+							trigger
+						);
 		}
 		if (bindings && bindings.methods && bindings.methods.length > 0) {
 			bindings.methods.forEach((element) => {
@@ -528,13 +525,13 @@ async function addOperationsToExistingApi(
 						element,
 						`${element}-${trigger}`,
 						route,
-						trigger,
-					),
+						trigger
+					)
 				);
 			});
 		} else {
 			allOperations.push(
-				getNewOperation(apiId, "POST", trigger, route, trigger),
+				getNewOperation(apiId, "POST", trigger, route, trigger)
 			);
 		}
 	}
@@ -543,21 +540,18 @@ async function addOperationsToExistingApi(
 	} else {
 		if (node instanceof ApiTreeItem) {
 			ext.outputChannel.appendLine(
-				localize(
-					"importFunctionApp",
-					`Checking conflict operations...`,
-				),
+				localize("importFunctionApp", `Checking conflict operations...`)
 			);
 			node = <ApiTreeItem>node;
 			const existingOperations = await getAllOperations(node);
 			allOperations = filteredExistingOperations(
 				apiId,
 				existingOperations,
-				allOperations,
+				allOperations
 			);
 		}
 		ext.outputChannel.appendLine(
-			localize("importFunctionApp", `Creating new operations...`),
+			localize("importFunctionApp", `Creating new operations...`)
 		);
 		for (const operation of allOperations) {
 			await node.root.client.apiOperation.createOrUpdate(
@@ -565,26 +559,26 @@ async function addOperationsToExistingApi(
 				node.root.serviceName,
 				apiName,
 				nonNullOrEmptyValue(operation.name),
-				operation,
+				operation
 			);
 		}
 		ext.outputChannel.appendLine(
 			localize(
 				"importFunctionApp",
-				`Getting host key from Function App ${funcAppName}...`,
-			),
+				`Getting host key from Function App ${funcAppName}...`
+			)
 		);
 		const hostKey = await funcAppService.addFuncHostKeyForApim(
-			node.root.serviceName,
+			node.root.serviceName
 		);
 		const namedValueId = apiUtil.displayNameToIdentifier(
-			`${funcAppName}-key`,
+			`${funcAppName}-key`
 		);
 		ext.outputChannel.appendLine(
 			localize(
 				"importFunctionApp",
-				`Creating new named value for the Function host key ${namedValueId}...`,
-			),
+				`Creating new named value for the Function host key ${namedValueId}...`
+			)
 		);
 		await createPropertyItem(node, namedValueId, hostKey);
 
@@ -596,8 +590,8 @@ async function addOperationsToExistingApi(
 		ext.outputChannel.appendLine(
 			localize(
 				"importFunctionApp",
-				`Creating new backend entity for the function app...`,
-			),
+				`Creating new backend entity for the function app...`
+			)
 		);
 		await setAppBackendEntity(
 			node,
@@ -606,14 +600,14 @@ async function addOperationsToExistingApi(
 			functionAppBase,
 			funcAppService.resourceGroup,
 			funcAppName,
-			backendCredentials,
+			backendCredentials
 		);
 		for (const operation of allOperations) {
 			ext.outputChannel.appendLine(
 				localize(
 					"importFunctionApp",
-					`Creating policy for operations ${operation.name}...`,
-				),
+					`Creating policy for operations ${operation.name}...`
+				)
 			);
 			await node.root.client.apiOperationPolicy.createOrUpdate(
 				node.root.resourceGroupName,
@@ -625,7 +619,7 @@ async function addOperationsToExistingApi(
 					value: createImportXmlPolicy([
 						getSetBackendPolicy(backendId),
 					]),
-				},
+				}
 			);
 		}
 	}
@@ -634,7 +628,7 @@ async function addOperationsToExistingApi(
 function filteredExistingOperations(
 	apiId: string,
 	existingOperations: string[],
-	allOperations: OperationContract[],
+	allOperations: OperationContract[]
 ): OperationContract[] {
 	const resOperations: OperationContract[] = [];
 	for (const operation of allOperations) {
@@ -643,8 +637,8 @@ function filteredExistingOperations(
 			ext.outputChannel.appendLine(
 				localize(
 					"importFunctionApp",
-					`Resolving conflict operations... ${opName}`,
-				),
+					`Resolving conflict operations... ${opName}`
+				)
 			);
 			const appdNum = genUniqueOperationName(opName, existingOperations);
 			const nOperation: OperationContract = {
@@ -666,7 +660,7 @@ function filteredExistingOperations(
 
 function genUniqueOperationName(
 	opName: string,
-	existingOperations: string[],
+	existingOperations: string[]
 ): number {
 	let cnt = 0;
 	let curName = opName;
@@ -681,14 +675,14 @@ async function getAllOperations(node: ApiTreeItem): Promise<string[]> {
 	ext.outputChannel.appendLine(
 		localize(
 			"importFunctionApp",
-			`Getting all operations from API ${node.root.apiName}...`,
-		),
+			`Getting all operations from API ${node.root.apiName}...`
+		)
 	);
 	const operations: OperationCollection =
 		await node.root.client.apiOperation.listByApi(
 			node.root.resourceGroupName,
 			node.root.serviceName,
-			node.root.apiName,
+			node.root.apiName
 		);
 	const operationsNames: string[] = [];
 	operations.forEach((ele) => {
@@ -698,20 +692,20 @@ async function getAllOperations(node: ApiTreeItem): Promise<string[]> {
 }
 
 async function pickFunctions(
-	funcAppService: FunctionAppService,
+	funcAppService: FunctionAppService
 ): Promise<IFunctionContract[]> {
 	const allFunctions = await funcAppService.listAllFunctions();
 	const importableFuncs = await filterFunctions(allFunctions);
 
 	// Pick functions to import
 	ext.outputChannel.appendLine(
-		localize("importFunctionApp", "Getting Functions to import...."),
+		localize("importFunctionApp", "Getting Functions to import....")
 	);
 	const pickedFuncs = await ext.ui.showQuickPick(
 		importableFuncs.map((s) => {
 			return { label: String(s.properties.name), func: s };
 		}),
-		{ canPickMany: true },
+		{ canPickMany: true }
 	);
 	return pickedFuncs.map((s) => {
 		return s.func;
@@ -722,7 +716,7 @@ async function pickFunctions(
 async function createPropertyItem(
 	node: ApisTreeItem | ApiTreeItem,
 	namedValueId: string,
-	hostKey: string,
+	hostKey: string
 ): Promise<void> {
 	const namedValueContract: NamedValueCreateContract = {
 		displayName: namedValueId,
@@ -734,7 +728,7 @@ async function createPropertyItem(
 		node.root.resourceGroupName,
 		node.root.serviceName,
 		namedValueId,
-		namedValueContract,
+		namedValueContract
 	);
 }
 
@@ -744,7 +738,7 @@ function getNewOperation(
 	method: string,
 	name: string,
 	route: string,
-	displayName: string,
+	displayName: string
 ): OperationContract {
 	const operationId = apiUtil.displayNameToIdentifier(name);
 	const cleanUrl = parseUrlTemplate(route);
@@ -762,7 +756,7 @@ function getNewOperation(
 function getFunctionAppBase(invokeUrlTemplate: string, route: string): string {
 	const uri = invokeUrlTemplate.substr(
 		0,
-		invokeUrlTemplate.length - route.length,
+		invokeUrlTemplate.length - route.length
 	);
 	return uri.endsWith("/") ? uri.substr(0, uri.length - 1) : uri;
 }
@@ -770,12 +764,12 @@ function getFunctionAppBase(invokeUrlTemplate: string, route: string): string {
 async function constructApiFromFunctionApp(
 	apiId: string,
 	funcApp: Site,
-	apiName: string,
+	apiName: string
 ): Promise<ApiContract> {
 	return {
 		description: localize(
 			"ImportFunction",
-			`Import from "${funcApp.name}" Function App`,
+			`Import from "${funcApp.name}" Function App`
 		),
 		id: apiId,
 		name: apiName,
@@ -787,7 +781,7 @@ async function constructApiFromFunctionApp(
 
 // Find all importable functions
 async function filterFunctions(
-	functions: IFunctionContract[],
+	functions: IFunctionContract[]
 ): Promise<IFunctionContract[]> {
 	return functions.filter(
 		(element) =>
@@ -801,7 +795,7 @@ async function filterFunctions(
 						ele.direction ===
 							Constants.HttpTriggerDirectionContract.in) &&
 					(!ele.authLevel ||
-						ele.authLevel !== Constants.HttpTriggerAuthLevelAdmin),
-			),
+						ele.authLevel !== Constants.HttpTriggerAuthLevelAdmin)
+			)
 	);
 }

@@ -13,7 +13,7 @@ export async function createTemporaryFile(fileName: string): Promise<string> {
 	// The extension globalStoragePath is a wellknown for vscode and will cleanup when extension gets uninstalled.
 	const defaultWorkspacePath = path.join(
 		ext.context.globalStoragePath,
-		extensionName,
+		extensionName
 	);
 	await fse.ensureDir(defaultWorkspacePath);
 
@@ -23,7 +23,7 @@ export async function createTemporaryFile(fileName: string): Promise<string> {
 	const filePath: string = path.join(
 		defaultWorkspacePath,
 		sessionFolder,
-		fileName,
+		fileName
 	);
 	await fse.ensureFile(filePath);
 	return filePath;
@@ -35,7 +35,7 @@ export function getSessionWorkingFolderName(): string {
 	if (!sessionFolderName) {
 		sessionFolderName = getRandomHexString();
 		ext.outputChannel.appendLine(
-			`Session working folder:${sessionFolderName}`,
+			`Session working folder:${sessionFolderName}`
 		);
 		ext.context.globalState.update(sessionFolderKey, sessionFolderName);
 	}

@@ -16,7 +16,7 @@ export namespace dotnetUtils {
 				undefined,
 				undefined,
 				"dotnet",
-				"--version",
+				"--version"
 			);
 			return true;
 		} catch (error) {
@@ -26,7 +26,7 @@ export namespace dotnetUtils {
 
 	export async function validateDotnetInstalled(
 		actionContext?: IActionContext,
-		minVersion: string = "2.1",
+		minVersion: string = "2.1"
 	): Promise<void> {
 		if (
 			!(await isDotnetInstalled()) ||
@@ -35,7 +35,7 @@ export namespace dotnetUtils {
 			const message: string = localize(
 				"dotnetNotInstalled",
 				"You must have the .NET CLI {0} or older installed to perform this operation.",
-				minVersion,
+				minVersion
 			);
 
 			if (
@@ -74,14 +74,14 @@ export namespace dotnetUtils {
 	}
 
 	async function checkDotnetVersionInstalled(
-		minVersion: string,
+		minVersion: string
 	): Promise<boolean> {
 		try {
 			const response = await cpUtils.executeCommand(
 				undefined,
 				undefined,
 				"dotnet",
-				"--list-runtimes",
+				"--list-runtimes"
 			);
 			const versions = response.split(/\r?\n/);
 			for (const version of versions) {

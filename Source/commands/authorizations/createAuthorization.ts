@@ -13,13 +13,13 @@ import { ext } from "../../extensionVariables";
 
 export async function createAuthorization(
 	context: IActionContext & Partial<IAuthorizationTreeItemContext>,
-	node?: AuthorizationsTreeItem,
+	node?: AuthorizationsTreeItem
 ): Promise<void> {
 	if (!node) {
 		const authorizationProviderNode = <AuthorizationProviderTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				AuthorizationProviderTreeItem.contextValue,
-				context,
+				context
 			)
 		);
 		node = authorizationProviderNode.authorizationsTreeItem;
