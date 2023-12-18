@@ -24,12 +24,12 @@ export class GatewayApisTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
-	public static contextValue: string = "azureApiManagementGatewayApis";
-	public label: string = "Apis";
+	public static contextValue = "azureApiManagementGatewayApis";
+	public label = "Apis";
 	public contextValue: string = GatewayApisTreeItem.contextValue;
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.GatewayApi",
-		"Gateway API"
+		"Gateway API",
 	);
 	private _nextLink: string | undefined;
 
@@ -38,7 +38,7 @@ export class GatewayApisTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean
+		clearCache: boolean,
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -49,7 +49,7 @@ export class GatewayApisTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 			this.root.environment.resourceManagerEndpointUrl,
 			this.root.subscriptionId,
 			this.root.resourceGroupName,
-			this.root.serviceName
+			this.root.serviceName,
 		);
 
 		const gatewayApis: IGatewayApiContract[] =
@@ -62,12 +62,12 @@ export class GatewayApisTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 				new GatewayApiTreeItem(this, api),
 			(api: IGatewayApiContract) => {
 				return api.name;
-			}
+			},
 		);
 	}
 
 	public async createChildImpl(
-		context: IGatewayTreeItemContext
+		context: IGatewayTreeItemContext,
 	): Promise<GatewayApiTreeItem> {
 		if (context.apiName) {
 			const apiName = context.apiName;
@@ -79,11 +79,11 @@ export class GatewayApisTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 					this.root.environment.resourceManagerEndpointUrl,
 					this.root.subscriptionId,
 					this.root.resourceGroupName,
-					this.root.serviceName
+					this.root.serviceName,
 				);
 				const api = await apimService.createGatewayApi(
 					this.root.gatewayName,
-					apiName
+					apiName,
 				);
 				return new GatewayApiTreeItem(this, api);
 			} catch (error) {
@@ -92,9 +92,9 @@ export class GatewayApisTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 						error,
 						localize(
 							"addApiToProductFailed",
-							`Failed to add '${apiName}' to gateway '${this.root.gatewayName}'.`
-						)
-					)
+							`Failed to add '${apiName}' to gateway '${this.root.gatewayName}'.`,
+						),
+					),
 				);
 			}
 		} else {

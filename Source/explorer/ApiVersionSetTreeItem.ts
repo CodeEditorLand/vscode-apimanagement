@@ -14,7 +14,7 @@ import { ApiTreeItem } from "./ApiTreeItem";
 import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export class ApiVersionSetTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
-	public static contextValue: string = "azureApiManagementApiVersionSet";
+	public static contextValue = "azureApiManagementApiVersionSet";
 	public contextValue: string = ApiVersionSetTreeItem.contextValue;
 
 	private _apis: ApiContract[] = [];
@@ -22,7 +22,7 @@ export class ApiVersionSetTreeItem extends AzureParentTreeItem<IServiceTreeRoot>
 
 	constructor(
 		parent: AzureParentTreeItem,
-		public readonly initialApi: ApiContract
+		public readonly initialApi: ApiContract,
 	) {
 		super(parent);
 		this._apis.push(initialApi);
@@ -55,8 +55,8 @@ export class ApiVersionSetTreeItem extends AzureParentTreeItem<IServiceTreeRoot>
 				new ApiTreeItem(
 					this,
 					api,
-					api.apiVersion ? api.apiVersion : "Original"
-				)
+					api.apiVersion ? api.apiVersion : "Original",
+				),
 		);
 		return Promise.all(apis);
 	}

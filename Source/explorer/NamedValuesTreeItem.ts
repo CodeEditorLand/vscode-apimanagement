@@ -26,12 +26,12 @@ export class NamedValuesTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
-	public static contextValue: string = "azureApiManagementNamedValues";
-	public label: string = "Named values";
+	public static contextValue = "azureApiManagementNamedValues";
+	public label = "Named values";
 	public contextValue: string = NamedValuesTreeItem.contextValue;
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.NamedValue",
-		"Named value"
+		"Named value",
 	);
 	private _nextLink: string | undefined;
 
@@ -40,7 +40,7 @@ export class NamedValuesTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean
+		clearCache: boolean,
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -51,11 +51,11 @@ export class NamedValuesTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				? await this.root.client.namedValue.listByService(
 						this.root.resourceGroupName,
 						this.root.serviceName,
-						{ top: topItemCount }
-					)
+						{ top: topItemCount },
+				  )
 				: await this.root.client.namedValue.listByServiceNext(
-						this._nextLink
-					);
+						this._nextLink,
+				  );
 
 		this._nextLink = propertyCollection.nextLink;
 
@@ -66,12 +66,12 @@ export class NamedValuesTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				new NamedValueTreeItem(this, prop),
 			(prop: ApiManagementModels.NamedValueContract) => {
 				return prop.name;
-			}
+			},
 		);
 	}
 
 	public async createChildImpl(
-		context: INamedValuesTreeItemContext
+		context: INamedValuesTreeItemContext,
 	): Promise<NamedValueTreeItem> {
 		if (context.key && context.value) {
 			context.showCreatingTreeItem(context.key);
@@ -90,7 +90,7 @@ export class NamedValuesTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						context.key,
-						propertyContract
+						propertyContract,
 					);
 				return new NamedValueTreeItem(this, property);
 			} catch (error) {
@@ -99,9 +99,9 @@ export class NamedValuesTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 						error,
 						localize(
 							"createNamedValueFailed",
-							`Failed to create the named value ${context.key}`
-						)
-					)
+							`Failed to create the named value ${context.key}`,
+						),
+					),
 				);
 			}
 		} else {

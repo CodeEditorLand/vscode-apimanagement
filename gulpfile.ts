@@ -6,8 +6,8 @@
 // tslint:disable:no-unsafe-any
 
 import * as cp from "child_process";
-import * as gulp from "gulp";
 import * as path from "path";
+import * as gulp from "gulp";
 import {
 	gulp_installAzureAccount,
 	gulp_webpack,
@@ -30,5 +30,5 @@ exports["webpack-prod"] = () => gulp_webpack("production");
 exports.test = gulp.series(
 	gulp_installAzureAccount,
 	gulp_installRestClient,
-	test
+	test,
 );

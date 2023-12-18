@@ -11,13 +11,13 @@ import { localize } from "../../localize";
 
 export async function copyAuthorizationPolicy(
 	context: IActionContext,
-	node?: AuthorizationTreeItem
+	node?: AuthorizationTreeItem,
 ): Promise<void> {
 	if (!node) {
 		const authorizationNode = <AuthorizationTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				AuthorizationTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 		node = authorizationNode;
@@ -34,7 +34,7 @@ export async function copyAuthorizationPolicy(
 		{
 			placeHolder: "How do you want to use the policy?",
 			canPickMany: false,
-		}
+		},
 	);
 	const managed = "managed";
 	const jwt = "jwt";
@@ -60,7 +60,7 @@ export async function copyAuthorizationPolicy(
 			placeHolder: "Which identity type do you want to use?",
 			canPickMany: false,
 			suppressPersistence: true,
-		}
+		},
 	);
 
 	const pid = node.root.authorizationProviderName;
@@ -111,10 +111,10 @@ export async function copyAuthorizationPolicy(
 	vscode.window.showInformationMessage(
 		localize(
 			"CopySnippet",
-			`Policy copied to clipboard. ${additionalMessage}`
-		)
+			`Policy copied to clipboard. ${additionalMessage}`,
+		),
 	);
 	ext.outputChannel.appendLine(
-		`Policy copied to clipboard. ${additionalMessage}`
+		`Policy copied to clipboard. ${additionalMessage}`,
 	);
 }

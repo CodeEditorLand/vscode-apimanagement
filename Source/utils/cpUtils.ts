@@ -20,7 +20,7 @@ export namespace cpUtils {
 			outputChannel,
 			workingDirectory,
 			command,
-			...args
+			...args,
 		);
 		if (result.code !== 0) {
 			// We want to make sure the full error message is displayed to the user, not just the error code.
@@ -32,8 +32,8 @@ export namespace cpUtils {
 					localize(
 						"commandErrorWithOutput",
 						'Failed to run "{0}" command. Check output window for more details.',
-						command
-					)
+						command,
+					),
 				);
 			} else {
 				throw new Error(
@@ -44,21 +44,19 @@ export namespace cpUtils {
 						result.formattedArgs,
 						result.code,
 						os.EOL,
-						result.cmdOutputIncludingStderr
-					)
+						result.cmdOutputIncludingStderr,
+					),
 				);
 			}
-		} else {
-			if (outputChannel) {
-				outputChannel.appendLine(
-					localize(
-						"finishedRunningCommand",
-						'Finished running command: "{0} {1}".',
-						command,
-						result.formattedArgs
-					)
-				);
-			}
+		} else if (outputChannel) {
+			outputChannel.appendLine(
+				localize(
+					"finishedRunningCommand",
+					'Finished running command: "{0} {1}".',
+					command,
+					result.formattedArgs,
+				),
+			);
 		}
 		return result.cmdOutput;
 	}
@@ -72,10 +70,10 @@ export namespace cpUtils {
 		return await new Promise(
 			(
 				resolve: (res: ICommandResult) => void,
-				reject: (e: Error) => void
+				reject: (e: Error) => void,
 			): void => {
-				let cmdOutput: string = "";
-				let cmdOutputIncludingStderr: string = "";
+				let cmdOutput = "";
+				let cmdOutputIncludingStderr = "";
 				const formattedArgs: string = args.join(" ");
 
 				workingDirectory = workingDirectory || os.tmpdir();
@@ -86,7 +84,7 @@ export namespace cpUtils {
 				const childProc: cp.ChildProcess = cp.spawn(
 					command,
 					args,
-					options
+					options,
 				);
 
 				if (outputChannel) {
@@ -95,8 +93,8 @@ export namespace cpUtils {
 							"runningCommand",
 							'Running command: "{0} {1}"...',
 							command,
-							formattedArgs
-						)
+							formattedArgs,
+						),
 					);
 				}
 
@@ -128,7 +126,7 @@ export namespace cpUtils {
 						formattedArgs,
 					});
 				});
-			}
+			},
 		);
 	}
 

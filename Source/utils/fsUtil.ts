@@ -4,8 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as crypto from "crypto";
-import * as fse from "fs-extra";
 import * as path from "path";
+import * as fse from "fs-extra";
 import { extensionName, sessionFolderKey } from "../constants";
 import { ext } from "../extensionVariables";
 
@@ -13,7 +13,7 @@ export async function createTemporaryFile(fileName: string): Promise<string> {
 	// The extension globalStoragePath is a wellknown for vscode and will cleanup when extension gets uninstalled.
 	const defaultWorkspacePath = path.join(
 		ext.context.globalStoragePath,
-		extensionName
+		extensionName,
 	);
 	await fse.ensureDir(defaultWorkspacePath);
 
@@ -23,7 +23,7 @@ export async function createTemporaryFile(fileName: string): Promise<string> {
 	const filePath: string = path.join(
 		defaultWorkspacePath,
 		sessionFolder,
-		fileName
+		fileName,
 	);
 	await fse.ensureFile(filePath);
 	return filePath;
@@ -35,7 +35,7 @@ export function getSessionWorkingFolderName(): string {
 	if (!sessionFolderName) {
 		sessionFolderName = getRandomHexString();
 		ext.outputChannel.appendLine(
-			`Session working folder:${sessionFolderName}`
+			`Session working folder:${sessionFolderName}`,
 		);
 		ext.context.globalState.update(sessionFolderKey, sessionFolderName);
 	}
@@ -43,7 +43,7 @@ export function getSessionWorkingFolderName(): string {
 	return <string>sessionFolderName;
 }
 
-export function getRandomHexString(length: number = 10): string {
+export function getRandomHexString(length = 10): string {
 	const buffer: Buffer = crypto.randomBytes(Math.ceil(length / 2));
 	return buffer.toString("hex").slice(0, length);
 }

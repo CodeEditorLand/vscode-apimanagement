@@ -15,7 +15,7 @@ export class GraphService {
 	constructor(
 		private credentials: TokenCredentialsBase,
 		private graphEndpoint: string,
-		private tenantId: string
+		private tenantId: string,
 	) {}
 
 	public async acquireGraphToken(): Promise<void> {
@@ -30,13 +30,13 @@ export class GraphService {
 				} else {
 					ext.outputChannel.append(error.message);
 				}
-			}
+			},
 		);
 	}
 
 	// tslint:disable-next-line:no-any
 	public async getUser(
-		emailId: string
+		emailId: string,
 	): Promise<{ userPrincipalName: string; objectId: string } | undefined> {
 		const client: ServiceClient = await createGenericClient();
 		const result: HttpOperationResponse = await client.sendRequest({
@@ -61,7 +61,7 @@ export class GraphService {
 
 	// tslint:disable-next-line:no-any
 	public async getGroup(
-		displayNameOrEmail: string
+		displayNameOrEmail: string,
 	): Promise<{ displayName: string; objectId: string } | undefined> {
 		const client: ServiceClient = await createGenericClient();
 		const result: HttpOperationResponse = await client.sendRequest({
@@ -87,7 +87,7 @@ export class GraphService {
 
 	// tslint:disable-next-line:no-any
 	public async getServicePrincipal(
-		displayName: string
+		displayName: string,
 	): Promise<{ displayName: string; objectId: string } | undefined> {
 		const client: ServiceClient = await createGenericClient();
 		const result: HttpOperationResponse = await client.sendRequest({

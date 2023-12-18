@@ -17,7 +17,7 @@ import { IGatewayTreeRoot } from "./IGatewayTreeRoot";
 import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export class GatewayTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
-	public static contextValue: string = "azureApiManagementGatewayTreeItem";
+	public static contextValue = "azureApiManagementGatewayTreeItem";
 	public contextValue: string = GatewayTreeItem.contextValue;
 	public readonly gatewayApisTreeItem: GatewayApisTreeItem;
 
@@ -26,7 +26,7 @@ export class GatewayTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 
 	constructor(
 		parent: GatewaysTreeItem,
-		public readonly gatewayContract: IGatewayContract
+		public readonly gatewayContract: IGatewayContract,
 	) {
 		super(parent);
 		this._label = nonNullProp(this.gatewayContract, "name");

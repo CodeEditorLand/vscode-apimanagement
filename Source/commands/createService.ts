@@ -15,20 +15,20 @@ import { treeUtils } from "../utils/treeUtils";
 export async function createService(
 	context: IActionContext,
 	subscription?: AzureParentTreeItem | string,
-	_resourceGroup?: string
+	_resourceGroup?: string,
 ): Promise<string> {
 	let node: AzureParentTreeItem;
 	if (typeof subscription === "string") {
 		node = await treeUtils.getSubscriptionNode(ext.tree, subscription);
-	} else if (!subscription) {
+	} else if (subscription) {
+		node = subscription;
+	} else {
 		node = <AzureParentTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				SubscriptionTreeItemBase.contextValue,
-				context
+				context,
 			)
 		);
-	} else {
-		node = subscription;
 	}
 
 	const serviceNode: AzureTreeItem = await node.createChild(context);

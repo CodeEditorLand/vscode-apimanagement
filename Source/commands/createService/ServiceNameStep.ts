@@ -19,18 +19,18 @@ export class ServiceNameStep extends AzureNameStep<IServiceWizardContext> {
 	public async prompt(wizardContext: IServiceWizardContext): Promise<void> {
 		const prompt: string = localize(
 			"serviceNamePrompt",
-			"Enter a globally unique name for the new API Management instance."
+			"Enter a globally unique name for the new API Management instance.",
 		);
 		wizardContext.serviceName = (
 			await ext.ui.showInputBox({
 				prompt,
 				validateInput: async (
-					value: string
+					value: string,
 				): Promise<string | undefined> => {
 					value = value ? value.trim() : "";
 					const nameAvailability: ApiManagementModels.ApiManagementServiceNameAvailabilityResult =
 						await wizardContext.client.apiManagementService.checkNameAvailability(
-							{ name: value }
+							{ name: value },
 						);
 					if (
 						nameAvailability.nameAvailable !== undefined &&
@@ -49,7 +49,7 @@ export class ServiceNameStep extends AzureNameStep<IServiceWizardContext> {
 		wizardContext.relatedNameTask = this.generateRelatedName(
 			wizardContext,
 			nonNullProp(wizardContext, "serviceName"),
-			namingRules
+			namingRules,
 		);
 	}
 
@@ -59,7 +59,7 @@ export class ServiceNameStep extends AzureNameStep<IServiceWizardContext> {
 
 	protected async isRelatedNameAvailable(
 		wizardContext: IServiceWizardContext,
-		name: string
+		name: string,
 	): Promise<boolean> {
 		return ResourceGroupListStep.isNameAvailable(wizardContext, name);
 	}

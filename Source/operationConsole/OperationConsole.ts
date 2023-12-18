@@ -19,23 +19,23 @@ export class OperationConsole {
 		const results = await Promise.all([
 			root.client.apiManagementService.get(
 				root.resourceGroupName,
-				root.serviceName
+				root.serviceName,
 			),
 			root.client.api.get(
 				root.resourceGroupName,
 				root.serviceName,
-				root.apiName
+				root.apiName,
 			),
 			root.client.apiOperation.get(
 				root.resourceGroupName,
 				root.serviceName,
 				root.apiName,
-				root.opName
+				root.opName,
 			),
 			root.client.apiRevision.listByService(
 				root.resourceGroupName,
 				root.serviceName,
-				root.apiName
+				root.apiName,
 			),
 		]);
 
@@ -56,7 +56,7 @@ export class OperationConsole {
 			consoleOperation,
 			api,
 			revision,
-			root.serviceName
+			root.serviceName,
 		)}`;
 		const method = consoleOperation.method;
 
@@ -80,28 +80,28 @@ export class OperationConsole {
 	}
 
 	public async buildDebugRequestInfo(
-		root: IOperationTreeRoot
+		root: IOperationTreeRoot,
 	): Promise<string> {
 		const results = await Promise.all([
 			root.client.apiManagementService.get(
 				root.resourceGroupName,
-				root.serviceName
+				root.serviceName,
 			),
 			root.client.api.get(
 				root.resourceGroupName,
 				root.serviceName,
-				root.apiName
+				root.apiName,
 			),
 			root.client.apiOperation.get(
 				root.resourceGroupName,
 				root.serviceName,
 				root.apiName,
-				root.opName
+				root.opName,
 			),
 			root.client.apiRevision.listByService(
 				root.resourceGroupName,
 				root.serviceName,
-				root.apiName
+				root.apiName,
 			),
 		]);
 
@@ -122,7 +122,7 @@ export class OperationConsole {
 			consoleOperation,
 			api,
 			revision,
-			root.serviceName
+			root.serviceName,
 		)}`;
 		const method = consoleOperation.method;
 
@@ -135,7 +135,7 @@ export class OperationConsole {
 			root.environment.resourceManagerEndpointUrl,
 			root.subscriptionId,
 			root.resourceGroupName,
-			root.serviceName
+			root.serviceName,
 		);
 		const masterSubscription = await apimService.getSubscriptionMasterkey();
 		headers.forEach((header) => {
@@ -160,7 +160,7 @@ export class OperationConsole {
 		consoleOperation: ConsoleOperation,
 		api: ApiContract,
 		revision: ApiRevisionContract | undefined,
-		serviceName: string
+		serviceName: string,
 	): string {
 		const protocol =
 			nonNullProp(api, "protocols").indexOf("https") !== -1
@@ -176,7 +176,7 @@ export class OperationConsole {
 		}
 		// tslint:disable-next-line: no-unsafe-any
 		const hostName: string | undefined = ext.context.globalState.get(
-			serviceName + gatewayHostName
+			serviceName + gatewayHostName,
 		);
 		if (hostName === undefined) {
 			return `${protocol}://${
@@ -184,7 +184,7 @@ export class OperationConsole {
 			}${this.ensureLeadingSlash(urlTemplate)}`;
 		} else {
 			return `${protocol}://${hostName}${this.ensureLeadingSlash(
-				urlTemplate
+				urlTemplate,
 			)}`;
 		}
 	}
@@ -192,7 +192,7 @@ export class OperationConsole {
 	private requestUrl(
 		consoleOperation: ConsoleOperation,
 		api: ApiContract,
-		apiRevision: ApiRevisionContract | undefined
+		apiRevision: ApiRevisionContract | undefined,
 	): string {
 		let versionPath = "";
 		let revision = "";
@@ -208,7 +208,7 @@ export class OperationConsole {
 
 		let requestUrl = consoleOperation.uriTemplate;
 		const parameters = consoleOperation.templateParameters.concat(
-			consoleOperation.request.queryParameters
+			consoleOperation.request.queryParameters,
 		);
 
 		parameters.forEach((parameter) => {
@@ -219,13 +219,13 @@ export class OperationConsole {
 				if (requestUrl.indexOf(parameterPlaceholder) > -1) {
 					requestUrl = requestUrl.replace(
 						parameterPlaceholder,
-						encodeURI(parameter.value)
+						encodeURI(parameter.value),
 					);
 				} else {
 					requestUrl = this.addParam(
 						requestUrl,
 						encodeURI(parameter.name),
-						encodeURI(parameter.value)
+						encodeURI(parameter.value),
 					);
 				}
 			}
@@ -238,7 +238,7 @@ export class OperationConsole {
 			requestUrl = this.addParam(
 				requestUrl,
 				nonNullOrEmptyValue(api.apiVersionSet.versionQueryName),
-				nonNullOrEmptyValue(api.apiVersion)
+				nonNullOrEmptyValue(api.apiVersion),
 			);
 		}
 

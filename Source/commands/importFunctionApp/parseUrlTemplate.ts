@@ -26,7 +26,7 @@ export function parseUrlTemplate(uriTemplate: string): {
 		} else if (uriTemplate[i] === "}" && --parameterDepth === 0) {
 			if (parameterStart < i) {
 				const parameter = parseParameter(
-					uriTemplate.substring(parameterStart, i)
+					uriTemplate.substring(parameterStart, i),
 				);
 				cleanTemplate += `{${parameter.name}}`;
 				parameters.push(parameter);

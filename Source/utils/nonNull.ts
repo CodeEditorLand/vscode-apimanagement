@@ -11,7 +11,7 @@ import { isNullOrUndefined } from "util";
  */
 export function nonNullProp<TSource, TKey extends keyof TSource>(
 	source: TSource,
-	name: TKey
+	name: TKey,
 ): NonNullable<TSource[TKey]> {
 	const value: NonNullable<TSource[TKey]> = <NonNullable<TSource[TKey]>>(
 		source[name]
@@ -24,13 +24,13 @@ export function nonNullProp<TSource, TKey extends keyof TSource>(
  */
 export function nonNullValue<T>(
 	value: T | undefined,
-	propertyNameOrMessage?: string
+	propertyNameOrMessage?: string,
 ): T {
 	if (isNullOrUndefined(value)) {
 		throw new Error(
 			// tslint:disable-next-line:prefer-template
 			"Internal error: Expected value to be neither null nor undefined" +
-				(propertyNameOrMessage ? `: ${propertyNameOrMessage}` : "")
+				(propertyNameOrMessage ? `: ${propertyNameOrMessage}` : ""),
 		);
 	}
 
@@ -42,13 +42,13 @@ export function nonNullValue<T>(
  */
 export function nonNullOrEmptyValue(
 	value: string | undefined,
-	propertyNameOrMessage?: string
+	propertyNameOrMessage?: string,
 ): string {
 	if (!value) {
 		throw new Error(
 			// tslint:disable-next-line:prefer-template
 			"Internal error: Expected value to be neither null, undefined, nor empty" +
-				(propertyNameOrMessage ? `: ${propertyNameOrMessage}` : "")
+				(propertyNameOrMessage ? `: ${propertyNameOrMessage}` : ""),
 		);
 	}
 
@@ -62,7 +62,7 @@ export function nonNullOrEmptyValue(
  */
 export function nonNullValueAndProp<TSource, TKey extends keyof TSource>(
 	source: TSource | undefined,
-	name: TKey
+	name: TKey,
 ): NonNullable<TSource[TKey]> {
 	return nonNullProp(nonNullValue(source, <string>name), name);
 }

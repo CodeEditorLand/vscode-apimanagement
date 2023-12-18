@@ -3,14 +3,14 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as fse from "fs-extra";
 import * as path from "path";
+import * as fse from "fs-extra";
 import * as vscode from "vscode";
 import {
-	env,
 	OpenDialogOptions,
 	ProgressLocation,
 	Uri,
+	env,
 	window,
 	workspace,
 } from "vscode";
@@ -25,13 +25,13 @@ import { localize } from "../localize";
 // tslint:disable-next-line: export-name
 export async function copyDockerRunCommand(
 	context: IActionContext,
-	node?: GatewayTreeItem
+	node?: GatewayTreeItem,
 ): Promise<void> {
 	if (!node) {
 		node = <GatewayTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				GatewayTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 	}
@@ -40,7 +40,7 @@ export async function copyDockerRunCommand(
 	const hasConsent = await askConsentToGenerateToken();
 	if (!hasConsent) {
 		ext.outputChannel.appendLine(
-			localize("deployGateway", "Generating docker command stopped...")
+			localize("deployGateway", "Generating docker command stopped..."),
 		);
 		return;
 	}
@@ -54,34 +54,34 @@ export async function copyDockerRunCommand(
 					"deployGateway",
 					`Generating Docker Command for Gateway ${
 						node!.root.gatewayName
-					}`
+					}`,
 				),
 				cancellable: true,
 			},
 			async () => {
 				// tslint:disable: no-non-null-assertion
 				const confEndpoint = `config.service.endpoint=${getConfigEndpointUrl(
-					node!
+					node!,
 				)}`;
 				const apimService = new ApimService(
 					node!.root.credentials,
 					node!.root.environment.resourceManagerEndpointUrl,
 					node!.root.subscriptionId,
 					node!.root.resourceGroupName,
-					node!.root.serviceName
+					node!.root.serviceName,
 				);
 				const token = await apimService.generateNewGatewayToken(
 					node!.root.gatewayName,
 					Constants.maxTokenValidTimeSpan,
-					GatewayKeyType.primary
+					GatewayKeyType.primary,
 				);
 				const initialComd = getDockerRunCommand(
 					token,
 					confEndpoint,
-					node!.root.gatewayName
+					node!.root.gatewayName,
 				);
 				env.clipboard.writeText(initialComd);
-			}
+			},
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
@@ -89,21 +89,21 @@ export async function copyDockerRunCommand(
 			window.showInformationMessage(
 				localize(
 					"deployGateway",
-					"Docker run command copied to clipboard."
-				)
+					"Docker run command copied to clipboard.",
+				),
 			);
 		});
 }
 
 export async function generateKubernetesDeployment(
 	context: IActionContext,
-	node?: GatewayTreeItem
+	node?: GatewayTreeItem,
 ): Promise<void> {
 	if (!node) {
 		node = <GatewayTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				GatewayTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 	}
@@ -112,7 +112,7 @@ export async function generateKubernetesDeployment(
 	const hasConsent = await askConsentToGenerateToken();
 	if (!hasConsent) {
 		ext.outputChannel.appendLine(
-			localize("deployGateway", "Generating deployment file stopped...")
+			localize("deployGateway", "Generating deployment file stopped..."),
 		);
 		return;
 	}
@@ -125,7 +125,7 @@ export async function generateKubernetesDeployment(
 					"deployGateway",
 					`Generating Deployment file to run Gateway ${
 						node!.root.gatewayName
-					} in kubernetes.`
+					} in kubernetes.`,
 				),
 				cancellable: true,
 			},
@@ -135,41 +135,41 @@ export async function generateKubernetesDeployment(
 					node!.root.environment.resourceManagerEndpointUrl,
 					node!.root.subscriptionId,
 					node!.root.resourceGroupName,
-					node!.root.serviceName
+					node!.root.serviceName,
 				);
 				const gatewayToken = await apimService.generateNewGatewayToken(
 					node!.root.gatewayName,
 					Constants.maxTokenValidTimeSpan,
-					GatewayKeyType.primary
+					GatewayKeyType.primary,
 				);
 				ext.outputChannel.appendLine(
 					localize(
 						"deployGateway",
-						"Generating deployment yaml file..."
-					)
+						"Generating deployment yaml file...",
+					),
 				);
 				const confEndpoint = getConfigEndpointUrl(node!);
 				const depYaml = generateDeploymentYaml(
 					node!.root.gatewayName,
 					gatewayToken,
-					confEndpoint
+					confEndpoint,
 				);
 				const uris = await askFolder();
 				const configFilePath = path.join(
 					uris[0].fsPath,
-					`${node!.root.gatewayName}.yaml`
+					`${node!.root.gatewayName}.yaml`,
 				);
 				await fse.writeFile(configFilePath, depYaml);
 				env.clipboard.writeText(`kubectl apply -f ${configFilePath}`);
-			}
+			},
 		)
 		.then(async () => {
 			await node!.refresh(context);
 			window.showInformationMessage(
 				localize(
 					"deployGateway",
-					`Generated file and command "kubectl apply -f configFilePath" copied to clipboard.`
-				)
+					`Generated file and command "kubectl apply -f configFilePath" copied to clipboard.`,
+				),
 			);
 		});
 }
@@ -177,13 +177,13 @@ export async function generateKubernetesDeployment(
 async function askConsentToGenerateToken(): Promise<boolean> {
 	const message = localize(
 		"genToken",
-		"Command requires generating token, do you wish to proceed?"
+		"Command requires generating token, do you wish to proceed?",
 	);
 	const result: vscode.MessageItem | undefined =
 		await vscode.window.showWarningMessage(
 			message,
 			DialogResponses.yes,
-			DialogResponses.no
+			DialogResponses.no,
 		);
 	return result === DialogResponses.yes ? true : false;
 }
@@ -191,7 +191,7 @@ async function askConsentToGenerateToken(): Promise<boolean> {
 function getDockerRunCommand(
 	token: string,
 	confEndpoint: string,
-	gatewayName: string
+	gatewayName: string,
 ): string {
 	return `docker run -d -p 8080:8080 -p 8081:8081 --name ${gatewayName} --env ${confEndpoint} --env config.service.auth="GatewayKey ${token}" mcr.microsoft.com/azure-api-management/gateway:beta`;
 }
@@ -211,7 +211,7 @@ function getConfigEndpointUrl(node: GatewayTreeItem): string {
 function generateDeploymentYaml(
 	gatewayName: string,
 	gatewayToken: string,
-	gatewayEndpoint: string
+	gatewayEndpoint: string,
 ): string {
 	const gatewayNameLowercase = gatewayName.toLocaleLowerCase();
 	// tslint:disable-next-line: no-unnecessary-local-variable

@@ -11,8 +11,8 @@ export class ApiPolicyTreeItem extends AzureTreeItem<IApiTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("policy");
 	}
-	public static contextValue: string = "azureApiManagementApiPolicy";
-	public label: string = "Policy";
+	public static contextValue = "azureApiManagementApiPolicy";
+	public label = "Policy";
 	public contextValue: string = ApiPolicyTreeItem.contextValue;
 	public readonly commandId: string = "azureApiManagement.showApiPolicy";
 }

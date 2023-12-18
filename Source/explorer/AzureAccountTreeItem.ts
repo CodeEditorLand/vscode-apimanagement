@@ -15,7 +15,7 @@ export class AzureAccountTreeItem extends AzureAccountTreeItemBase {
 	}
 
 	public createSubscriptionTreeItem(
-		root: ISubscriptionContext
+		root: ISubscriptionContext,
 	): ApiManagementProvider {
 		return new ApiManagementProvider(this, root);
 	}

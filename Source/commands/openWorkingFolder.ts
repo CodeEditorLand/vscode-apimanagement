@@ -11,19 +11,19 @@ import { workingFolderOpenedInWorkspace } from "../utils/vscodeUtils";
 
 export async function openWorkingFolder(): Promise<void> {
 	const folderPath = getDefaultWorkspacePath();
-	if (!workingFolderOpenedInWorkspace()) {
-		vscode.commands.executeCommand(
-			"vscode.openFolder",
-			vscode.Uri.file(folderPath)
-		);
-	} else {
+	if (workingFolderOpenedInWorkspace()) {
 		ext.outputChannel.appendLine(
 			localize(
 				"folderAlreadyInWorkspace",
 				"Folder '{0}' already open in workspace",
-				folderPath
-			)
+				folderPath,
+			),
 		);
 		ext.outputChannel.show();
+	} else {
+		vscode.commands.executeCommand(
+			"vscode.openFolder",
+			vscode.Uri.file(folderPath),
+		);
 	}
 }

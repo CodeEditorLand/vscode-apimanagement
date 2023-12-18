@@ -202,6 +202,6 @@ export interface IAuthorizationAccessPolicyPropertiesContract {
 }
 
 export enum IAuthorizationTypeEnum {
-	OAuth2,
-	OAuth1,
+	OAuth2 = 0,
+	OAuth1 = 1,
 }

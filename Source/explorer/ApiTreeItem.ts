@@ -16,8 +16,8 @@ import {
 import { localize } from "../localize";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
-import { ApiOperationsTreeItem } from "./ApiOperationsTreeItem";
 import { ApiOperationTreeItem } from "./ApiOperationTreeItem";
+import { ApiOperationsTreeItem } from "./ApiOperationsTreeItem";
 import { ApiPolicyTreeItem } from "./ApiPolicyTreeItem";
 import { IApiTreeRoot } from "./IApiTreeRoot";
 import { IServiceTreeRoot } from "./IServiceTreeRoot";
@@ -25,7 +25,7 @@ import { OperationPolicyTreeItem } from "./OperationPolicyTreeItem";
 
 // tslint:disable: no-non-null-assertion
 export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
-	public static contextValue: string = "azureApiManagementApi";
+	public static contextValue = "azureApiManagementApi";
 	public contextValue: string = ApiTreeItem.contextValue;
 	public readonly commandId: string = "azureApiManagement.showArmApi";
 	public policyTreeItem: ApiPolicyTreeItem;
@@ -38,14 +38,14 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	constructor(
 		parent: AzureParentTreeItem,
 		public apiContract: ApiManagementModels.ApiContract,
-		apiVersion?: string
+		apiVersion?: string,
 	) {
 		super(parent);
 
-		if (!apiVersion) {
-			this._label = nonNullProp(this.apiContract, "displayName");
-		} else {
+		if (apiVersion) {
 			this._label = apiVersion;
+		} else {
+			this._label = nonNullProp(this.apiContract, "displayName");
 		}
 
 		this._name = nonNullProp(this.apiContract, "name");
@@ -83,18 +83,18 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	public async deleteTreeItemImpl(): Promise<void> {
 		const message: string = localize(
 			"confirmDeleteApi",
-			`Are you sure you want to delete API '${this.root.apiName}' and its contents?`
+			`Are you sure you want to delete API '${this.root.apiName}' and its contents?`,
 		);
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
-			DialogResponses.cancel
+			DialogResponses.cancel,
 		);
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"deletingApi",
-				`Deleting API "${this.root.apiName}"...`
+				`Deleting API "${this.root.apiName}"...`,
 			);
 			await window.withProgress(
 				{
@@ -106,16 +106,16 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 						this.root.apiName,
-						"*"
+						"*",
 					);
-				}
+				},
 			);
 			// don't wait
 			window.showInformationMessage(
 				localize(
 					"deletedApi",
-					`Successfully deleted API "${this.root.apiName}".`
-				)
+					`Successfully deleted API "${this.root.apiName}".`,
+				),
 			);
 		} else {
 			throw new UserCancelledError();
@@ -123,7 +123,7 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	}
 
 	public pickTreeItemImpl(
-		expectedContextValues: (string | RegExp)[]
+		expectedContextValues: (string | RegExp)[],
 	): AzureTreeItem<IApiTreeRoot> | undefined {
 		for (const expectedContextValue of expectedContextValues) {
 			switch (expectedContextValue) {
@@ -156,7 +156,7 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 
 	private createRoot(
 		subRoot: ISubscriptionContext,
-		apiName: string
+		apiName: string,
 	): IApiTreeRoot {
 		return Object.assign({}, <IServiceTreeRoot>subRoot, {
 			apiName: apiName,

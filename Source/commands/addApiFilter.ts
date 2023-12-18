@@ -13,13 +13,13 @@ import { ext } from "../extensionVariables";
 // tslint:disable: no-non-null-assertion
 export async function addApiFilter(
 	context: IActionContext,
-	node?: ApisTreeItem
+	node?: ApisTreeItem,
 ): Promise<void> {
 	if (!node) {
 		const serviceNode = <ServiceTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ServiceTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 		node = serviceNode.apisTreeItem;
@@ -31,8 +31,8 @@ export async function addApiFilter(
 			? await node.root.client.api.listByService(
 					node.root.resourceGroupName,
 					node.root.serviceName,
-					{ expandApiVersionSet: false, top: 100 }
-				)
+					{ expandApiVersionSet: false, top: 100 },
+			  )
 			: await node.root.client.api.listByServiceNext(nextLink);
 
 	while (nextLink !== undefined) {
@@ -67,7 +67,7 @@ export async function addApiFilter(
 			}
 			return { label: apiName, api: s, picked: picked };
 		}),
-		{ canPickMany: true, placeHolder: "Select APIs" }
+		{ canPickMany: true, placeHolder: "Select APIs" },
 	);
 
 	node.selectedApis = picks.map((s) => s.api);

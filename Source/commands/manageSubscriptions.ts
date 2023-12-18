@@ -21,13 +21,13 @@ import { localize } from "../localize";
 // tslint:disable-next-line: export-name
 export async function createSubscription(
 	context: IActionContext,
-	node?: SubscriptionsTreeItem
+	node?: SubscriptionsTreeItem,
 ): Promise<void> {
 	if (!node) {
 		const serviceNode = <ServiceTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				ServiceTreeItem.contextValue,
-				context
+				context,
 			)
 		);
 		node = serviceNode.subscriptionsTreeItem;
@@ -68,17 +68,17 @@ export async function createSubscription(
 					node!.root.resourceGroupName,
 					node!.root.serviceName,
 					name,
-					subContract
+					subContract,
 				);
 				await node!.refresh(context);
-			}
+			},
 		)
 		.then(async () => {
 			window.showInformationMessage(
 				localize(
 					"createSubscription",
-					"Subscription has been created successfully."
-				)
+					"Subscription has been created successfully.",
+				),
 			);
 		});
 }
@@ -87,19 +87,19 @@ async function askName(node: SubscriptionsTreeItem): Promise<string> {
 	const subNames = (
 		await node.root.client.subscription.list(
 			node.root.resourceGroupName,
-			node.root.serviceName
+			node.root.serviceName,
 		)
 	).map((s) => s.name!);
 
 	const subNamePrompt: string = localize(
 		"subNamePrompt",
-		"Enter Subscription Name."
+		"Enter Subscription Name.",
 	);
 	return (
 		await ext.ui.showInputBox({
 			prompt: subNamePrompt,
 			validateInput: async (
-				value: string | undefined
+				value: string | undefined,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
 				return validateSubscriptionName(value, subNames);
@@ -110,12 +110,12 @@ async function askName(node: SubscriptionsTreeItem): Promise<string> {
 
 function validateSubscriptionName(
 	subName: string,
-	subNames: string[]
+	subNames: string[],
 ): string | undefined {
 	if (subName.length > Constants.maxApiNameLength) {
 		return localize(
 			"subNameMaxLength",
-			`API name cannot be more than ${Constants.maxApiNameLength} characters long.`
+			`API name cannot be more than ${Constants.maxApiNameLength} characters long.`,
 		);
 	}
 	if (subName.match(/^[^*#&+:<>?]+$/) === null) {
@@ -131,13 +131,13 @@ function validateSubscriptionName(
 async function askDisplayname(): Promise<string> {
 	const idPrompt: string = localize(
 		"idPrompt",
-		"Enter Subscription DisplayName."
+		"Enter Subscription DisplayName.",
 	);
 	return (
 		await ext.ui.showInputBox({
 			prompt: idPrompt,
 			validateInput: async (
-				value: string
+				value: string,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
 				return validateDisplayName(value);
@@ -162,17 +162,17 @@ async function askScope(): Promise<string> {
 			items.map((s) => {
 				return { label: s };
 			}),
-			{ canPickMany: false, placeHolder: "Select Scope" }
+			{ canPickMany: false, placeHolder: "Select Scope" },
 		)
 	).label;
 }
 
 async function askUser(
-	node: SubscriptionsTreeItem
+	node: SubscriptionsTreeItem,
 ): Promise<{ label: string; value: UserContract }> {
 	const users = await node.root.client.user.listByService(
 		node.root.resourceGroupName,
-		node.root.serviceName
+		node.root.serviceName,
 	);
 	return await ext.ui.showQuickPick(
 		users.map((s) => {
@@ -185,37 +185,37 @@ async function askUser(
 				value: s,
 			};
 		}),
-		{ canPickMany: false, placeHolder: "Select User" }
+		{ canPickMany: false, placeHolder: "Select User" },
 	);
 }
 
 async function askAPI(
-	node: SubscriptionsTreeItem
+	node: SubscriptionsTreeItem,
 ): Promise<{ label: string; value: ApiContract }> {
 	const apis = await node.root.client.api.listByService(
 		node.root.resourceGroupName,
-		node.root.serviceName
+		node.root.serviceName,
 	);
 	return await ext.ui.showQuickPick(
 		apis.map((s) => {
 			return { label: s.displayName!, value: s };
 		}),
-		{ canPickMany: false, placeHolder: "Select API" }
+		{ canPickMany: false, placeHolder: "Select API" },
 	);
 }
 
 async function askProduct(
-	node: SubscriptionsTreeItem
+	node: SubscriptionsTreeItem,
 ): Promise<{ label: string; value: ProductContract }> {
 	const products = await node.root.client.product.listByService(
 		node.root.resourceGroupName,
-		node.root.serviceName
+		node.root.serviceName,
 	);
 	return await ext.ui.showQuickPick(
 		products.map((s) => {
 			return { label: s.displayName, value: s };
 		}),
-		{ canPickMany: false, placeHolder: "Select Product" }
+		{ canPickMany: false, placeHolder: "Select Product" },
 	);
 }
 
@@ -226,7 +226,7 @@ async function askTrace(): Promise<string> {
 			allowTrace.map((s) => {
 				return { label: s };
 			}),
-			{ canPickMany: false, placeHolder: "Allow Trace?" }
+			{ canPickMany: false, placeHolder: "Allow Trace?" },
 		)
 	).label;
 }

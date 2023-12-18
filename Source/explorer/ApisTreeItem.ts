@@ -33,14 +33,14 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
-	public static contextValue: string = "azureApiManagementApis";
-	public label: string = "APIs";
+	public static contextValue = "azureApiManagementApis";
+	public label = "APIs";
 	public contextValue: string = ApisTreeItem.contextValue;
 	public selectedApis: ApiContract[] = [];
 	//public filterValue: string | undefined;
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.Api",
-		"API"
+		"API",
 	);
 	private _nextLink: string | undefined;
 
@@ -49,7 +49,7 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean
+		clearCache: boolean,
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -62,11 +62,11 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 					? await this.root.client.api.listByService(
 							this.root.resourceGroupName,
 							this.root.serviceName,
-							{ expandApiVersionSet: true, top: topItemCount }
-						)
+							{ expandApiVersionSet: true, top: topItemCount },
+					  )
 					: await this.root.client.api.listByServiceNext(
-							this._nextLink
-						);
+							this._nextLink,
+					  );
 
 			this._nextLink = apiCollection.nextLink;
 
@@ -85,24 +85,24 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 			async (api: ApiManagementModels.ApiContract) => {
 				if (api.apiVersionSetId) {
 					let apiVersionSetTreeItem = versionSetMap.get(
-						api.apiVersionSetId
+						api.apiVersionSetId,
 					);
-					if (!apiVersionSetTreeItem) {
-						apiVersionSetTreeItem = new ApiVersionSetTreeItem(
-							this,
-							api
-						);
-						// tslint:disable-next-line: no-non-null-assertion
-						versionSetMap.set(
-							api.apiVersionSetId,
-							apiVersionSetTreeItem!
-						);
-						return apiVersionSetTreeItem;
-					} else {
+					if (apiVersionSetTreeItem) {
 						if (apiUtil.isNotApiRevision(api)) {
 							apiVersionSetTreeItem.addApiToSet(api);
 						}
 						return undefined;
+					} else {
+						apiVersionSetTreeItem = new ApiVersionSetTreeItem(
+							this,
+							api,
+						);
+						// tslint:disable-next-line: no-non-null-assertion
+						versionSetMap.set(
+							api.apiVersionSetId,
+							apiVersionSetTreeItem!,
+						);
+						return apiVersionSetTreeItem;
 					}
 				} else if (apiUtil.isNotApiRevision(api)) {
 					return new ApiTreeItem(this, api);
@@ -111,38 +111,38 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 			},
 			(api: ApiManagementModels.ApiContract) => {
 				return api.name;
-			}
+			},
 		);
 	}
 
 	public async createChildImpl(
-		context: IApiTreeItemContext
+		context: IApiTreeItemContext,
 	): Promise<ApiTreeItem> {
 		if (context.document) {
 			return await this.createApiFromOpenApi(
 				context.showCreatingTreeItem,
 				context.apiName,
-				context.document
+				context.document,
 			);
 		} else if (context.apiContract) {
 			return await this.createApiWithApiContract(
 				context.showCreatingTreeItem,
 				context.apiName,
-				context.apiContract
+				context.apiContract,
 			);
 		}
 		throw Error(
 			localize(
 				"",
-				"Missing one or more userOptions when creating new Api"
-			)
+				"Missing one or more userOptions when creating new Api",
+			),
 		);
 	}
 
 	private async createApiFromOpenApi(
 		showCreatingTreeItem: (label: string) => void,
 		apiName: string,
-		document?: IOpenApiImportObject
+		document?: IOpenApiImportObject,
 	): Promise<ApiTreeItem> {
 		if (document && apiName) {
 			showCreatingTreeItem(apiName);
@@ -150,7 +150,7 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				const api = await apiUtil.createOrUpdateApiWithSwaggerObject(
 					this,
 					apiName,
-					document
+					document,
 				);
 				return new ApiTreeItem(this, api);
 			} catch (error) {
@@ -159,14 +159,14 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 						error,
 						localize(
 							"createAPIFailed",
-							`Failed to create the API ${apiName}`
-						)
-					)
+							`Failed to create the API ${apiName}`,
+						),
+					),
 				);
 			}
 		} else {
 			throw Error(
-				localize("", "Expected either OpenAPI document or link.")
+				localize("", "Expected either OpenAPI document or link."),
 			);
 		}
 	}
@@ -174,7 +174,7 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	private async createApiWithApiContract(
 		showCreatingTreeItem: (label: string) => void,
 		apiName: string,
-		apiContract?: ApiContract
+		apiContract?: ApiContract,
 	): Promise<ApiTreeItem> {
 		if (apiContract && apiName) {
 			showCreatingTreeItem(apiName);
@@ -190,7 +190,7 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 					this.root.resourceGroupName,
 					this.root.serviceName,
 					apiName,
-					apiPayload
+					apiPayload,
 				);
 				return new ApiTreeItem(this, api);
 			} catch (error) {
@@ -199,14 +199,17 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 						error,
 						localize(
 							"createAPIFailed",
-							`Failed to create the API ${apiName}`
-						)
-					)
+							`Failed to create the API ${apiName}`,
+						),
+					),
 				);
 			}
 		} else {
 			throw Error(
-				localize("", "Something went wrong when creating this new api.")
+				localize(
+					"",
+					"Something went wrong when creating this new api.",
+				),
 			);
 		}
 	}

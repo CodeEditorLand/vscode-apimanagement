@@ -1,5 +1,3 @@
-"use strict";
-
 import * as Net from "net";
 import * as vscode from "vscode";
 import {
@@ -22,15 +20,18 @@ import { ApimDebugSession } from "./apimDebug";
 export function activate(context: vscode.ExtensionContext) {
 	const provider = new ApimPolicyConfigurationProvider();
 	context.subscriptions.push(
-		vscode.debug.registerDebugConfigurationProvider("apim-policy", provider)
+		vscode.debug.registerDebugConfigurationProvider(
+			"apim-policy",
+			provider,
+		),
 	);
 
 	const factory = new ApimPolicyDebugAdapterDescriptorFactory();
 	context.subscriptions.push(
 		vscode.debug.registerDebugAdapterDescriptorFactory(
 			"apim-policy",
-			factory
-		)
+			factory,
+		),
 	);
 	context.subscriptions.push(factory);
 }
@@ -43,7 +44,7 @@ class ApimPolicyConfigurationProvider
 	public resolveDebugConfiguration(
 		_folder: WorkspaceFolder | undefined,
 		config: DebugConfiguration,
-		_token?: CancellationToken
+		_token?: CancellationToken,
 	): ProviderResult<DebugConfiguration> {
 		if (!config.type && !config.request && !config.name) {
 			const editor = vscode.window.activeTextEditor;
@@ -65,7 +66,7 @@ class ApimPolicyDebugAdapterDescriptorFactory
 
 	public createDebugAdapterDescriptor(
 		_session: vscode.DebugSession,
-		_executable: vscode.DebugAdapterExecutable | undefined
+		_executable: vscode.DebugAdapterExecutable | undefined,
 	): vscode.ProviderResult<vscode.DebugAdapterDescriptor> {
 		if (!this.server) {
 			// start listening on a random port

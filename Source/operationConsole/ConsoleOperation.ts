@@ -22,13 +22,13 @@ export class ConsoleOperation {
 		this.method = operationContract.method.toUpperCase();
 		this.uriTemplate = operationContract.urlTemplate;
 		this.request = new ConsoleRequest(
-			nonNullProp(operationContract, "request")
+			nonNullProp(operationContract, "request"),
 		);
 		this.templateParameters = operationContract.templateParameters
 			? operationContract.templateParameters.map(
 					(parameterContract) =>
-						new ConsoleParameter(parameterContract)
-				)
+						new ConsoleParameter(parameterContract),
+			  )
 			: [];
 		if (
 			this.uriTemplate &&
@@ -41,7 +41,7 @@ export class ConsoleOperation {
 					values: [],
 					type: "",
 					required: false,
-				})
+				}),
 			);
 		}
 	}

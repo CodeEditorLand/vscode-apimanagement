@@ -39,13 +39,12 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
-	public static contextValue: string =
-		"azureApiManagementAuthorizationProviders";
+	public static contextValue = "azureApiManagementAuthorizationProviders";
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.AuthorizationProvider",
-		"AuthorizationProvider"
+		"AuthorizationProvider",
 	);
-	public label: string = "Authorizations (preview)";
+	public label = "Authorizations (preview)";
 	public contextValue: string = AuthorizationProvidersTreeItem.contextValue;
 	private _nextLink: string | undefined;
 	private apimService: ApimService;
@@ -55,7 +54,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 	}
 
 	public async loadMoreChildrenImpl(
-		clearCache: boolean
+		clearCache: boolean,
 	): Promise<AzExtTreeItem[]> {
 		if (clearCache) {
 			this._nextLink = undefined;
@@ -66,7 +65,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 			this.root.environment.resourceManagerEndpointUrl,
 			this.root.subscriptionId,
 			this.root.resourceGroupName,
-			this.root.serviceName
+			this.root.serviceName,
 		);
 
 		const tokenProviders: IAuthorizationProviderContract[] =
@@ -79,12 +78,12 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 				new AuthorizationProviderTreeItem(this, authorizationProvider),
 			(authorizationProvider: IAuthorizationProviderContract) => {
 				return authorizationProvider.name;
-			}
+			},
 		);
 	}
 
 	public async createChildImpl(
-		context: IAuthorizationProviderTreeItemContext
+		context: IAuthorizationProviderTreeItemContext,
 	): Promise<AuthorizationProviderTreeItem> {
 		await this.checkManagedIdentityEnabled();
 		await this.buildContext(context);
@@ -94,7 +93,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 					location: ProgressLocation.Notification,
 					title: localize(
 						"creatingAuthorizationProvider",
-						`Creating Authorization provider '${context.name}' in service ${this.root.serviceName} ...`
+						`Creating Authorization provider '${context.name}' in service ${this.root.serviceName} ...`,
 					),
 					cancellable: false,
 				},
@@ -105,36 +104,36 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 					try {
 						let authorizationProvider =
 							await this.apimService.getAuthorizationProvider(
-								context.name
+								context.name,
 							);
 						if (authorizationProvider === undefined) {
 							authorizationProvider =
 								await this.apimService.createAuthorizationProvider(
 									context.name,
-									context.authorizationProvider
+									context.authorizationProvider,
 								);
 							const message = `Please add redirect url '${authorizationProvider.properties.oauth2?.redirectUrl}' to the OAuth application.`;
 							ext.outputChannel.show();
 							ext.outputChannel.appendLine(message);
 							window.showWarningMessage(
-								localize("redirectUrlMessage", message)
+								localize("redirectUrlMessage", message),
 							);
 							window.showInformationMessage(
 								localize(
 									"createdAuthorizationProvider",
-									`Created Authorization provider '${context.name}'.`
-								)
+									`Created Authorization provider '${context.name}'.`,
+								),
 							);
 							return new AuthorizationProviderTreeItem(
 								this,
-								authorizationProvider
+								authorizationProvider,
 							);
 						} else {
 							throw new Error(
 								localize(
 									"createAuthorizationProvider",
-									`Authorization provider '${authorizationProviderName}' already exists.`
-								)
+									`Authorization provider '${authorizationProviderName}' already exists.`,
+								),
 							);
 						}
 					} catch (error) {
@@ -143,12 +142,12 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 								error,
 								localize(
 									"createAuthorizationProvider",
-									`Failed to create Authorization provider '${authorizationProviderName}'.`
-								)
-							)
+									`Failed to create Authorization provider '${authorizationProviderName}'.`,
+								),
+							),
 						);
 					}
-				}
+				},
 			);
 		} else {
 			throw Error("Expected Authorization provider information.");
@@ -166,7 +165,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 				{
 					placeHolder: "Enable system assigned managed identity",
 					canPickMany: false,
-				}
+				},
 			);
 			if (option.label === options[0]) {
 				await window.withProgress(
@@ -174,7 +173,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 						location: ProgressLocation.Notification,
 						title: localize(
 							"enableManagedIdentity",
-							`Enabling system assigned managed identity.`
+							`Enabling system assigned managed identity.`,
 						),
 						cancellable: false,
 					},
@@ -183,17 +182,17 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 						window.showInformationMessage(
 							localize(
 								"enabledManagedIdentity",
-								`Enabled system assigned managed identity.`
-							)
+								`Enabled system assigned managed identity.`,
+							),
 						);
-					}
+					},
 				);
 			}
 		}
 	}
 
 	private async buildContext(
-		context: IAuthorizationProviderTreeItemContext
+		context: IAuthorizationProviderTreeItemContext,
 	): Promise<void> {
 		let supportedIdentityProviders: ITokenStoreIdentityProviderContract[] =
 			await this.apimService.listTokenStoreIdentityProviders();
@@ -201,12 +200,12 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 		supportedIdentityProviders = supportedIdentityProviders.sort(
 			function compare(
 				a: ITokenStoreIdentityProviderContract,
-				b: ITokenStoreIdentityProviderContract
+				b: ITokenStoreIdentityProviderContract,
 			): number {
 				return a.properties.displayName.localeCompare(
-					b.properties.displayName
+					b.properties.displayName,
 				);
-			}
+			},
 		);
 
 		const identityProviderPicked = await ext.ui.showQuickPick(
@@ -217,24 +216,24 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 					detail: "",
 				};
 			}),
-			{ placeHolder: "Select identity provider ...", canPickMany: false }
+			{ placeHolder: "Select identity provider ...", canPickMany: false },
 		);
 		const selectedIdentityProvider = supportedIdentityProviders.find(
-			(s) => s.properties.displayName === identityProviderPicked.label
+			(s) => s.properties.displayName === identityProviderPicked.label,
 		);
 
-		let grantType: string = "";
+		let grantType = "";
 		if (
 			selectedIdentityProvider &&
 			selectedIdentityProvider.properties.oauth2.grantTypes !== null
 		) {
 			const authorizationProviderName = await askId(
 				"Enter Authorization provider name ...",
-				"Invalid Authorization provider name."
+				"Invalid Authorization provider name.",
 			);
 
 			const grantTypes = Object.keys(
-				selectedIdentityProvider.properties.oauth2.grantTypes
+				selectedIdentityProvider.properties.oauth2.grantTypes,
 			);
 			if (grantTypes.length > 1) {
 				const grantTypePicked = await ext.ui.showQuickPick(
@@ -248,7 +247,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 					{
 						placeHolder: "Select grant type ...",
 						canPickMany: false,
-					}
+					},
 				);
 				grantType =
 					grantTypePicked.label[0].toLocaleLowerCase() +

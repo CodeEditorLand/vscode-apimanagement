@@ -22,16 +22,16 @@ export function gulp_installRestClient(): Promise<void> | Stream {
 	const version: string = "0.21.3";
 	const extensionPath: string = path.join(
 		os.homedir(),
-		`.vscode/extensions/humao.rest-client-${version}`
+		`.vscode/extensions/humao.rest-client-${version}`,
 	);
 	const existingExtensions: string[] = glob.sync(
-		extensionPath.replace(version, "*")
+		extensionPath.replace(version, "*"),
 	);
 	if (existingExtensions.length === 0) {
 		console.log("installing rest-client extension.");
 		// tslint:disable-next-line:no-http-string
 		return download(
-			`http://humao.gallery.vsassets.io/_apis/public/gallery/publisher/humao/extension/rest-client/${version}/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage`
+			`http://humao.gallery.vsassets.io/_apis/public/gallery/publisher/humao/extension/rest-client/${version}/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage`,
 		)
 			.pipe(
 				decompress({
@@ -41,7 +41,7 @@ export function gulp_installRestClient(): Promise<void> | Stream {
 						file.path = file.path.slice(10);
 						return file;
 					},
-				})
+				}),
 			)
 			.pipe(gulp.dest(extensionPath));
 	} else {

@@ -13,16 +13,16 @@ import { nonNullProp, nonNullValueAndProp } from "../../utils/nonNull";
 import { IServiceWizardContext } from "./IServiceWizardContext";
 
 export class ServiceCreateStep extends AzureWizardExecuteStep<IServiceWizardContext> {
-	public priority: number = 140;
+	public priority = 140;
 
 	public async execute(
 		wizardContext: IServiceWizardContext,
-		progress: Progress<{ message?: string; increment?: number }>
+		progress: Progress<{ message?: string; increment?: number }>,
 	): Promise<void> {
 		const creatingNewService: string = localize(
 			"creatingNewAPIManagementService",
 			'Creating new API Management service "{0}"...',
-			wizardContext.serviceName
+			wizardContext.serviceName,
 		);
 		ext.outputChannel.appendLine(creatingNewService);
 		progress.report({ message: creatingNewService });
@@ -33,7 +33,7 @@ export class ServiceCreateStep extends AzureWizardExecuteStep<IServiceWizardCont
 				<ApiManagementServiceResource>{
 					location: nonNullValueAndProp(
 						wizardContext.location,
-						"name"
+						"name",
 					),
 					sku: <
 						ApiManagementModels.ApiManagementServiceSkuProperties
@@ -43,13 +43,13 @@ export class ServiceCreateStep extends AzureWizardExecuteStep<IServiceWizardCont
 					},
 					publisherEmail: nonNullValueAndProp(wizardContext, "email"),
 					publisherName: nonNullValueAndProp(wizardContext, "email"),
-				}
+				},
 			);
 
 		const createdNewService: string = localize(
 			"createdNewAPIManagementService",
 			'Created new API Management service "{0}".',
-			wizardContext.service.name
+			wizardContext.service.name,
 		);
 
 		ext.outputChannel.appendLine(createdNewService);

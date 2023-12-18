@@ -21,7 +21,7 @@ import { IOperationTreeRoot } from "./IOperationTreeRoot";
 import { OperationPolicyTreeItem } from "./OperationPolicyTreeItem";
 
 export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot> {
-	public static contextValue: string = "azureApiManagementApiOperation";
+	public static contextValue = "azureApiManagementApiOperation";
 	public contextValue: string = ApiOperationTreeItem.contextValue;
 	public readonly commandId: string =
 		"azureApiManagement.showArmApiOperation";
@@ -49,7 +49,7 @@ export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot
 	private _root: IOperationTreeRoot;
 	constructor(
 		parent: AzureParentTreeItem,
-		public readonly operationContract: ApiManagementModels.OperationContract
+		public readonly operationContract: ApiManagementModels.OperationContract,
 	) {
 		super(parent);
 
@@ -58,7 +58,7 @@ export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot
 
 		this._label = `[${nonNullProp(
 			this.operationContract,
-			"method"
+			"method",
 		)}] ${nonNullProp(this.operationContract, "displayName")}`;
 		this._name = nonNullProp(this.operationContract, "name");
 	}
@@ -76,18 +76,18 @@ export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot
 	public async deleteTreeItemImpl(): Promise<void> {
 		const message: string = localize(
 			"confirmDeleteOperation",
-			`Are you sure you want to delete operation '${this.root.opName}'?`
+			`Are you sure you want to delete operation '${this.root.opName}'?`,
 		);
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
-			DialogResponses.cancel
+			DialogResponses.cancel,
 		);
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"",
-				`Deleting operation "${this.root.opName}"...`
+				`Deleting operation "${this.root.opName}"...`,
 			);
 			await window.withProgress(
 				{
@@ -100,16 +100,16 @@ export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot
 						this.root.serviceName,
 						this.root.apiName,
 						this.root.opName,
-						"*"
+						"*",
 					);
-				}
+				},
 			);
 			// don't wait
 			window.showInformationMessage(
 				localize(
 					"deletedOperation",
-					`Successfully deleted API "${this.root.apiName}".`
-				)
+					`Successfully deleted API "${this.root.apiName}".`,
+				),
 			);
 		} else {
 			throw new UserCancelledError();

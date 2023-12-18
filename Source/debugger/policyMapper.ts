@@ -77,7 +77,7 @@ export class PolicyMapper {
 						//const curkey = this.stack.reduce((a, b) => `${a}/${b}`) + `${name}[1]`;
 						if (this.count[curkey]) {
 							this.stack.push(
-								name + `[${this.count[curkey] + 1}]`
+								name + `[${this.count[curkey] + 1}]`,
 							);
 							this.count[curkey]++;
 						} else {
@@ -89,10 +89,10 @@ export class PolicyMapper {
 					}
 				}
 
-				if (!end) {
-					selfClosing = true;
-				} else {
+				if (end) {
 					closing = true;
+				} else {
+					selfClosing = true;
 				}
 			} else if (char === ">") {
 				if (nameStart > 0 && !name) {

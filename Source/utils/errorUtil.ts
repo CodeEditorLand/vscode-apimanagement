@@ -8,7 +8,7 @@ import { ext } from "../extensionVariables";
 
 // tslint:disable: no-unsafe-any
 export function errorUtil(responseBody: string): string {
-	let msg: string = "";
+	let msg = "";
 	const errors = JSON.parse(responseBody);
 	errors.error.details.forEach((element) => {
 		msg = msg.concat(`Error: "${element.code}" - "${element.message}" \n`);

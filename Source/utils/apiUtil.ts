@@ -15,8 +15,8 @@ import {
 	DialogResponses,
 	IOpenApiImportObject,
 	IParsedError,
-	parseError,
 	UserCancelledError,
+	parseError,
 } from "../../extension.bundle";
 import * as Constants from "../constants";
 import { IServiceTreeRoot } from "../explorer/IServiceTreeRoot";
@@ -27,14 +27,14 @@ export namespace apiUtil {
 	export async function askApiName(defaultName?: string): Promise<string> {
 		const apiNamePrompt: string = localize(
 			"apiNamePrompt",
-			"Enter API Name."
+			"Enter API Name.",
 		);
 		return (
 			await ext.ui.showInputBox({
 				prompt: apiNamePrompt,
 				value: defaultName,
 				validateInput: async (
-					value: string | undefined
+					value: string | undefined,
 				): Promise<string | undefined> => {
 					value = value ? value.trim() : "";
 					return validateApiName(value);
@@ -52,7 +52,7 @@ export namespace apiUtil {
 		if (apiName.length > Constants.maxApiNameLength) {
 			return localize(
 				"apiNameMaxLength",
-				`API name cannot be more than ${Constants.maxApiNameLength} characters long.`
+				`API name cannot be more than ${Constants.maxApiNameLength} characters long.`,
 			);
 		}
 		if (apiName.match(/^[^*#&+:<>?]+$/) === null) {
@@ -82,7 +82,7 @@ export namespace apiUtil {
 	export function displayNameToIdentifier(value: string): string {
 		const invalidIdCharsRegExp = new RegExp(
 			Constants.invalidIdCharRegEx,
-			"ig"
+			"ig",
 		);
 		let identifier =
 			value &&
@@ -100,7 +100,7 @@ export namespace apiUtil {
 	export async function createOrUpdateApiWithSwaggerObject(
 		node: AzureParentTreeItem<IServiceTreeRoot>,
 		apiName: string,
-		document: IOpenApiImportObject
+		document: IOpenApiImportObject,
 	): Promise<ApiContract> {
 		document.info.title = apiName;
 
@@ -135,20 +135,20 @@ export namespace apiUtil {
 			node.root.serviceName,
 			apiName,
 			openApiImportPayload,
-			options
+			options,
 		);
 	}
 
 	export async function checkApiExist(
 		node: AzureParentTreeItem<IServiceTreeRoot>,
-		apiName: string
+		apiName: string,
 	): Promise<void> {
-		let apiExists: boolean = true;
+		let apiExists = true;
 		try {
 			await node.root.client.api.get(
 				node.root.resourceGroupName,
 				node.root.serviceName,
-				apiName
+				apiName,
 			);
 		} catch (error) {
 			const err: IParsedError = parseError(error);
@@ -163,11 +163,11 @@ export namespace apiUtil {
 			const overwriteFlag = await window.showWarningMessage(
 				localize(
 					"apiAlreadyExists",
-					`API "${apiName}" already exists. Import will trigger an 'Override' of exisiting API. Do you want to continue?`
+					`API "${apiName}" already exists. Import will trigger an 'Override' of exisiting API. Do you want to continue?`,
 				),
 				{ modal: true },
 				DialogResponses.yes,
-				DialogResponses.cancel
+				DialogResponses.cancel,
 			);
 			if (overwriteFlag !== DialogResponses.yes) {
 				throw new UserCancelledError();
@@ -177,13 +177,13 @@ export namespace apiUtil {
 
 	export async function getAllOperationsForApi(
 		root: IServiceTreeRoot,
-		apiId: string
+		apiId: string,
 	): Promise<OperationCollection> {
 		let operations: OperationCollection =
 			await root.client.apiOperation.listByApi(
 				root.resourceGroupName,
 				root.serviceName,
-				apiId
+				apiId,
 			);
 		let nextLink = operations.nextLink;
 		while (nextLink) {
