@@ -58,11 +58,7 @@ export class FunctionAppService {
 	public async addFuncHostKeyForApim(keyName: string): Promise<string> {
 		const hostKeys = await this.getFuncHostKeys();
 		const funcAppKeyName = `apim-${keyName}`;
-		if (
-			hostKeys !== undefined &&
-			hostKeys.functionKeys !== undefined &&
-			hostKeys.functionKeys[funcAppKeyName]
-		) {
+		if (hostKeys?.functionKeys?.[funcAppKeyName]) {
 			return hostKeys.functionKeys[funcAppKeyName];
 		}
 		return await this.createFuncHostKey(funcAppKeyName);

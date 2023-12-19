@@ -149,8 +149,8 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 		if (api.isCurrent !== undefined && api.isCurrent === true) {
 			return api.displayName!;
 		} else {
-			const revNumber = api.name!.split(";rev=")[1];
-			return api.displayName!.concat(";rev=", revNumber);
+			const revNumber = api.name?.split(";rev=")[1];
+			return api.displayName?.concat(";rev=", revNumber);
 		}
 	}
 

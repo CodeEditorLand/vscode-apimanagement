@@ -65,8 +65,8 @@ export async function importWebAppToApi(
 	const webAppResourceGroup = nonNullValue(pickedWebApp.resourceGroup);
 	const webAppName = nonNullValue(pickedWebApp.name);
 	const webConfigbaseUrl = getWebConfigbaseUrl(
-		node!.root.environment.resourceManagerEndpointUrl,
-		node!.root.subscriptionId,
+		node?.root.environment.resourceManagerEndpointUrl,
+		node?.root.subscriptionId,
 		webAppResourceGroup,
 		webAppName,
 	);
@@ -77,16 +77,13 @@ export async function importWebAppToApi(
 
 	// tslint:disable: no-unsafe-any
 	const webAppConfig: IWebAppContract = JSON.parse(webAppConfigStr);
-	if (
-		webAppConfig.properties.apiDefinition &&
-		webAppConfig.properties.apiDefinition.url
-	) {
+	if (webAppConfig.properties.apiDefinition?.url) {
 		// tslint:disable-next-line: no-non-null-assertion
 		await importFromSwagger(
 			context,
 			webAppConfig,
 			webAppName,
-			node!.root.apiName,
+			node?.root.apiName,
 			node!,
 			pickedWebApp,
 		);
@@ -125,7 +122,7 @@ export async function importWebApp(
 	const webAppResourceGroup = nonNullValue(pickedWebApp.resourceGroup);
 	const webAppName = nonNullValue(pickedWebApp.name);
 	const webConfigbaseUrl = getWebConfigbaseUrl(
-		node!.root.environment.resourceManagerEndpointUrl,
+		node?.root.environment.resourceManagerEndpointUrl,
 		webAppSubscriptionId,
 		webAppResourceGroup,
 		webAppName,
@@ -135,10 +132,7 @@ export async function importWebApp(
 	).parsedBody;
 
 	const apiName = await apiUtil.askApiName(webAppName);
-	if (
-		webAppConfig.properties.apiDefinition &&
-		webAppConfig.properties.apiDefinition.url
-	) {
+	if (webAppConfig.properties.apiDefinition?.url) {
 		ext.outputChannel.appendLine(
 			localize(
 				"importWebApp",
@@ -374,7 +368,7 @@ async function createApiWithWildCardOperations(
 				context.apiName = apiName;
 				context.apiContract = nApi;
 
-				await node!.createChild(context);
+				await node?.createChild(context);
 				const serviceUrl = "https://".concat(
 					nonNullValue(nonNullValue(pickedWebApp.hostNames)[0]),
 				);
@@ -389,9 +383,9 @@ async function createApiWithWildCardOperations(
 					webAppResourceGroup,
 					webAppName,
 				);
-				await node!.root.client.apiPolicy.createOrUpdate(
-					node!.root.resourceGroupName,
-					node!.root.serviceName,
+				await node?.root.client.apiPolicy.createOrUpdate(
+					node?.root.resourceGroupName,
+					node?.root.serviceName,
 					apiName,
 					{
 						format: "rawxml",
@@ -405,9 +399,9 @@ async function createApiWithWildCardOperations(
 				);
 				const operations = await getWildcardOperationsForApi(apiId);
 				for (const operation of operations) {
-					await node!.root.client.apiOperation.createOrUpdate(
-						node!.root.resourceGroupName,
-						node!.root.serviceName,
+					await node?.root.client.apiOperation.createOrUpdate(
+						node?.root.resourceGroupName,
+						node?.root.serviceName,
 						apiName,
 						nonNullValue(operation.name),
 						operation,
@@ -423,7 +417,7 @@ async function createApiWithWildCardOperations(
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
-			await node!.refresh(context);
+			await node?.refresh(context);
 			window.showInformationMessage(
 				localize(
 					"importWebApp",
@@ -462,7 +456,7 @@ async function importFromSwagger(
 	pickedWebApp: Site,
 ): Promise<void> {
 	const webResource = new WebResource();
-	webResource.url = webAppConfig.properties.apiDefinition!.url!;
+	webResource.url = webAppConfig.properties.apiDefinition?.url!;
 	webResource.method = "GET";
 	const docStr: string = await sendRequest(webResource);
 	if (docStr !== undefined && docStr.trim() !== "") {
@@ -491,9 +485,9 @@ async function importFromSwagger(
 								apiName,
 								document,
 							);
-							curApi = await node!.root.client.api.get(
-								node!.root.resourceGroupName,
-								node!.root.serviceName,
+							curApi = await node?.root.client.api.get(
+								node?.root.resourceGroupName,
+								node?.root.serviceName,
 								apiName,
 							);
 						} else {
@@ -509,15 +503,15 @@ async function importFromSwagger(
 									"Updating API service url...",
 								),
 							);
-							curApi = await node!.root.client.api.get(
-								node!.root.resourceGroupName,
-								node!.root.serviceName,
+							curApi = await node?.root.client.api.get(
+								node?.root.resourceGroupName,
+								node?.root.serviceName,
 								apiName,
 							);
 							curApi.serviceUrl = "";
-							await node!.root.client.api.createOrUpdate(
-								node!.root.resourceGroupName,
-								node!.root.serviceName,
+							await node?.root.client.api.createOrUpdate(
+								node?.root.resourceGroupName,
+								node?.root.serviceName,
 								apiName,
 								curApi,
 							);
@@ -545,9 +539,9 @@ async function importFromSwagger(
 							webAppName,
 						);
 						const backendPolicy = [getSetBackendPolicy(backendId)];
-						await node!.root.client.apiPolicy.createOrUpdate(
-							node!.root.resourceGroupName,
-							node!.root.serviceName,
+						await node?.root.client.apiPolicy.createOrUpdate(
+							node?.root.resourceGroupName,
+							node?.root.serviceName,
 							apiName,
 							{
 								format: "rawxml",
@@ -584,8 +578,7 @@ async function importFromSwagger(
 										operationSecurity[0],
 									)[0];
 									secretProperty =
-										securityKeys[secretPropertyType] &&
-										securityKeys[secretPropertyType][
+										securityKeys[secretPropertyType]?.[
 											operationKey
 										];
 								}
@@ -611,7 +604,7 @@ async function importFromSwagger(
 								operation,
 								curApi,
 								secretProperty,
-								node!.root,
+								node?.root,
 							);
 						}
 						ext.outputChannel.appendLine(
@@ -632,7 +625,7 @@ async function importFromSwagger(
 			)
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
-				await node!.refresh(context);
+				await node?.refresh(context);
 				window.showInformationMessage(
 					localize(
 						"importWebApp",
@@ -657,7 +650,7 @@ async function assignAppDataToOperation(
 	if (secret) {
 		const secretParamName = secret.value.split(" for ")[0];
 
-		if (secret.name!.indexOf("_query_") !== -1) {
+		if (secret.name?.indexOf("_query_") !== -1) {
 			triggerUrl = `${operation.urlTemplate}?${secretParamName}={{${secret.name}}}`;
 			inboundPolicies.push(getRewriteUrlPolicy(triggerUrl));
 		} else {
@@ -674,10 +667,7 @@ async function assignAppDataToOperation(
 	}
 
 	let subscriptionKeyHeaderName = "Ocp-Apim-Subscription-Key";
-	if (
-		api.subscriptionKeyParameterNames &&
-		api.subscriptionKeyParameterNames.header
-	) {
+	if (api.subscriptionKeyParameterNames?.header) {
 		subscriptionKeyHeaderName = api.subscriptionKeyParameterNames.header;
 	}
 

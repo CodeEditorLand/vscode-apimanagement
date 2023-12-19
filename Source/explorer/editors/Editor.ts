@@ -171,7 +171,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 		data: string,
 		textEditor?: vscode.TextEditor,
 	): Promise<void> {
-		if (!!textEditor) {
+		if (textEditor) {
 			await writeToEditor(textEditor, data);
 			this.ignoreSave = true;
 			try {

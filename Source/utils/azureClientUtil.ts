@@ -31,7 +31,7 @@ export namespace azureClientUtil {
 			"ms-vscode.azure-account",
 		);
 		// tslint:disable-next-line: no-non-null-assertion
-		const azureAccount = azureAccountExtension!.exports;
+		const azureAccount = azureAccountExtension?.exports;
 		await azureAccount.waitForFilters();
 		if (azureAccount.status !== "LoggedIn") {
 			throw new Error(localize("", "Please Log in at first!"));

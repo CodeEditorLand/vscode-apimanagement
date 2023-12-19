@@ -29,8 +29,10 @@ export namespace dotnetUtils {
 		minVersion = "2.1",
 	): Promise<void> {
 		if (
-			!(await isDotnetInstalled()) ||
-			!(await checkDotnetVersionInstalled(minVersion))
+			!(
+				(await isDotnetInstalled()) &&
+				(await checkDotnetVersionInstalled(minVersion))
+			)
 		) {
 			const message: string = localize(
 				"dotnetNotInstalled",
@@ -38,10 +40,7 @@ export namespace dotnetUtils {
 				minVersion,
 			);
 
-			if (
-				!actionContext ||
-				!actionContext.errorHandling.suppressDisplay
-			) {
+			if (!actionContext?.errorHandling.suppressDisplay) {
 				// don't wait
 				vscode.window
 					.showErrorMessage(message, DialogResponses.learnMore)

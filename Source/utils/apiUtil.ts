@@ -84,15 +84,13 @@ export namespace apiUtil {
 			Constants.invalidIdCharRegEx,
 			"ig",
 		);
-		let identifier =
-			value &&
-			value
-				.replace(invalidIdCharsRegExp, "-")
-				.trim()
-				.replace(/-+/g, "-")
-				.substr(0, Constants.maxApiNameLength)
-				.replace(/(^-)|(-$)/g, "")
-				.toLowerCase();
+		let identifier = value
+			?.replace(invalidIdCharsRegExp, "-")
+			.trim()
+			.replace(/-+/g, "-")
+			.substr(0, Constants.maxApiNameLength)
+			.replace(/(^-)|(-$)/g, "")
+			.toLowerCase();
 		identifier = removeAccents(identifier);
 		return identifier;
 	}

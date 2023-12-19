@@ -154,7 +154,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 					error,
 					localize(
 						"updateOpenApiFailed",
-						`Changes to the OpenAPI document could not be uploaded to cloud.`,
+						"Changes to the OpenAPI document could not be uploaded to cloud.",
 					),
 				),
 			);

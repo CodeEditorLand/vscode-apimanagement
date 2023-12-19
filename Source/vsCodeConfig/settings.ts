@@ -19,7 +19,7 @@ export function getGlobalSetting<T>(
 		workspace.getConfiguration(prefix);
 	const result: { globalValue?: T } | undefined =
 		projectConfiguration.inspect<T>(key);
-	return result && result.globalValue;
+	return result?.globalValue;
 }
 
 export async function updateGlobalSetting<T = string>(

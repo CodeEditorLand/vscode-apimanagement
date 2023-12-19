@@ -177,7 +177,7 @@ export class DebuggerConnection extends EventEmitter {
 			);
 			// tslint:disable-next-line: switch-default
 			switch (event.name) {
-				case "stopOnEntry":
+				case "stopOnEntry": {
 					this.sendEvent(
 						event.name,
 						event.arguments.requestId,
@@ -187,7 +187,8 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.productId,
 					);
 					break;
-				case "stopOnStep":
+				}
+				case "stopOnStep": {
 					this.sendEvent(
 						event.name,
 						event.arguments.requestId,
@@ -197,7 +198,8 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.productId,
 					);
 					break;
-				case "stopOnException":
+				}
+				case "stopOnException": {
 					this.sendEvent(
 						event.name,
 						event.arguments.requestId,
@@ -208,7 +210,8 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.message,
 					);
 					break;
-				case "stopOnBreakpoint":
+				}
+				case "stopOnBreakpoint": {
 					this.sendEvent(
 						event.name,
 						event.arguments.requestId,
@@ -218,7 +221,8 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.productId,
 					);
 					break;
-				case "threadExited":
+				}
+				case "threadExited": {
 					this.sendEvent(
 						event.name,
 						event.arguments.requestId,
@@ -228,6 +232,7 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.productId,
 					);
 					break;
+				}
 			}
 
 			const awaiters = this.responseAwaiters[event.name];

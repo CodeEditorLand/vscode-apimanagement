@@ -105,7 +105,7 @@ export class UiThread {
 				(prevFrame && prevFrame.scopeId !== frame.scopeId)
 			) {
 				// tslint:disable-next-line: prefer-template
-				path = ["policies[1]", frame.section + "[1]"];
+				path = ["policies[1]", `${frame.section}[1]`];
 			}
 			prevFrame = frame;
 			if (frame.name.endsWith("]")) {
@@ -141,7 +141,7 @@ export class UiThread {
 
 			if (!stackFrame.source) {
 				const policy = this.policySource.getPolicy(frame.scopeId);
-				stackFrame.source = policy && policy.source;
+				stackFrame.source = policy?.source;
 			}
 
 			const location = this.policySource.getPolicyLocation(
@@ -160,9 +160,11 @@ export class UiThread {
 		for (let index = 0; index < stack.length; ) {
 			if (
 				stack[index].isVirtual &&
-				(!stack[index].stackFrame.source ||
-					(!stack[index].stackFrame.line &&
-						!stack[index].stackFrame.column))
+				!(
+					stack[index].stackFrame.source &&
+					(stack[index].stackFrame.line ||
+						stack[index].stackFrame.column)
+				)
 			) {
 				stack.splice(index, 1);
 			} else {
@@ -247,7 +249,7 @@ export class UiThread {
 				frame.name,
 			);
 			const policy = this.policySource.getPolicy(frame.scopeId);
-			stackFrame.source = policy && policy.source;
+			stackFrame.source = policy?.source;
 			if (!stackFrame.source) {
 				UiThread.addPendingSource(pendingSources, frame, stackFrame);
 			}

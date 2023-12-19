@@ -53,7 +53,7 @@ export async function revisions(
 			),
 		);
 	} else if (commands.label === localize("", "Make Current")) {
-		if (node!.apiContract.isCurrent) {
+		if (node?.apiContract.isCurrent) {
 			window.showInformationMessage(
 				localize("releaseRev", "This revision is already current."),
 			);
@@ -62,7 +62,7 @@ export async function revisions(
 			const no: MessageItem = { title: localize("No", "No") };
 			const message: string = localize(
 				"shouldRelease",
-				`You are currently on ${node!.apiContract
+				`You are currently on ${node?.apiContract
 					.name!}. This revision will become the public implementation of your API. Are you sure you want to continue?`,
 			);
 			const result = await window.showInformationMessage(
@@ -82,29 +82,29 @@ export async function revisions(
 							cancellable: false,
 						},
 						async () => {
-							const apiRevName = node!.apiContract.name!;
+							const apiRevName = node?.apiContract.name!;
 							const notes = await askReleaseNotes();
 							const apiRelease: ApiReleaseContract = {
 								apiId: "/apis/".concat(apiRevName),
 								notes: notes,
 							};
 							const pickedApiName =
-								node!.root.apiName.split(";rev=")[0];
+								node?.root.apiName.split(";rev=")[0];
 							const releaseId = Guid.create().toString();
-							await node!.root.client.apiRelease.createOrUpdate(
-								node!.root.resourceGroupName,
-								node!.root.serviceName,
+							await node?.root.client.apiRelease.createOrUpdate(
+								node?.root.resourceGroupName,
+								node?.root.serviceName,
 								pickedApiName,
 								releaseId,
 								apiRelease,
 							);
-							const api = await node!.root.client.api.get(
-								node!.root.resourceGroupName,
-								node!.root.serviceName,
-								node!.root.apiName,
+							const api = await node?.root.client.api.get(
+								node?.root.resourceGroupName,
+								node?.root.serviceName,
+								node?.root.apiName,
 							);
-							await node!.reloadApi(api);
-							await node!.refresh(context);
+							await node?.reloadApi(api);
+							await node?.refresh(context);
 						},
 					)
 					.then(async () => {
@@ -154,7 +154,7 @@ async function listRevisions(node: ApiTreeItem): Promise<ApiContract> {
 		);
 	const apiIds = apiRevisions.map((s) => {
 		return s.isCurrent !== undefined && s.isCurrent === true
-			? s.apiId!.concat("(Current)")
+			? s.apiId?.concat("(Current)")
 			: s.apiId!;
 	});
 	const pickedApiRevision = await ext.ui.showQuickPick(

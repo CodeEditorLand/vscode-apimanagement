@@ -180,7 +180,7 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 			window.showErrorMessage(
 				localize(
 					"CopySubscriptionKey",
-					`Secondary Subscription Key Unexpectedly null.`,
+					"Secondary Subscription Key Unexpectedly null.",
 				),
 			);
 		}

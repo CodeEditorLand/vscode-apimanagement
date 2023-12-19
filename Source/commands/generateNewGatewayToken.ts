@@ -60,14 +60,14 @@ export async function generateNewGatewayToken(
 	const numOfDays = Number.parseInt(numOfDaysResponse);
 	// tslint:disable: no-non-null-assertion
 	const apimService = new ApimService(
-		node!.root.credentials,
-		node!.root.environment.resourceManagerEndpointUrl,
-		node!.root.subscriptionId,
-		node!.root.resourceGroupName,
-		node!.root.serviceName,
+		node?.root.credentials,
+		node?.root.environment.resourceManagerEndpointUrl,
+		node?.root.subscriptionId,
+		node?.root.resourceGroupName,
+		node?.root.serviceName,
 	);
 	const gatewayToken = await apimService.generateNewGatewayToken(
-		node!.root.gatewayName,
+		node?.root.gatewayName,
 		numOfDays,
 		keyType.label,
 	);
@@ -86,6 +86,6 @@ function validateDays(days: string): boolean {
 		numOfDays.toString().length === days.length &&
 		numOfDays < 30 &&
 		numOfDays > 0 &&
-		!isNaN(numOfDays)
+		!Number.isNaN(numOfDays)
 	);
 }

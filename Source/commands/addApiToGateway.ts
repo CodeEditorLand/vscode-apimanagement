@@ -61,18 +61,16 @@ export async function addApiToGateway(
 			},
 			// tslint:disable-next-line: no-non-null-assertion
 			async () => {
-				return node!.createChild(context);
+				return node?.createChild(context);
 			},
 		)
 		.then(async () => {
 			// tslint:disable:no-non-null-assertion
-			await node!.refresh(context);
+			await node?.refresh(context);
 			window.showInformationMessage(
 				localize(
 					"addedApiToGateway",
-					`Added API '${apiName}' to gateway ${
-						node!.root.gatewayName
-					}.`,
+					`Added API '${apiName}' to gateway ${node?.root.gatewayName}.`,
 				),
 			);
 		});

@@ -82,7 +82,7 @@ function mapParameterType(type: string): string {
 			return "integer";
 		case "bool":
 			return "boolean";
-		default:
+		default: {
 			if (
 				type.startsWith("length(") ||
 				type.startsWith("maxlength(") ||
@@ -99,5 +99,6 @@ function mapParameterType(type: string): string {
 				return "integer";
 			}
 			return "";
+		}
 	}
 }

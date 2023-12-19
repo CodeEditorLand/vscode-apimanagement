@@ -70,7 +70,7 @@ export async function copyAuthorizationPolicy(
 	let identityPhrase = "";
 	let additionalMessage = "";
 	if (identityTypeSelected.label === managed) {
-		comment = `<!-- Add to the inbound policy -->`;
+		comment = "<!-- Add to the inbound policy -->";
 		identityPhrase = `identity-type="${identityTypeSelected.label}"`;
 		additionalMessage =
 			"For 'managed' identity-type, make sure managed identity is turned on.";

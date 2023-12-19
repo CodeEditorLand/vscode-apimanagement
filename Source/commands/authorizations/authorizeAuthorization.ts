@@ -96,7 +96,7 @@ export async function authorizeAuthorization(
 			)
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
-				await node!.refresh(context);
+				await node?.refresh(context);
 				window.showInformationMessage(
 					localize(
 						"updatedAuthorization",

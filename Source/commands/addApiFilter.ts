@@ -60,7 +60,7 @@ export async function addApiFilter(
 				}
 			}
 			let picked = false;
-			for (const api of node!.selectedApis) {
+			for (const api of node?.selectedApis) {
 				if (api.name! === s.name!) {
 					picked = true;
 				}
@@ -72,5 +72,5 @@ export async function addApiFilter(
 
 	node.selectedApis = picks.map((s) => s.api);
 	// tslint:disable:no-non-null-assertion
-	await node!.refresh(context);
+	await node?.refresh(context);
 }

@@ -233,12 +233,12 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.TerminateThreadsArguments,
 		_request?: DebugProtocol.Request,
 	) {
-		const requests = args.threadIds!.map((id) => this.findThreadByUiId(id));
+		const requests = args.threadIds?.map((id) => this.findThreadByUiId(id));
 
 		if (requests.length) {
 			await this.runtime.terminateRequests(
 				requests
-					.map((r) => r![0].id)
+					.map((r) => r?.[0].id)
 					.filter(
 						(value, index, self) => self.indexOf(value) === index,
 					),
@@ -302,7 +302,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 		if (policy !== null && policy.xml !== null) {
 			response.body = {
-				content: policy && policy.xml,
+				content: policy?.xml,
 				mimeType: "application/vnd.ms-azure-apim.policy.raw+xml",
 			};
 			this.sendResponse(response);
@@ -488,7 +488,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 				this.policySource.getPolicy(args.source.name) ||
 				(await this.policySource.fetchPolicy(args.source.name));
 		}
-		if (args.breakpoints && args.breakpoints.length) {
+		if (args.breakpoints?.length) {
 			// set breakpoints if has policy otherwise check if it's initialization
 			if (policy && policy !== null) {
 				breakpoints = args.breakpoints.map((b) => {
@@ -506,8 +506,8 @@ export class ApimDebugSession extends LoggingDebugSession {
 					const breakpointColumn =
 						b.column &&
 						this.convertClientColumnToDebugger(b.column);
-					for (const key in policy!.map) {
-						const mapEntry = policy!.map[key];
+					for (const key in policy?.map) {
+						const mapEntry = policy?.map[key];
 						if (
 							mapEntry.line === breakpointLine &&
 							(!breakpointColumn ||
@@ -541,13 +541,13 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 					breakpointsToSet.push({
 						path: path.substr(path.indexOf("/") + 1), //Remove 'policies/' prefix
-						scopeId: policy!.scopeId,
+						scopeId: policy?.scopeId,
 					});
 					const breakpoint = new Breakpoint(
 						true,
 						this.convertDebuggerLineToClient(position.line),
 						this.convertDebuggerColumnToClient(position.column),
-						policy!.source,
+						policy?.source,
 					);
 					(<DebugProtocol.Breakpoint>breakpoint).endLine =
 						this.convertDebuggerLineToClient(position.endLine);
@@ -558,13 +558,13 @@ export class ApimDebugSession extends LoggingDebugSession {
 			}
 		}
 
-		await this.runtime.setBreakpoints(breakpointsToSet, policy!.scopeId);
+		await this.runtime.setBreakpoints(breakpointsToSet, policy?.scopeId);
 		return breakpoints;
 	}
 
 	private onThreadExited(requestId: string, threadId: number) {
 		const nRequest = this.requests.find((r) => r.id === requestId);
-		const thread = nRequest && nRequest.findThreadById(threadId);
+		const thread = nRequest?.findThreadById(threadId);
 
 		if (thread) {
 			this.sendEvent(new ThreadEvent("exited", thread.uiId));
@@ -593,7 +593,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 			false,
 		);
 		const nRequest = this.requests.find((r) => r.id === requestId);
-		const thread = nRequest && nRequest.findThreadById(threadId);
+		const thread = nRequest?.findThreadById(threadId);
 
 		if (thread) {
 			this.sendEvent(new StoppedEvent(event, thread.uiId, exceptionText));
@@ -606,7 +606,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		const azureAccountExtension = vscode.extensions.getExtension(
 			"ms-vscode.azure-account",
 		);
-		const azureAccount = azureAccountExtension!.exports;
+		const azureAccount = azureAccountExtension?.exports;
 		await azureAccount.waitForFilters();
 		if (azureAccount.status !== "LoggedIn") {
 			throw new Error("ERROR!");

@@ -11,9 +11,6 @@ import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 // tslint:disable-next-line:no-any
 export class ProductResourceEditor extends BaseArmResourceEditor<IProductTreeRoot> {
 	public entityType = "Product";
-	constructor() {
-		super();
-	}
 
 	public async getDataInternal(
 		context: AzureTreeItem<IProductTreeRoot>,

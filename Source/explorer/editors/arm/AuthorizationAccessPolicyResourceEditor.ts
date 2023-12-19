@@ -13,9 +13,6 @@ import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 // tslint:disable-next-line:no-any
 export class AuthorizationAccessPolicyResourceEditor extends BaseArmResourceEditor<IAuthorizationAccessPolicyTreeRoot> {
 	public entityType = "AuthorizationAccessPolicy";
-	constructor() {
-		super();
-	}
 
 	public async getDataInternal(
 		context: AzureTreeItem<IAuthorizationAccessPolicyTreeRoot>,

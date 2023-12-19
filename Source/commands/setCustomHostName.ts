@@ -47,7 +47,7 @@ export async function setCustomHostName(
 				if (s.hostName === customHostName) {
 					// tslint:disable-next-line: prefer-template
 					return {
-						label: s.hostName + " (Currently selected)",
+						label: `${s.hostName} (Currently selected)`,
 						hostName: s.hostName,
 					};
 				} else {

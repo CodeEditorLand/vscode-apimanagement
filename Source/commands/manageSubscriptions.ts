@@ -64,13 +64,13 @@ export async function createSubscription(
 				cancellable: false,
 			},
 			async () => {
-				await node!.root.client.subscription.createOrUpdate(
-					node!.root.resourceGroupName,
-					node!.root.serviceName,
+				await node?.root.client.subscription.createOrUpdate(
+					node?.root.resourceGroupName,
+					node?.root.serviceName,
 					name,
 					subContract,
 				);
-				await node!.refresh(context);
+				await node?.refresh(context);
 			},
 		)
 		.then(async () => {
@@ -177,8 +177,8 @@ async function askUser(
 	return await ext.ui.showQuickPick(
 		users.map((s) => {
 			return {
-				label: s
-					.firstName!.concat(s.lastName!)
+				label: s.firstName
+					?.concat(s.lastName!)
 					.concat(" (")
 					.concat(s.email!)
 					.concat(")"),

@@ -80,12 +80,12 @@ export async function importOpenApi(
 				},
 				// tslint:disable-next-line:no-non-null-assertion
 				async () => {
-					return node!.createChild(context);
+					return node?.createChild(context);
 				},
 			)
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
-				await node!.refresh(context);
+				await node?.refresh(context);
 				window.showInformationMessage(
 					localize(
 						"importedApi",

@@ -52,9 +52,7 @@ export async function copyDockerRunCommand(
 				// tslint:disable-next-line: no-non-null-assertion
 				title: localize(
 					"deployGateway",
-					`Generating Docker Command for Gateway ${
-						node!.root.gatewayName
-					}`,
+					`Generating Docker Command for Gateway ${node?.root.gatewayName}`,
 				),
 				cancellable: true,
 			},
@@ -64,28 +62,28 @@ export async function copyDockerRunCommand(
 					node!,
 				)}`;
 				const apimService = new ApimService(
-					node!.root.credentials,
-					node!.root.environment.resourceManagerEndpointUrl,
-					node!.root.subscriptionId,
-					node!.root.resourceGroupName,
-					node!.root.serviceName,
+					node?.root.credentials,
+					node?.root.environment.resourceManagerEndpointUrl,
+					node?.root.subscriptionId,
+					node?.root.resourceGroupName,
+					node?.root.serviceName,
 				);
 				const token = await apimService.generateNewGatewayToken(
-					node!.root.gatewayName,
+					node?.root.gatewayName,
 					Constants.maxTokenValidTimeSpan,
 					GatewayKeyType.primary,
 				);
 				const initialComd = getDockerRunCommand(
 					token,
 					confEndpoint,
-					node!.root.gatewayName,
+					node?.root.gatewayName,
 				);
 				env.clipboard.writeText(initialComd);
 			},
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
-			await node!.refresh(context);
+			await node?.refresh(context);
 			window.showInformationMessage(
 				localize(
 					"deployGateway",
@@ -123,22 +121,20 @@ export async function generateKubernetesDeployment(
 				location: ProgressLocation.Notification,
 				title: localize(
 					"deployGateway",
-					`Generating Deployment file to run Gateway ${
-						node!.root.gatewayName
-					} in kubernetes.`,
+					`Generating Deployment file to run Gateway ${node?.root.gatewayName} in kubernetes.`,
 				),
 				cancellable: true,
 			},
 			async () => {
 				const apimService = new ApimService(
-					node!.root.credentials,
-					node!.root.environment.resourceManagerEndpointUrl,
-					node!.root.subscriptionId,
-					node!.root.resourceGroupName,
-					node!.root.serviceName,
+					node?.root.credentials,
+					node?.root.environment.resourceManagerEndpointUrl,
+					node?.root.subscriptionId,
+					node?.root.resourceGroupName,
+					node?.root.serviceName,
 				);
 				const gatewayToken = await apimService.generateNewGatewayToken(
-					node!.root.gatewayName,
+					node?.root.gatewayName,
 					Constants.maxTokenValidTimeSpan,
 					GatewayKeyType.primary,
 				);
@@ -150,21 +146,21 @@ export async function generateKubernetesDeployment(
 				);
 				const confEndpoint = getConfigEndpointUrl(node!);
 				const depYaml = generateDeploymentYaml(
-					node!.root.gatewayName,
+					node?.root.gatewayName,
 					gatewayToken,
 					confEndpoint,
 				);
 				const uris = await askFolder();
 				const configFilePath = path.join(
 					uris[0].fsPath,
-					`${node!.root.gatewayName}.yaml`,
+					`${node?.root.gatewayName}.yaml`,
 				);
 				await fse.writeFile(configFilePath, depYaml);
 				env.clipboard.writeText(`kubectl apply -f ${configFilePath}`);
 			},
 		)
 		.then(async () => {
-			await node!.refresh(context);
+			await node?.refresh(context);
 			window.showInformationMessage(
 				localize(
 					"deployGateway",
@@ -197,15 +193,7 @@ function getDockerRunCommand(
 }
 
 function getConfigEndpointUrl(node: GatewayTreeItem): string {
-	return `"https://${
-		node!.root.serviceName
-	}.management.azure-api.net/subscriptions/${
-		node!.root.subscriptionId
-	}/resourceGroups/${
-		node!.root.resourceGroupName
-	}/providers/Microsoft.ApiManagement/service/${
-		node!.root.serviceName
-	}?api-version=${Constants.apimApiVersion}"`;
+	return `"https://${node?.root.serviceName}.management.azure-api.net/subscriptions/${node?.root.subscriptionId}/resourceGroups/${node?.root.resourceGroupName}/providers/Microsoft.ApiManagement/service/${node?.root.serviceName}?api-version=${Constants.apimApiVersion}"`;
 }
 
 function generateDeploymentYaml(

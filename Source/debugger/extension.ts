@@ -46,7 +46,7 @@ class ApimPolicyConfigurationProvider
 		config: DebugConfiguration,
 		_token?: CancellationToken,
 	): ProviderResult<DebugConfiguration> {
-		if (!config.type && !config.request && !config.name) {
+		if (!(config.type || config.request || config.name)) {
 			const editor = vscode.window.activeTextEditor;
 			if (editor && editor.document.languageId === "apim-policy") {
 				config.type = "apim-policy";

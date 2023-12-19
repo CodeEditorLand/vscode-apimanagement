@@ -81,7 +81,7 @@ export class PolicyMapper {
 							);
 							this.count[curkey]++;
 						} else {
-							this.stack.push(name + `[1]`);
+							this.stack.push(`${name}[1]`);
 							this.count[curkey] = 1;
 						}
 					} else {
@@ -105,7 +105,7 @@ export class PolicyMapper {
 						this.stack.push(name + `[${this.count[curkey] + 1}]`);
 						this.count[curkey]++;
 					} else {
-						this.stack.push(name + `[1]`);
+						this.stack.push(`${name}[1]`);
 						this.count[curkey] = 1;
 					}
 				}
@@ -141,7 +141,7 @@ export class PolicyMapper {
 						this.stack.push(name + `[${this.count[curkey] + 1}]`);
 						this.count[curkey]++;
 					} else {
-						this.stack.push(name + `[1]`);
+						this.stack.push(`${name}[1]`);
 						this.count[curkey] = 1;
 					}
 				}

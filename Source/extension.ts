@@ -780,7 +780,7 @@ class UriEventHandler
 {
 	public handleUri(uri: vscode.Uri) {
 		if (uri.path.startsWith("/vscodeauthcomplete")) {
-			if (uri.query !== null && uri.query.includes("error")) {
+			if (uri.query?.includes("error")) {
 				const queryParams = <Record<string, string>>(
 					query.parse(uri.query)
 				);
@@ -821,7 +821,7 @@ class UriEventHandler
 				vscode.window.showInformationMessage(
 					localize(
 						"closeBrowserWindow",
-						`You can now close the browser window that was launched during the authorization process.`,
+						"You can now close the browser window that was launched during the authorization process.",
 					),
 				);
 			}

@@ -166,7 +166,7 @@ export async function generateFunctions(
 
 	const openAPIFilePath = path.join(
 		uris[0].fsPath,
-		`${node!.apiContract.name}.json`,
+		`${node?.apiContract.name}.json`,
 	);
 
 	let isSucceeded = false;
@@ -189,9 +189,7 @@ export async function generateFunctions(
 			window.showInformationMessage(
 				localize(
 					"openAPIDownloaded",
-					`Downloaded OpenAPI Specification for API '${
-						node!.apiContract.name
-					} successfully.`,
+					`Downloaded OpenAPI Specification for API '${node?.apiContract.name} successfully.`,
 				),
 			);
 		});
@@ -218,23 +216,27 @@ export async function generateFunctions(
 				);
 
 				switch (language.label) {
-					case languageTypes.TypeScript:
+					case languageTypes.TypeScript: {
 						args.push("--azure-functions-typescript");
 						args.push("--no-namespace-folders:True");
 						break;
-					case languageTypes.CSharp:
+					}
+					case languageTypes.CSharp: {
 						args.push(`--namespace:${namespace}`);
 						args.push("--azure-functions-csharp");
 						break;
-					case languageTypes.Java:
+					}
+					case languageTypes.Java: {
 						args.push(`--namespace:${namespace}`);
 						args.push("--azure-functions-java");
 						break;
-					case languageTypes.Python:
+					}
+					case languageTypes.Python: {
 						args.push("--azure-functions-python");
 						args.push("--no-namespace-folders:True");
 						args.push("--no-async");
 						break;
+					}
 					default:
 						throw new Error(
 							localize(
@@ -299,9 +301,7 @@ export async function generateFunctions(
 				window.showInformationMessage(
 					localize(
 						"openAPIDownloaded",
-						`Scaffolded Azure Functions for API '${
-							node!.apiContract.name
-						} successfully.`,
+						`Scaffolded Azure Functions for API '${node?.apiContract.name} successfully.`,
 					),
 				);
 			}

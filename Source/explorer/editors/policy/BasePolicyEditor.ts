@@ -78,7 +78,7 @@ export abstract class BasePolicyEditor<
 			window.showInformationMessage(
 				localize(
 					"updatePolicySucceded",
-					`Changes to policy were uploaded to cloud.`,
+					"Changes to policy were uploaded to cloud.",
 				),
 			);
 			return await this.getPolicy(context);
@@ -88,7 +88,7 @@ export abstract class BasePolicyEditor<
 					error,
 					localize(
 						"updatePolicyFailed",
-						`Changes to policy were not uploaded to cloud.`,
+						"Changes to policy were not uploaded to cloud.",
 					),
 				),
 			);

@@ -37,7 +37,7 @@ export class PolicySource {
 		this.managementAddress = managementAddress;
 		this.credential = credential;
 		this.auth = auth;
-		if (!credential && !auth) {
+		if (!(credential || auth)) {
 			throw new Error("Missing credentials!");
 		}
 	}
@@ -65,7 +65,6 @@ export class PolicySource {
 			// tslint:disable-next-line: prefer-for-of
 			for (let idx = 0; idx < paths.length; idx++) {
 				if (paths[idx] === curKey[idx]) {
-					continue;
 				} else {
 					isEqual = false;
 				}
@@ -95,11 +94,7 @@ export class PolicySource {
 	public getPolicyBySourceReference(id: number | undefined): Policy | null {
 		for (const scope in this.policies) {
 			const policy = this.policies[scope];
-			if (
-				policy &&
-				policy.source &&
-				policy.source.sourceReference === id
-			) {
+			if (policy?.source && policy.source.sourceReference === id) {
 				return policy;
 			}
 		}
@@ -167,7 +162,7 @@ export class PolicySource {
 	}
 
 	private mapPolicy(policy: Policy): void {
-		if (!policy || !policy.xml) {
+		if (!policy?.xml) {
 			return;
 		}
 

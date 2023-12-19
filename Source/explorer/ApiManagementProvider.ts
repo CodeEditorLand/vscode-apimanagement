@@ -176,7 +176,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 		try {
 			await wizard.execute();
 		} catch (error) {
-			if (!parseError(error).isUserCancelledError && !advancedCreation) {
+			if (!(parseError(error).isUserCancelledError || advancedCreation)) {
 				const message: string = localize(
 					"tryAdvancedCreate",
 					'Modify the setting "{0}.{1}" if you want to change the default values when creating a API Management Instance in Azure.',

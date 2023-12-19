@@ -71,10 +71,12 @@ export class OperationConsole {
 		requestSummary += `\n\n${consoleOperation.request.body}`;
 
 		// add comment
-		requestSummary += `\n//A subscription key is required to call this API.`;
+		requestSummary +=
+			"\n//A subscription key is required to call this API.";
 		requestSummary += `\n//You can get the all-access subscription key by right clicking on your service and choose "Copy Subscription Key".`;
-		requestSummary += `\n//You can also set an environment variable,`;
-		requestSummary += `\n//see https://code.visualstudio.com/docs/editor/variables-reference#_environment-variables`;
+		requestSummary += "\n//You can also set an environment variable,";
+		requestSummary +=
+			"\n//see https://code.visualstudio.com/docs/editor/variables-reference#_environment-variables";
 
 		return requestSummary;
 	}

@@ -104,7 +104,7 @@ async function extract(
 		)
 		.then(() => {
 			window.showInformationMessage(
-				localize("Extracted", `Extraction completed!`),
+				localize("Extracted", "Extraction completed!"),
 			);
 		});
 }

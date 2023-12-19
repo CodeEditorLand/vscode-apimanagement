@@ -77,7 +77,7 @@ export class OpenApiParser {
 			if (basePath) {
 				oai20.basePath = basePath;
 			} else {
-				delete oai20.basePath;
+				oai20.basePath = undefined;
 			}
 		} else if (version.startsWith("3.")) {
 			const oai30 = <IOpenApi30>source;
@@ -107,7 +107,7 @@ export class OpenApiParser {
 			if (parsedUrl.path) {
 				oai20.basePath = parsedUrl.path;
 			} else {
-				delete oai20.basePath;
+				oai20.basePath = undefined;
 			}
 		} else if (version.startsWith("3.")) {
 			const oai30 = <IOpenApi30>source;

@@ -208,12 +208,12 @@ function createAccessPolicy(
 			},
 			async () => {
 				// tslint:disable-next-line:no-non-null-assertion
-				return node!.createChild(context);
+				return node?.createChild(context);
 			},
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
-			await node!.refresh(context);
+			await node?.refresh(context);
 			window.showInformationMessage(
 				localize(
 					"createdAuthorizationPermission",
@@ -241,7 +241,7 @@ async function populateIdentityOptionsAsync(
 
 	// 2. APIM Service
 	const service = await apimService.getService();
-	if (!!service.identity?.principalId) {
+	if (service.identity?.principalId) {
 		const apimOption: QuickPickItem = {
 			label: service.name,
 			description: service.identity.principalId,

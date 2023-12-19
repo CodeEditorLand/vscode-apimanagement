@@ -173,7 +173,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 						location: ProgressLocation.Notification,
 						title: localize(
 							"enableManagedIdentity",
-							`Enabling system assigned managed identity.`,
+							"Enabling system assigned managed identity.",
 						),
 						cancellable: false,
 					},
@@ -182,7 +182,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 						window.showInformationMessage(
 							localize(
 								"enabledManagedIdentity",
-								`Enabled system assigned managed identity.`,
+								"Enabled system assigned managed identity.",
 							),
 						);
 					},

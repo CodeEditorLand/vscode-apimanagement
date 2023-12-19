@@ -11,9 +11,6 @@ import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 // tslint:disable-next-line:no-any
 export class OperationResourceEditor extends BaseArmResourceEditor<IOperationTreeRoot> {
 	public entityType = "Operation";
-	constructor() {
-		super();
-	}
 
 	public async getDataInternal(
 		context: AzureTreeItem<IOperationTreeRoot>,

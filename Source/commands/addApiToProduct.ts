@@ -62,18 +62,16 @@ export async function addApiToProduct(
 			},
 			// tslint:disable-next-line:no-non-null-assertion
 			async () => {
-				return node!.createChild(context);
+				return node?.createChild(context);
 			},
 		)
 		.then(async () => {
 			// tslint:disable:no-non-null-assertion
-			await node!.refresh(context);
+			await node?.refresh(context);
 			window.showInformationMessage(
 				localize(
 					"addedApiToProduct",
-					`Added API '${apiName}' to product ${
-						node!.root.productName
-					}.`,
+					`Added API '${apiName}' to product ${node?.root.productName}.`,
 				),
 			);
 		});

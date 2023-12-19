@@ -44,12 +44,12 @@ export async function createNamedValue(
 			},
 			// tslint:disable-next-line:no-non-null-assertion
 			async () => {
-				return node!.createChild(context);
+				return node?.createChild(context);
 			},
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
-			await node!.refresh(context);
+			await node?.refresh(context);
 			window.showInformationMessage(
 				localize(
 					"creatededNamedValue",
@@ -89,12 +89,12 @@ export async function updateNamedValue(
 			},
 			// tslint:disable-next-line:no-non-null-assertion
 			async () => {
-				return node!.updateValue(context, value, secret);
+				return node?.updateValue(context, value, secret);
 			},
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
-			await node!.refresh(context);
+			await node?.refresh(context);
 			window.showInformationMessage(
 				localize(
 					"updatedNamedValue",
