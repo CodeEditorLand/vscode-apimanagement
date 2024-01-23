@@ -6,7 +6,7 @@
 import {
 	ConfigurationTarget,
 	Uri,
-	WorkspaceConfiguration,
+	type WorkspaceConfiguration,
 	workspace,
 } from "vscode";
 import { extensionPrefix } from "../constants";

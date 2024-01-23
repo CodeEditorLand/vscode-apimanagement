@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { AzureTreeItem, IActionContext } from "vscode-azureextensionui";
+import type { AzureTreeItem, IActionContext } from "vscode-azureextensionui";
 import { ServiceTreeItem } from "../explorer/ServiceTreeItem";
 import { ext } from "../extensionVariables";
 

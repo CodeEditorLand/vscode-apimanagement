@@ -8,7 +8,7 @@ import { Uri } from "vscode";
 import { parseError } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";
 import { localize } from "../localize";
-import { IOpenApiImportObject } from "./OpenApiImportObject";
+import type { IOpenApiImportObject } from "./OpenApiImportObject";
 
 export class OpenApiParser {
 	public async parse(source: string): Promise<IOpenApiImportObject> {

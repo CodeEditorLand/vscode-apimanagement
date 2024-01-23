@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { AzureTreeItem, IActionContext } from "vscode-azureextensionui";
+import type { AzureTreeItem, IActionContext } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";
 
 export async function deleteNode(

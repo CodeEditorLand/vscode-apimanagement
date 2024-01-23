@@ -5,7 +5,7 @@
 
 import { AzureWizardPromptStep } from "vscode-azureextensionui";
 import { ext } from "../../extensionVariables";
-import { IServiceWizardContext } from "./IServiceWizardContext";
+import type { IServiceWizardContext } from "./IServiceWizardContext";
 
 export class ServiceSkuStep extends AzureWizardPromptStep<IServiceWizardContext> {
 	public async prompt(wizardContext: IServiceWizardContext): Promise<void> {

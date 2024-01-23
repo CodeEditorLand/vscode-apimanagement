@@ -3,13 +3,13 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
+import type {
 	ApiContract,
 	ApiRevisionContract,
 } from "@azure/arm-apimanagement/src/models";
 import { ApimService } from "../azure/apim/ApimService";
 import { gatewayHostName } from "../constants";
-import { IOperationTreeRoot } from "../explorer/IOperationTreeRoot";
+import type { IOperationTreeRoot } from "../explorer/IOperationTreeRoot";
 import { ext } from "../extensionVariables";
 import { nonNullOrEmptyValue, nonNullProp } from "../utils/nonNull";
 import { ConsoleOperation } from "./ConsoleOperation";

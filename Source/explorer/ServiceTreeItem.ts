@@ -3,16 +3,16 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
+import type {
 	ApiManagementClient,
 	ApiManagementModels,
 } from "@azure/arm-apimanagement";
 import { ProgressLocation, window } from "vscode";
 import {
 	AzureParentTreeItem,
-	AzureTreeItem,
+	type AzureTreeItem,
 	DialogResponses,
-	ISubscriptionContext,
+	type ISubscriptionContext,
 	UserCancelledError,
 } from "vscode-azureextensionui";
 import { localize } from "../localize";
@@ -28,7 +28,7 @@ import { AuthorizationProviderTreeItem } from "./AuthorizationProviderTreeItem";
 import { AuthorizationProvidersTreeItem } from "./AuthorizationProvidersTreeItem";
 import { AuthorizationTreeItem } from "./AuthorizationTreeItem";
 import { GatewaysTreeItem } from "./GatewaysTreeItem";
-import { IServiceTreeRoot } from "./IServiceTreeRoot";
+import type { IServiceTreeRoot } from "./IServiceTreeRoot";
 import { NamedValueTreeItem } from "./NamedValueTreeItem";
 import { NamedValuesTreeItem } from "./NamedValuesTreeItem";
 import { OperationPolicyTreeItem } from "./OperationPolicyTreeItem";

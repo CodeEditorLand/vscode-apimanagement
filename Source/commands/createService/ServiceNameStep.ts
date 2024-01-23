@@ -3,17 +3,17 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
 import {
 	AzureNameStep,
-	IAzureNamingRules,
+	type IAzureNamingRules,
 	ResourceGroupListStep,
 	resourceGroupNamingRules,
 } from "vscode-azureextensionui";
 import { ext } from "../../extensionVariables";
 import { localize } from "../../localize";
 import { nonNullProp } from "../../utils/nonNull";
-import { IServiceWizardContext } from "./IServiceWizardContext";
+import type { IServiceWizardContext } from "./IServiceWizardContext";
 
 export class ServiceNameStep extends AzureNameStep<IServiceWizardContext> {
 	public async prompt(wizardContext: IServiceWizardContext): Promise<void> {

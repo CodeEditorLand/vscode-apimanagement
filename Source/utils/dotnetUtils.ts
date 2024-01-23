@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from "vscode";
-import { DialogResponses, IActionContext } from "vscode-azureextensionui";
+import { DialogResponses, type IActionContext } from "vscode-azureextensionui";
 import { localize } from "../localize";
 import { cpUtils } from "./cpUtils";
 import { openUrl } from "./openUrl";
@@ -59,8 +59,8 @@ export namespace dotnetUtils {
 	}
 
 	function compareVersion(version1: string, version2: string): number {
-		const v1 = version1.split(".").map(parseInt);
-		const v2 = version2.split(".").map(parseInt);
+		const v1 = version1.split(".").map(Number.parseInt);
+		const v2 = version2.split(".").map(Number.parseInt);
 		for (let i = 0; i < Math.min(v1.length, v2.length); i++) {
 			if (v1[i] > v2[i]) {
 				return 1;

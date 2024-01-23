@@ -3,12 +3,15 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { AzExtTreeItem, AzureParentTreeItem } from "vscode-azureextensionui";
+import {
+	type AzExtTreeItem,
+	AzureParentTreeItem,
+} from "vscode-azureextensionui";
 import { ApimService } from "../azure/apim/ApimService";
-import { IGatewayContract } from "../azure/apim/contracts";
+import type { IGatewayContract } from "../azure/apim/contracts";
 import { treeUtils } from "../utils/treeUtils";
 import { GatewayTreeItem } from "./GatewayTreeItem";
-import { IServiceTreeRoot } from "./IServiceTreeRoot";
+import type { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export class GatewaysTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {

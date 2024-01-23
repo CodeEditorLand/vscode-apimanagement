@@ -5,13 +5,13 @@
 
 import * as vscode from "vscode";
 import { window } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
+import type { IActionContext } from "vscode-azureextensionui";
 import { ApimService } from "../../azure/apim/ApimService";
-import {
+import type {
 	IAuthorizationProviderContract,
 	ITokenStoreIdentityProviderContract,
 } from "../../azure/apim/contracts";
-import { AuthorizationProviderTreeItem } from "../../explorer/AuthorizationProviderTreeItem";
+import type { AuthorizationProviderTreeItem } from "../../explorer/AuthorizationProviderTreeItem";
 import { AuthorizationTreeItem } from "../../explorer/AuthorizationTreeItem";
 import { ext } from "../../extensionVariables";
 import { localize } from "../../localize";

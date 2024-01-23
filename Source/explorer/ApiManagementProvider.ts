@@ -5,18 +5,18 @@
 
 import {
 	ApiManagementClient,
-	ApiManagementModels,
+	type ApiManagementModels,
 } from "@azure/arm-apimanagement";
-import { ApiManagementServiceListResponse } from "@azure/arm-apimanagement/src/models";
-import { MessageItem } from "vscode";
+import type { ApiManagementServiceListResponse } from "@azure/arm-apimanagement/src/models";
+import type { MessageItem } from "vscode";
 import {
-	AzExtTreeItem,
-	AzureParentTreeItem,
+	type AzExtTreeItem,
+	type AzureParentTreeItem,
 	AzureWizard,
-	AzureWizardExecuteStep,
-	AzureWizardPromptStep,
-	ICreateChildImplContext,
-	IErrorHandlingContext,
+	type AzureWizardExecuteStep,
+	type AzureWizardPromptStep,
+	type ICreateChildImplContext,
+	type IErrorHandlingContext,
 	LocationListStep,
 	ResourceGroupCreateStep,
 	ResourceGroupListStep,
@@ -24,7 +24,7 @@ import {
 	createAzureClient,
 	parseError,
 } from "vscode-azureextensionui";
-import { IServiceWizardContext } from "../commands/createService/IServiceWizardContext";
+import type { IServiceWizardContext } from "../commands/createService/IServiceWizardContext";
 import { ServiceCreateStep } from "../commands/createService/ServiceCreateStep";
 import { ServiceNameStep } from "../commands/createService/ServiceNameStep";
 import { ServiceSkuStep } from "../commands/createService/ServiceSkuStep";

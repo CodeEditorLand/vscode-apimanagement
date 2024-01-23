@@ -3,10 +3,10 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
 import { ProgressLocation, window } from "vscode";
 import {
-	AzureParentTreeItem,
+	type AzureParentTreeItem,
 	AzureTreeItem,
 	DialogResponses,
 	UserCancelledError,
@@ -14,7 +14,7 @@ import {
 import { localize } from "../localize";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
-import { IProductTreeRoot } from "./IProductTreeRoot";
+import type { IProductTreeRoot } from "./IProductTreeRoot";
 
 export class ProductApiTreeItem extends AzureTreeItem<IProductTreeRoot> {
 	public static contextValue = "azureApiManagementProductApi";

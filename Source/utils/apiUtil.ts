@@ -3,23 +3,23 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import {
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
+import type {
 	ApiContract,
 	OperationCollection,
 	Protocol,
 } from "@azure/arm-apimanagement/src/models";
 import { window } from "vscode";
 import {
-	AzureParentTreeItem,
+	type AzureParentTreeItem,
 	DialogResponses,
-	IOpenApiImportObject,
-	IParsedError,
+	type IOpenApiImportObject,
+	type IParsedError,
 	UserCancelledError,
 	parseError,
 } from "../../extension.bundle";
 import * as Constants from "../constants";
-import { IServiceTreeRoot } from "../explorer/IServiceTreeRoot";
+import type { IServiceTreeRoot } from "../explorer/IServiceTreeRoot";
 import { ext } from "../extensionVariables";
 import { localize } from "../localize";
 

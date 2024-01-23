@@ -3,16 +3,16 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { File } from "decompress";
+import type { File } from "decompress";
 import * as glob from "glob";
 import * as gulp from "gulp";
 // tslint:disable-next-line: no-require-imports
 import decompress = require("gulp-decompress");
 // tslint:disable-next-line: no-require-imports
 import download = require("gulp-download");
-import * as os from "os";
-import * as path from "path";
-import { Stream } from "stream";
+import * as os from "node:os";
+import * as path from "node:path";
+import type { Stream } from "node:stream";
 
 // Tests expect the extension to be installed.
 // tslint:disable-next-line: promise-function-async

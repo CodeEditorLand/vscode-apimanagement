@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { window } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
+import type { IActionContext } from "vscode-azureextensionui";
 import { gatewayHostName } from "../constants";
 import { ServiceTreeItem } from "../explorer/ServiceTreeItem";
 import { ext } from "../extensionVariables";

@@ -1,6 +1,6 @@
-import * as Net from "net";
+import * as Net from "node:net";
 import * as vscode from "vscode";
-import {
+import type {
 	CancellationToken,
 	DebugConfiguration,
 	ProviderResult,

@@ -3,13 +3,13 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
-import { ProgressLocation, QuickPickItem, window } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
+import type { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
+import { ProgressLocation, type QuickPickItem, window } from "vscode";
+import type { IActionContext } from "vscode-azureextensionui";
 import { ApimService } from "../../azure/apim/ApimService";
 import { GraphService } from "../../azure/graph/GraphService";
 import { ResourceGraphService } from "../../azure/resourceGraph/ResourceGraphService";
-import {
+import type {
 	AuthorizationAccessPoliciesTreeItem,
 	IAuthorizationAccessPolicyTreeItemContext,
 } from "../../explorer/AuthorizationAccessPoliciesTreeItem";

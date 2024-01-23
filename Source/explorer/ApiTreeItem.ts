@@ -3,14 +3,14 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import { ApiContract } from "@azure/arm-apimanagement/src/models";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { ApiContract } from "@azure/arm-apimanagement/src/models";
 import { ProgressLocation, window } from "vscode";
 import {
 	AzureParentTreeItem,
-	AzureTreeItem,
+	type AzureTreeItem,
 	DialogResponses,
-	ISubscriptionContext,
+	type ISubscriptionContext,
 	UserCancelledError,
 } from "vscode-azureextensionui";
 import { localize } from "../localize";
@@ -19,8 +19,8 @@ import { treeUtils } from "../utils/treeUtils";
 import { ApiOperationTreeItem } from "./ApiOperationTreeItem";
 import { ApiOperationsTreeItem } from "./ApiOperationsTreeItem";
 import { ApiPolicyTreeItem } from "./ApiPolicyTreeItem";
-import { IApiTreeRoot } from "./IApiTreeRoot";
-import { IServiceTreeRoot } from "./IServiceTreeRoot";
+import type { IApiTreeRoot } from "./IApiTreeRoot";
+import type { IServiceTreeRoot } from "./IServiceTreeRoot";
 import { OperationPolicyTreeItem } from "./OperationPolicyTreeItem";
 
 // tslint:disable: no-non-null-assertion

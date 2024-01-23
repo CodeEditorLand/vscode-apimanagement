@@ -4,9 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ProgressLocation, window } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
+import type { IActionContext } from "vscode-azureextensionui";
 import { NamedValueTreeItem } from "../explorer/NamedValueTreeItem";
-import {
+import type {
 	INamedValuesTreeItemContext,
 	NamedValuesTreeItem,
 } from "../explorer/NamedValuesTreeItem";

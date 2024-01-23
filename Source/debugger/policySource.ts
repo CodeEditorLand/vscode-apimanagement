@@ -2,14 +2,18 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import * as path from "path";
-import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
+import * as path from "node:path";
+import type { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
 import * as request from "request-promise-native";
 import { Source } from "vscode-debugadapter";
 import * as Constants from "../constants";
 import { getBearerToken } from "../utils/requestUtil";
 import { StackFrameScopeContract } from "./debuggerConnection";
-import { PolicyLocation, PolicyMap, PolicyMapper } from "./policyMapper";
+import {
+	type PolicyLocation,
+	type PolicyMap,
+	PolicyMapper,
+} from "./policyMapper";
 
 // tslint:disable: no-unsafe-any
 // tslint:disable: indent

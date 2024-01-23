@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiCollection } from "@azure/arm-apimanagement/src/models";
-import { IActionContext } from "vscode-azureextensionui";
-import { ApisTreeItem } from "../explorer/ApisTreeItem";
+import type { ApiCollection } from "@azure/arm-apimanagement/src/models";
+import type { IActionContext } from "vscode-azureextensionui";
+import type { ApisTreeItem } from "../explorer/ApisTreeItem";
 import { ServiceTreeItem } from "../explorer/ServiceTreeItem";
 import { ext } from "../extensionVariables";
 

@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import { AzureTreeItem } from "vscode-azureextensionui";
-import { IApiTreeRoot } from "../../IApiTreeRoot";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { AzureTreeItem } from "vscode-azureextensionui";
+import type { IApiTreeRoot } from "../../IApiTreeRoot";
 import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 
 // tslint:disable-next-line:no-any

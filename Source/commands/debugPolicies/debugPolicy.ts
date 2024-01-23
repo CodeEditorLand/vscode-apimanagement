@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
+import type { IActionContext } from "vscode-azureextensionui";
 import { gatewayHostName } from "../../constants";
 import { ApiOperationTreeItem } from "../../explorer/ApiOperationTreeItem";
-import { IOperationTreeRoot } from "../../explorer/IOperationTreeRoot";
+import type { IOperationTreeRoot } from "../../explorer/IOperationTreeRoot";
 import { ext } from "../../extensionVariables";
 import { localize } from "../../localize";
 import { nameUtil } from "../../utils/nameUtil";

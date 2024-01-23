@@ -4,13 +4,13 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	HttpMethods,
-	HttpOperationResponse,
-	ParameterValue,
-	ServiceClient,
+	type HttpMethods,
+	type HttpOperationResponse,
+	type ParameterValue,
+	type ServiceClient,
 	WebResource,
 } from "@azure/ms-rest-js";
-import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
+import type { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
 import requestPromise from "request-promise";
 import {
 	appendExtensionUserAgent,

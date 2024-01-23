@@ -5,17 +5,17 @@
 
 import { ProgressLocation, window } from "vscode";
 import {
-	AzureParentTreeItem,
+	type AzureParentTreeItem,
 	AzureTreeItem,
 	DialogResponses,
 	UserCancelledError,
 } from "vscode-azureextensionui";
 import { ApimService } from "../azure/apim/ApimService";
-import { IGatewayApiContract } from "../azure/apim/contracts";
+import type { IGatewayApiContract } from "../azure/apim/contracts";
 import { localize } from "../localize";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
-import { IGatewayTreeRoot } from "./IGatewayTreeRoot";
+import type { IGatewayTreeRoot } from "./IGatewayTreeRoot";
 
 export class GatewayApiTreeItem extends AzureTreeItem<IGatewayTreeRoot> {
 	public static contextValue = "azureApiManagementGatewayApi";

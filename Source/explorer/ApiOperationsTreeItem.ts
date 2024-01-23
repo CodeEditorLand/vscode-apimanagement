@@ -3,13 +3,16 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import { AzExtTreeItem, AzureParentTreeItem } from "vscode-azureextensionui";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
+import {
+	type AzExtTreeItem,
+	AzureParentTreeItem,
+} from "vscode-azureextensionui";
 import { topItemCount } from "../constants";
 import { localize } from "../localize";
 import { treeUtils } from "../utils/treeUtils";
 import { ApiOperationTreeItem } from "./ApiOperationTreeItem";
-import { IApiTreeRoot } from "./IApiTreeRoot";
+import type { IApiTreeRoot } from "./IApiTreeRoot";
 
 export class ApiOperationsTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {

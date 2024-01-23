@@ -4,12 +4,12 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { window } from "vscode";
-import { AzureTreeItem, parseError } from "vscode-azureextensionui";
+import { type AzureTreeItem, parseError } from "vscode-azureextensionui";
 import { showSavePromptConfigKey } from "../../../constants";
 import { localize } from "../../../localize";
 import { processError } from "../../../utils/errorUtil";
 import { nameUtil } from "../../../utils/nameUtil";
-import { IServiceTreeRoot } from "../../IServiceTreeRoot";
+import type { IServiceTreeRoot } from "../../IServiceTreeRoot";
 import { Editor } from "../Editor";
 
 // tslint:disable:no-any

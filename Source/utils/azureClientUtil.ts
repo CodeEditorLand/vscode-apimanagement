@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 import { WebSiteManagementClient } from "@azure/arm-appservice";
-import { Environment } from "@azure/ms-rest-azure-env";
-import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
+import type { Environment } from "@azure/ms-rest-azure-env";
+import type { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
 import * as vscode from "vscode";
 import { createAzureClient } from "vscode-azureextensionui";
-import { IAzureClientInfo } from "../azure/azureClientInfo";
+import type { IAzureClientInfo } from "../azure/azureClientInfo";
 import { ext } from "../extensionVariables";
 import { localize } from "../localize";
 

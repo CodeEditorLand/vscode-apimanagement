@@ -1,10 +1,10 @@
 import { StackFrame } from "vscode-debugadapter";
-import { DebugProtocol } from "vscode-debugprotocol";
+import type { DebugProtocol } from "vscode-debugprotocol";
 import {
-	StackFrameContract,
+	type StackFrameContract,
 	StackFrameScopeContract,
 } from "./debuggerConnection";
-import { PolicySource } from "./policySource";
+import type { PolicySource } from "./policySource";
 
 // tslint:disable: indent
 // tslint:disable: export-name

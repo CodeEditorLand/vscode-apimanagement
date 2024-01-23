@@ -6,20 +6,20 @@
 import { ProgressLocation, window } from "vscode";
 import {
 	AzureParentTreeItem,
-	AzureTreeItem,
+	type AzureTreeItem,
 	DialogResponses,
-	ISubscriptionContext,
+	type ISubscriptionContext,
 	UserCancelledError,
 } from "vscode-azureextensionui";
 import { ApimService } from "../azure/apim/ApimService";
-import { IAuthorizationProviderContract } from "../azure/apim/contracts";
+import type { IAuthorizationProviderContract } from "../azure/apim/contracts";
 import { localize } from "../localize";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
 import { AuthorizationTreeItem } from "./AuthorizationTreeItem";
 import { AuthorizationsTreeItem } from "./AuthorizationsTreeItem";
-import { IAuthorizationProviderTreeRoot } from "./IAuthorizationProviderTreeRoot";
-import { IServiceTreeRoot } from "./IServiceTreeRoot";
+import type { IAuthorizationProviderTreeRoot } from "./IAuthorizationProviderTreeRoot";
+import type { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export class AuthorizationProviderTreeItem extends AzureParentTreeItem<IAuthorizationProviderTreeRoot> {
 	public static contextValue = "azureApiManagementAuthorizationProvider";

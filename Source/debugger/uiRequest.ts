@@ -1,4 +1,4 @@
-import { PolicySource } from "./policySource";
+import type { PolicySource } from "./policySource";
 import { UiThread } from "./uiThread";
 
 // tslint:disable: indent

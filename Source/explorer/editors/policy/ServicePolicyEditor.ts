@@ -3,10 +3,10 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import { AzureTreeItem } from "vscode-azureextensionui";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { AzureTreeItem } from "vscode-azureextensionui";
 import { emptyGlobalPolicyXml, policyFormat } from "../../../constants";
-import { IServiceTreeRoot } from "../../IServiceTreeRoot";
+import type { IServiceTreeRoot } from "../../IServiceTreeRoot";
 import { BasePolicyEditor } from "./BasePolicyEditor";
 
 export class ServicePolicyEditor extends BasePolicyEditor<IServiceTreeRoot> {

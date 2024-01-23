@@ -5,7 +5,7 @@
 
 import { AzureTreeItem } from "vscode-azureextensionui";
 import { treeUtils } from "../utils/treeUtils";
-import { IProductTreeRoot } from "./IProductTreeRoot";
+import type { IProductTreeRoot } from "./IProductTreeRoot";
 
 export class ProductPolicyTreeItem extends AzureTreeItem<IProductTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {

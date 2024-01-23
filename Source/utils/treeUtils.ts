@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
+import * as path from "node:path";
 import {
-	AzExtTreeDataProvider,
-	AzureParentTreeItem,
-	AzureTreeItem,
+	type AzExtTreeDataProvider,
+	type AzureParentTreeItem,
+	type AzureTreeItem,
 	SubscriptionTreeItemBase,
 } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";

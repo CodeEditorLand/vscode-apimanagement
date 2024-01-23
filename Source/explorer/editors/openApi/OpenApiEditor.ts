@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import {
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
+import type {
 	HttpOperationResponse,
 	RequestPrepareOptions,
 	ServiceClient,
@@ -25,11 +25,11 @@ import {
 } from "../../../constants";
 import * as Constants from "../../../constants";
 import { localize } from "../../../localize";
-import { IOpenApiImportObject } from "../../../openApi/OpenApiImportObject";
+import type { IOpenApiImportObject } from "../../../openApi/OpenApiImportObject";
 import { OpenApiParser } from "../../../openApi/OpenApiParser";
 import { processError } from "../../../utils/errorUtil";
 import { nonNullProp } from "../../../utils/nonNull";
-import { ApiTreeItem } from "../../ApiTreeItem";
+import type { ApiTreeItem } from "../../ApiTreeItem";
 import { Editor } from "../Editor";
 
 export class OpenApiEditor extends Editor<ApiTreeItem> {

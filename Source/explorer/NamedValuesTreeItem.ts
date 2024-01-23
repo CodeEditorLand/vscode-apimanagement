@@ -3,17 +3,17 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
 import {
-	AzExtTreeItem,
+	type AzExtTreeItem,
 	AzureParentTreeItem,
-	ICreateChildImplContext,
+	type ICreateChildImplContext,
 } from "vscode-azureextensionui";
 import { topItemCount } from "../constants";
 import { localize } from "../localize";
 import { processError } from "../utils/errorUtil";
 import { treeUtils } from "../utils/treeUtils";
-import { IServiceTreeRoot } from "./IServiceTreeRoot";
+import type { IServiceTreeRoot } from "./IServiceTreeRoot";
 import { NamedValueTreeItem } from "./NamedValueTreeItem";
 
 export interface INamedValuesTreeItemContext extends ICreateChildImplContext {

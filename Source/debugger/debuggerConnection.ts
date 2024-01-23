@@ -2,7 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import WebSocket from "ws";
 import { localize } from "../localize";
 

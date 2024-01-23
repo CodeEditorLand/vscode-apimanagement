@@ -3,16 +3,16 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
+import * as path from "node:path";
 import * as fse from "fs-extra";
 import {
-	OpenDialogOptions,
+	type OpenDialogOptions,
 	ProgressLocation,
 	Uri,
 	window,
 	workspace,
 } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
+import type { IActionContext } from "vscode-azureextensionui";
 import * as Constants from "../constants";
 import { ApiTreeItem } from "../explorer/ApiTreeItem";
 import { ServiceTreeItem } from "../explorer/ServiceTreeItem";

@@ -3,15 +3,18 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
+import type {
 	ApiContract,
 	ApiVersionSetContractDetails,
 } from "@azure/arm-apimanagement/src/models";
-import { AzureParentTreeItem, AzureTreeItem } from "vscode-azureextensionui";
+import {
+	AzureParentTreeItem,
+	type AzureTreeItem,
+} from "vscode-azureextensionui";
 import { nonNullProp, nonNullValue } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
 import { ApiTreeItem } from "./ApiTreeItem";
-import { IServiceTreeRoot } from "./IServiceTreeRoot";
+import type { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export class ApiVersionSetTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public static contextValue = "azureApiManagementApiVersionSet";

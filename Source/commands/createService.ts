@@ -4,9 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	AzureParentTreeItem,
-	AzureTreeItem,
-	IActionContext,
+	type AzureParentTreeItem,
+	type AzureTreeItem,
+	type IActionContext,
 	SubscriptionTreeItemBase,
 } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";

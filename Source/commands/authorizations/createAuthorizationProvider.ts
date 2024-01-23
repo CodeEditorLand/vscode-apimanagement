@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { IActionContext } from "vscode-azureextensionui";
-import {
+import type { IActionContext } from "vscode-azureextensionui";
+import type {
 	AuthorizationProvidersTreeItem,
 	IAuthorizationProviderTreeItemContext,
 } from "../../explorer/AuthorizationProvidersTreeItem";

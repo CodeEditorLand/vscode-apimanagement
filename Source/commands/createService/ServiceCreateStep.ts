@@ -3,14 +3,14 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import { ApiManagementServiceResource } from "@azure/arm-apimanagement/src/models";
-import { MessageItem, Progress, window } from "vscode";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { ApiManagementServiceResource } from "@azure/arm-apimanagement/src/models";
+import { type MessageItem, type Progress, window } from "vscode";
 import { AzureWizardExecuteStep } from "vscode-azureextensionui";
 import { ext } from "../../extensionVariables";
 import { localize } from "../../localize";
 import { nonNullProp, nonNullValueAndProp } from "../../utils/nonNull";
-import { IServiceWizardContext } from "./IServiceWizardContext";
+import type { IServiceWizardContext } from "./IServiceWizardContext";
 
 export class ServiceCreateStep extends AzureWizardExecuteStep<IServiceWizardContext> {
 	public priority = 140;

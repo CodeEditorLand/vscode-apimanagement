@@ -3,19 +3,19 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { SubscriptionContract } from "@azure/arm-apimanagement/src/models";
+import type { SubscriptionContract } from "@azure/arm-apimanagement/src/models";
 import { ProgressLocation, window } from "vscode";
 import {
 	AzureTreeItem,
 	DialogResponses,
-	ISubscriptionContext,
+	type ISubscriptionContext,
 	UserCancelledError,
 } from "vscode-azureextensionui";
 import { localize } from "../localize";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
-import { ISubscriptionTreeRoot } from "./ISubscriptionTreeRoot";
-import { SubscriptionsTreeItem } from "./SubscriptionsTreeItem";
+import type { ISubscriptionTreeRoot } from "./ISubscriptionTreeRoot";
+import type { SubscriptionsTreeItem } from "./SubscriptionsTreeItem";
 
 export class SubscriptionTreeItem extends AzureTreeItem<ISubscriptionTreeRoot> {
 	public static contextValue = "azureApiManagementSubscriptionTreeItem";

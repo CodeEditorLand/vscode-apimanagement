@@ -3,12 +3,12 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
+import * as path from "node:path";
 import * as fse from "fs-extra";
 import * as vscode from "vscode";
 import {
 	DialogResponses,
-	IActionContext,
+	type IActionContext,
 	UserCancelledError,
 } from "vscode-azureextensionui";
 import { ext } from "../../extensionVariables";

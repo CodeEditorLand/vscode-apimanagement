@@ -5,16 +5,16 @@
 
 import {
 	AzureParentTreeItem,
-	AzureTreeItem,
-	ISubscriptionContext,
+	type AzureTreeItem,
+	type ISubscriptionContext,
 } from "vscode-azureextensionui";
-import { IGatewayContract } from "../azure/apim/contracts";
+import type { IGatewayContract } from "../azure/apim/contracts";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
 import { GatewayApisTreeItem } from "./GatewayApisTreeItem";
-import { GatewaysTreeItem } from "./GatewaysTreeItem";
-import { IGatewayTreeRoot } from "./IGatewayTreeRoot";
-import { IServiceTreeRoot } from "./IServiceTreeRoot";
+import type { GatewaysTreeItem } from "./GatewaysTreeItem";
+import type { IGatewayTreeRoot } from "./IGatewayTreeRoot";
+import type { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export class GatewayTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 	public static contextValue = "azureApiManagementGatewayTreeItem";

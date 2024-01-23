@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
+import type { IActionContext } from "vscode-azureextensionui";
 import { AuthorizationProviderTreeItem } from "../../explorer/AuthorizationProviderTreeItem";
 import { ext } from "../../extensionVariables";
 import { localize } from "../../localize";

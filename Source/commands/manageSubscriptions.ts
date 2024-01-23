@@ -3,17 +3,17 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
+import type {
 	ApiContract,
 	ProductContract,
 	UserContract,
 } from "@azure/arm-apimanagement/src/models";
 import { ProgressLocation, window } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
-import { ISubscriptionContract } from "../azure/webApp/contracts";
+import type { IActionContext } from "vscode-azureextensionui";
+import type { ISubscriptionContract } from "../azure/webApp/contracts";
 import * as Constants from "../constants";
 import { ServiceTreeItem } from "../explorer/ServiceTreeItem";
-import { SubscriptionsTreeItem } from "../explorer/SubscriptionsTreeItem";
+import type { SubscriptionsTreeItem } from "../explorer/SubscriptionsTreeItem";
 import { ext } from "../extensionVariables";
 import { localize } from "../localize";
 

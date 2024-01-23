@@ -4,17 +4,17 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	AzExtTreeItem,
+	type AzExtTreeItem,
 	AzureParentTreeItem,
-	ICreateChildImplContext,
+	type ICreateChildImplContext,
 } from "vscode-azureextensionui";
 import { ApimService } from "../azure/apim/ApimService";
-import { IGatewayApiContract } from "../azure/apim/contracts";
+import type { IGatewayApiContract } from "../azure/apim/contracts";
 import { localize } from "../localize";
 import { processError } from "../utils/errorUtil";
 import { treeUtils } from "../utils/treeUtils";
 import { GatewayApiTreeItem } from "./GatewayApiTreeItem";
-import { IGatewayTreeRoot } from "./IGatewayTreeRoot";
+import type { IGatewayTreeRoot } from "./IGatewayTreeRoot";
 
 export interface IGatewayTreeItemContext extends ICreateChildImplContext {
 	apiName: string;

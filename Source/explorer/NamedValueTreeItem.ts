@@ -3,20 +3,20 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
 import { ProgressLocation, window } from "vscode";
 import {
-	AzureParentTreeItem,
+	type AzureParentTreeItem,
 	AzureTreeItem,
 	DialogResponses,
-	IActionContext,
+	type IActionContext,
 	UserCancelledError,
 } from "vscode-azureextensionui";
 import { localize } from "../localize";
 import { processError } from "../utils/errorUtil";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
-import { IServiceTreeRoot } from "./IServiceTreeRoot";
+import type { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export class NamedValueTreeItem extends AzureTreeItem<IServiceTreeRoot> {
 	public static contextValue = "azureApiManagementNamedValue";

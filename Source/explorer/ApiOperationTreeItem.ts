@@ -3,21 +3,21 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
 import { ProgressLocation, window } from "vscode";
 import {
 	AzureParentTreeItem,
-	AzureTreeItem,
+	type AzureTreeItem,
 	DialogResponses,
-	ISubscriptionContext,
+	type ISubscriptionContext,
 	UserCancelledError,
 } from "vscode-azureextensionui";
 import { localize } from "../localize";
 import { OperationConsole } from "../operationConsole/OperationConsole";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
-import { IApiTreeRoot } from "./IApiTreeRoot";
-import { IOperationTreeRoot } from "./IOperationTreeRoot";
+import type { IApiTreeRoot } from "./IApiTreeRoot";
+import type { IOperationTreeRoot } from "./IOperationTreeRoot";
 import { OperationPolicyTreeItem } from "./OperationPolicyTreeItem";
 
 export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot> {

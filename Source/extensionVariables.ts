@@ -2,13 +2,13 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-import { ExtensionContext } from "vscode";
-import {
+import type { ExtensionContext } from "vscode";
+import type {
 	AzExtTreeDataProvider,
 	IAzExtOutputChannel,
 	IAzureUserInput,
 } from "vscode-azureextensionui";
-import { AzureAccountTreeItem } from "./explorer/AzureAccountTreeItem";
+import type { AzureAccountTreeItem } from "./explorer/AzureAccountTreeItem";
 
 /**
  * Namespace for common variables used throughout the extension. They must be initialized in the activate() method of extension.ts

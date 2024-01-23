@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as cp from "child_process";
-import * as os from "os";
-import * as vscode from "vscode";
+import * as cp from "node:child_process";
+import * as os from "node:os";
+import type * as vscode from "vscode";
 import { isWindows } from "../constants";
 import { localize } from "../localize";
 

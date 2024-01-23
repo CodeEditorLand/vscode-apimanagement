@@ -3,17 +3,17 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
+import * as path from "node:path";
 import * as fse from "fs-extra";
 import * as vscode from "vscode";
 import {
-	OpenDialogOptions,
+	type OpenDialogOptions,
 	ProgressLocation,
 	Uri,
 	window,
 	workspace,
 } from "vscode";
-import { DialogResponses, IActionContext } from "vscode-azureextensionui";
+import { DialogResponses, type IActionContext } from "vscode-azureextensionui";
 import XRegExp = require("xregexp");
 import { ApiTreeItem } from "../explorer/ApiTreeItem";
 import { OpenApiEditor } from "../explorer/editors/openApi/OpenApiEditor";

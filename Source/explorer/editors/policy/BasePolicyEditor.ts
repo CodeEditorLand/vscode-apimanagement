@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
+import type { ApiManagementModels } from "@azure/arm-apimanagement";
 import { window } from "vscode";
 import {
-	AzureTreeItem,
-	IParsedError,
+	type AzureTreeItem,
+	type IParsedError,
 	parseError,
 } from "vscode-azureextensionui";
 import { policyFormat, showSavePromptConfigKey } from "../../../constants";
@@ -16,7 +16,7 @@ import { localize } from "../../../localize";
 import { errorUtil, processError } from "../../../utils/errorUtil";
 import { nameUtil } from "../../../utils/nameUtil";
 import { promptOpenWorkingFolder } from "../../../utils/vscodeUtils";
-import { IServiceTreeRoot } from "../../IServiceTreeRoot";
+import type { IServiceTreeRoot } from "../../IServiceTreeRoot";
 import { Editor } from "../Editor";
 
 export abstract class BasePolicyEditor<

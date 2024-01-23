@@ -3,15 +3,15 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
+import type {
 	ApiContract,
 	ApiCreateOrUpdateParameter,
 	ApiReleaseContract,
 	ApiRevisionCollection,
 } from "@azure/arm-apimanagement/src/models";
 import { Guid } from "guid-typescript";
-import { MessageItem, ProgressLocation, window } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
+import { type MessageItem, ProgressLocation, window } from "vscode";
+import type { IActionContext } from "vscode-azureextensionui";
 import { ApiTreeItem } from "../explorer/ApiTreeItem";
 import { ext } from "../extensionVariables";
 import { localize } from "../localize";

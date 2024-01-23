@@ -73,11 +73,11 @@ export class PolicyMapper {
 						const curkey =
 							this.stack.length === 0
 								? `${name}[1]`
-								: this.stack.join("/") + `/${name}[1]`;
+								: `${this.stack.join("/")}/${name}[1]`;
 						//const curkey = this.stack.reduce((a, b) => `${a}/${b}`) + `${name}[1]`;
 						if (this.count[curkey]) {
 							this.stack.push(
-								name + `[${this.count[curkey] + 1}]`,
+								`${name}[${this.count[curkey] + 1}]`,
 							);
 							this.count[curkey]++;
 						} else {
@@ -100,9 +100,9 @@ export class PolicyMapper {
 					const curkey =
 						this.stack.length === 0
 							? `${name}[1]`
-							: this.stack.join("/") + `/${name}[1]`;
+							: `${this.stack.join("/")}/${name}[1]`;
 					if (this.count[curkey]) {
-						this.stack.push(name + `[${this.count[curkey] + 1}]`);
+						this.stack.push(`${name}[${this.count[curkey] + 1}]`);
 						this.count[curkey]++;
 					} else {
 						this.stack.push(`${name}[1]`);
@@ -136,9 +136,9 @@ export class PolicyMapper {
 					const curkey =
 						this.stack.length === 0
 							? `${name}[1]`
-							: this.stack.join("/") + `/${name}[1]`;
+							: `${this.stack.join("/")}/${name}[1]`;
 					if (this.count[curkey]) {
-						this.stack.push(name + `[${this.count[curkey] + 1}]`);
+						this.stack.push(`${name}[${this.count[curkey] + 1}]`);
 						this.count[curkey]++;
 					} else {
 						this.stack.push(`${name}[1]`);

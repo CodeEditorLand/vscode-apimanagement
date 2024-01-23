@@ -3,10 +3,10 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { IApiTreeRoot } from "../explorer/IApiTreeRoot";
-import { IOperationTreeRoot } from "../explorer/IOperationTreeRoot";
-import { IProductTreeRoot } from "../explorer/IProductTreeRoot";
-import { IServiceTreeRoot } from "../explorer/IServiceTreeRoot";
+import type { IApiTreeRoot } from "../explorer/IApiTreeRoot";
+import type { IOperationTreeRoot } from "../explorer/IOperationTreeRoot";
+import type { IProductTreeRoot } from "../explorer/IProductTreeRoot";
+import type { IServiceTreeRoot } from "../explorer/IServiceTreeRoot";
 
 export function nameUtil(
 	root:

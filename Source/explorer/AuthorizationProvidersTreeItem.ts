@@ -5,18 +5,18 @@
 
 import { ProgressLocation, window } from "vscode";
 import {
-	AzExtTreeItem,
+	type AzExtTreeItem,
 	AzureParentTreeItem,
-	ICreateChildImplContext,
+	type ICreateChildImplContext,
 } from "vscode-azureextensionui";
 import { ApimService } from "../azure/apim/ApimService";
 import {
-	IAuthorizationProviderContract,
-	IAuthorizationProviderOAuth2GrantTypesContract,
-	IAuthorizationProviderPropertiesContract,
+	type IAuthorizationProviderContract,
+	type IAuthorizationProviderOAuth2GrantTypesContract,
+	type IAuthorizationProviderPropertiesContract,
 	IGrantTypesContract,
-	ITokenStoreGrantTypeParameterContract,
-	ITokenStoreIdentityProviderContract,
+	type ITokenStoreGrantTypeParameterContract,
+	type ITokenStoreIdentityProviderContract,
 } from "../azure/apim/contracts";
 import {
 	askAuthorizationProviderParameterValues,
@@ -27,7 +27,7 @@ import { localize } from "../localize";
 import { processError } from "../utils/errorUtil";
 import { treeUtils } from "../utils/treeUtils";
 import { AuthorizationProviderTreeItem } from "./AuthorizationProviderTreeItem";
-import { IServiceTreeRoot } from "./IServiceTreeRoot";
+import type { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export interface IAuthorizationProviderTreeItemContext
 	extends ICreateChildImplContext {

@@ -3,18 +3,18 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
+import type {
 	HttpMethods,
 	HttpOperationResponse,
 	ParameterValue,
 	ServiceClient,
 } from "@azure/ms-rest-js";
-import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
+import type { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
 import { createGenericClient } from "vscode-azureextensionui";
 import * as Constants from "../../constants";
 import { nonNullOrEmptyValue } from "../../utils/nonNull";
-import { IFunctionKeys, IWebAppContract } from "./contracts";
-import { IFunctionContract } from "./contracts";
+import type { IFunctionKeys, IWebAppContract } from "./contracts";
+import type { IFunctionContract } from "./contracts";
 
 export class FunctionAppService {
 	public baseUrl: string;

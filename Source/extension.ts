@@ -5,14 +5,14 @@
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as query from "querystring";
+import * as query from "node:querystring";
 import * as vscode from "vscode";
 import {
 	AzExtTreeDataProvider,
-	AzureParentTreeItem,
-	AzureTreeItem,
+	type AzureParentTreeItem,
+	type AzureTreeItem,
 	AzureUserInput,
-	IActionContext,
+	type IActionContext,
 	callWithTelemetryAndErrorHandling,
 	createAzExtOutputChannel,
 	registerCommand,
@@ -61,27 +61,27 @@ import { testOperation } from "./commands/testOperation";
 import { doubleClickDebounceDelay } from "./constants";
 import { activate } from "./debugger/extension";
 import { ApiOperationTreeItem } from "./explorer/ApiOperationTreeItem";
-import { ApiPolicyTreeItem } from "./explorer/ApiPolicyTreeItem";
+import type { ApiPolicyTreeItem } from "./explorer/ApiPolicyTreeItem";
 import { ApiTreeItem } from "./explorer/ApiTreeItem";
-import { ApisTreeItem } from "./explorer/ApisTreeItem";
-import { AuthorizationAccessPoliciesTreeItem } from "./explorer/AuthorizationAccessPoliciesTreeItem";
+import type { ApisTreeItem } from "./explorer/ApisTreeItem";
+import type { AuthorizationAccessPoliciesTreeItem } from "./explorer/AuthorizationAccessPoliciesTreeItem";
 import { AuthorizationAccessPolicyTreeItem } from "./explorer/AuthorizationAccessPolicyTreeItem";
 import { AuthorizationProviderTreeItem } from "./explorer/AuthorizationProviderTreeItem";
-import { AuthorizationProvidersTreeItem } from "./explorer/AuthorizationProvidersTreeItem";
+import type { AuthorizationProvidersTreeItem } from "./explorer/AuthorizationProvidersTreeItem";
 import { AuthorizationTreeItem } from "./explorer/AuthorizationTreeItem";
-import { AuthorizationsTreeItem } from "./explorer/AuthorizationsTreeItem";
+import type { AuthorizationsTreeItem } from "./explorer/AuthorizationsTreeItem";
 import { AzureAccountTreeItem } from "./explorer/AzureAccountTreeItem";
 import { GatewayApiTreeItem } from "./explorer/GatewayApiTreeItem";
-import { GatewayApisTreeItem } from "./explorer/GatewayApisTreeItem";
-import { GatewayTreeItem } from "./explorer/GatewayTreeItem";
+import type { GatewayApisTreeItem } from "./explorer/GatewayApisTreeItem";
+import type { GatewayTreeItem } from "./explorer/GatewayTreeItem";
 import { NamedValueTreeItem } from "./explorer/NamedValueTreeItem";
-import { NamedValuesTreeItem } from "./explorer/NamedValuesTreeItem";
-import { OperationPolicyTreeItem } from "./explorer/OperationPolicyTreeItem";
+import type { NamedValuesTreeItem } from "./explorer/NamedValuesTreeItem";
+import type { OperationPolicyTreeItem } from "./explorer/OperationPolicyTreeItem";
 import { ProductApiTreeItem } from "./explorer/ProductApiTreeItem";
-import { ProductApisTreeItem } from "./explorer/ProductApisTreeItem";
-import { ProductPolicyTreeItem } from "./explorer/ProductPolicyTreeItem";
+import type { ProductApisTreeItem } from "./explorer/ProductApisTreeItem";
+import type { ProductPolicyTreeItem } from "./explorer/ProductPolicyTreeItem";
 import { ProductTreeItem } from "./explorer/ProductTreeItem";
-import { ServicePolicyTreeItem } from "./explorer/ServicePolicyTreeItem";
+import type { ServicePolicyTreeItem } from "./explorer/ServicePolicyTreeItem";
 import { ServiceTreeItem } from "./explorer/ServiceTreeItem";
 import { SubscriptionTreeItem } from "./explorer/SubscriptionTreeItem";
 import { ApiResourceEditor } from "./explorer/editors/arm/ApiResourceEditor";

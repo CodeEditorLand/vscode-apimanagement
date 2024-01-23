@@ -2,12 +2,12 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-import { AzureTreeItem } from "vscode-azureextensionui";
+import type { AzureTreeItem } from "vscode-azureextensionui";
 import { ApimService } from "../../../azure/apim/ApimService";
-import { IAuthorizationContract } from "../../../azure/apim/contracts";
+import type { IAuthorizationContract } from "../../../azure/apim/contracts";
 
 import { nonNullValue } from "../../../utils/nonNull";
-import { IAuthorizationTreeRoot } from "../../IAuthorizationTreeRoot";
+import type { IAuthorizationTreeRoot } from "../../IAuthorizationTreeRoot";
 import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 
 // tslint:disable-next-line:no-any

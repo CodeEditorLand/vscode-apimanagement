@@ -6,18 +6,21 @@
 import { WebResource } from "@azure/ms-rest-js";
 import * as fse from "fs-extra";
 import {
-	OpenDialogOptions,
+	type OpenDialogOptions,
 	ProgressLocation,
 	Uri,
 	window,
 	workspace,
 } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
-import { ApisTreeItem, IApiTreeItemContext } from "../explorer/ApisTreeItem";
+import type { IActionContext } from "vscode-azureextensionui";
+import type {
+	ApisTreeItem,
+	IApiTreeItemContext,
+} from "../explorer/ApisTreeItem";
 import { ServiceTreeItem } from "../explorer/ServiceTreeItem";
 import { ext } from "../extensionVariables";
 import { localize } from "../localize";
-import { IOpenApiImportObject } from "../openApi/OpenApiImportObject";
+import type { IOpenApiImportObject } from "../openApi/OpenApiImportObject";
 import { OpenApiParser } from "../openApi/OpenApiParser";
 import { apiUtil } from "../utils/apiUtil";
 import { processError } from "../utils/errorUtil";

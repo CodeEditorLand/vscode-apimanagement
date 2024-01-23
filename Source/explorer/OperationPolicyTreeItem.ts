@@ -5,7 +5,7 @@
 
 import { AzureTreeItem } from "vscode-azureextensionui";
 import { treeUtils } from "../utils/treeUtils";
-import { IOperationTreeRoot } from "./IOperationTreeRoot";
+import type { IOperationTreeRoot } from "./IOperationTreeRoot";
 
 export class OperationPolicyTreeItem extends AzureTreeItem<IOperationTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {

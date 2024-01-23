@@ -2,7 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
+import type { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
 import * as request from "request-promise-native";
 import * as vscode from "vscode";
 import {
@@ -13,7 +13,7 @@ import {
 	LoggingDebugSession,
 	OutputEvent,
 	Scope,
-	StackFrame,
+	type StackFrame,
 	StoppedEvent,
 	TerminatedEvent,
 	Thread,
@@ -21,8 +21,8 @@ import {
 	Variable,
 	logger,
 } from "vscode-debugadapter";
-import { DebugProtocol } from "vscode-debugprotocol";
-import {
+import type { DebugProtocol } from "vscode-debugprotocol";
+import type {
 	IArmResource,
 	IMasterSubscriptionsSecrets,
 	IPaged,
@@ -32,10 +32,10 @@ import { localize } from "../localize";
 import { createTemporaryFile } from "../utils/fsUtil";
 import { getBearerToken } from "../utils/requestUtil";
 import { writeToEditor } from "../utils/vscodeUtils";
-import { DebuggerConnection, RequestContract } from "./debuggerConnection";
+import { DebuggerConnection, type RequestContract } from "./debuggerConnection";
 import { PolicySource } from "./policySource";
 import { UiRequest } from "./uiRequest";
-import { UiThread } from "./uiThread";
+import type { UiThread } from "./uiThread";
 
 // tslint:disable: no-unsafe-any
 // tslint:disable: indent

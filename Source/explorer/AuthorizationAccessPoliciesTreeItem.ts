@@ -4,12 +4,12 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	AzExtTreeItem,
+	type AzExtTreeItem,
 	AzureParentTreeItem,
-	ICreateChildImplContext,
+	type ICreateChildImplContext,
 } from "vscode-azureextensionui";
 import { ApimService } from "../azure/apim/ApimService";
-import {
+import type {
 	IAuthorizationAccessPolicyContract,
 	IAuthorizationAccessPolicyPropertiesContract,
 } from "../azure/apim/contracts";
@@ -17,7 +17,7 @@ import { localize } from "../localize";
 import { processError } from "../utils/errorUtil";
 import { treeUtils } from "../utils/treeUtils";
 import { AuthorizationAccessPolicyTreeItem } from "./AuthorizationAccessPolicyTreeItem";
-import { IAuthorizationTreeRoot } from "./IAuthorizationTreeRoot";
+import type { IAuthorizationTreeRoot } from "./IAuthorizationTreeRoot";
 
 export interface IAuthorizationAccessPolicyTreeItemContext
 	extends ICreateChildImplContext {

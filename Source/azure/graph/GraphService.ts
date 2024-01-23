@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { HttpOperationResponse, ServiceClient } from "@azure/ms-rest-js";
-import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
-import { TokenResponse } from "adal-node";
+import type { HttpOperationResponse, ServiceClient } from "@azure/ms-rest-js";
+import type { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
+import type { TokenResponse } from "adal-node";
 import { createGenericClient } from "vscode-azureextensionui";
 import { ext } from "../../extensionVariables";
 import { nonNullValue } from "../../utils/nonNull";

@@ -4,15 +4,15 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ProgressLocation, window } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
+import type { IActionContext } from "vscode-azureextensionui";
 import { ApiTreeItem } from "../explorer/ApiTreeItem";
-import {
+import type {
 	IProductTreeItemContext,
 	ProductApisTreeItem,
 } from "../explorer/ProductApisTreeItem";
 import { ProductTreeItem } from "../explorer/ProductTreeItem";
-import { ProductsTreeItem } from "../explorer/ProductsTreeItem";
-import { ServiceTreeItem } from "../explorer/ServiceTreeItem";
+import type { ProductsTreeItem } from "../explorer/ProductsTreeItem";
+import type { ServiceTreeItem } from "../explorer/ServiceTreeItem";
 import { ext } from "../extensionVariables";
 import { localize } from "../localize";
 import { nonNullProp } from "../utils/nonNull";

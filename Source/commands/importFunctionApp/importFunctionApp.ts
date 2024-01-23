@@ -3,27 +3,33 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
+import type {
 	ApiContract,
 	BackendCredentialsContract,
 	NamedValueCreateContract,
 	OperationCollection,
 	OperationContract,
 } from "@azure/arm-apimanagement/src/models";
-import { Site } from "@azure/arm-appservice/src/models";
+import type { Site } from "@azure/arm-appservice/src/models";
 import { WebResource } from "@azure/ms-rest-js";
 import { ProgressLocation, window } from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
-import { IOpenApiImportObject, OpenApiParser } from "../../../extension.bundle";
+import type { IActionContext } from "vscode-azureextensionui";
+import {
+	type IOpenApiImportObject,
+	OpenApiParser,
+} from "../../../extension.bundle";
 import { getSetBackendPolicy } from "../../azure/apim/policyHelper";
 import { FunctionAppService } from "../../azure/webApp/FunctionAppService";
-import {
+import type {
 	IFunctionContract,
 	IWebAppContract,
 } from "../../azure/webApp/contracts";
 import * as Constants from "../../constants";
 import { ApiTreeItem } from "../../explorer/ApiTreeItem";
-import { ApisTreeItem, IApiTreeItemContext } from "../../explorer/ApisTreeItem";
+import type {
+	ApisTreeItem,
+	IApiTreeItemContext,
+} from "../../explorer/ApisTreeItem";
 import { ServiceTreeItem } from "../../explorer/ServiceTreeItem";
 import { ext } from "../../extensionVariables";
 import { localize } from "../../localize";
