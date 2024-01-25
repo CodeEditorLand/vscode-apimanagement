@@ -10,9 +10,9 @@ import * as gulp from "gulp";
 import decompress = require("gulp-decompress");
 // tslint:disable-next-line: no-require-imports
 import download = require("gulp-download");
-import * as os from "node:os";
-import * as path from "node:path";
-import type { Stream } from "node:stream";
+import * as os from "os";
+import * as path from "path";
+import type { Stream } from "stream";
 
 // Tests expect the extension to be installed.
 // tslint:disable-next-line: promise-function-async

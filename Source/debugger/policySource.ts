@@ -2,7 +2,7 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import * as path from "node:path";
+import * as path from "path";
 import type { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
 import * as request from "request-promise-native";
 import { Source } from "vscode-debugadapter";

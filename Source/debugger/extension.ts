@@ -1,4 +1,4 @@
-import * as Net from "node:net";
+import * as Net from "net";
 import * as vscode from "vscode";
 import type {
 	CancellationToken,

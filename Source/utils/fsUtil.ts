@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as crypto from "node:crypto";
-import * as path from "node:path";
+import * as crypto from "crypto";
+import * as path from "path";
 import * as fse from "fs-extra";
 import { extensionName, sessionFolderKey } from "../constants";
 import { ext } from "../extensionVariables";
