@@ -4,31 +4,31 @@
 	"version": "0.0.1",
 	"private": false,
 	"description": "An Azure API Management extension for Visual Studio Code.",
-	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
+	"keywords": [
+		"land"
+	],
+	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/LandApimanagement#readme",
 	"bugs": {
-		"url": "https://github.com/CodeEditorLand/Foundation/issues"
+		"url": "HTTPS://GitHub.Com/CodeEditorLand/LandApimanagement/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
+		"url": "git+HTTPS://github.com/CodeEditorLand/LandApimanagement.git"
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
-		"name": "Playform",
-		"email": "Hello@Playform.Cloud",
-		"url": "https://playform.cloud"
+		"name": "🌆 — Land —",
+		"email": "Land@PlayForm.Cloud",
+		"url": "HTTPS://Land.PlayForm.Cloud"
 	},
 	"type": "module",
 	"main": "main",
 	"scripts": {
+		"Document": "Document 'Source/**/*.ts'",
 		"all": "npm i && npm run lint && npm test",
 		"build": "tsc -p ./",
 		"compile": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"package": "vsce package",
-		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
-		"vscode:prepublish": "npm run webpack-prod",
-		"watch": "tsc -watch -p ./",
+		"prepublishOnly": "Build 'Source/**/*.ts'",
 		"webpack": "npm run build && gulp webpack-dev",
 		"webpack-prod": "npm run build && gulp webpack-prod",
 		"webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
@@ -809,55 +809,30 @@
 		"onCommand:azureApiManagement.showArmAuthorizationAccessPolicy"
 	],
 	"dependencies": {
-		"@azure/arm-apimanagement": "^6.0.0",
-		"@azure/arm-appservice": "^7.0.0",
-		"@azure/arm-resources": "^4.0.0",
-		"@types/xml": "^1.0.4",
-		"adal-node": "^0.2.2",
+		"@types/xml": "1.0.11",
+		"adal-node": "0.2.2",
 		"await-notify": "1.0.1",
-		"decompress": "^4.2.1",
-		"fs-extra": "^4.0.2",
-		"guid-typescript": "^1.0.9",
-		"gulp-decompress": "^3.0.0",
-		"gulp-download": "0.0.1",
-		"opn": "^5.3.0",
-		"request": "^2.88.2",
-		"request-promise": "^4.2.5",
-		"request-promise-native": "^1.0.8",
-		"swagger-parser": "^6.0.5",
-		"vscode-azureextensionui": "^0.38.5",
-		"vscode-debugadapter": "^1.39.1",
-		"vscode-debugprotocol": "^1.39.0",
-		"vscode-nls": "^4.1.2",
-		"ws": "^7.4.6",
-		"xregexp": "^4.3.0"
+		"decompress": "4.2.1",
+		"fs-extra": "11.2.0",
+		"guid-typescript": "1.0.9",
+		"opn": "5.5.0",
+		"request": "2.88.2",
+		"request-promise": "4.2.5",
+		"request-promise-native": "1.0.8",
+		"swagger-parser": "10.0.3",
+		"ws": "8.17.0",
+		"xregexp": "5.1.1"
 	},
 	"devDependencies": {
-		"@azure/ms-rest-js": "^2.7.0",
-		"@types/fs-extra": "^4.0.3",
-		"@types/gulp": "^4.0.6",
-		"@types/mocha": "^5.2.6",
-		"@types/node": "^8.10.59",
-		"@types/request": "^2.48.4",
-		"@types/request-promise": "^4.1.46",
-		"@types/request-promise-native": "^1.0.17",
-		"@types/swagger-parser": "^4.0.3",
-		"@types/ws": "^6.0.4",
-		"gulp": "^4.0.0",
-		"mocha": "^5.2.0",
-		"mocha-junit-reporter": "^1.23.3",
-		"mocha-multi-reporters": "^1.1.7",
-		"ts-node": "^7.0.1",
-		"tslint-microsoft-contrib": "5.0.1",
-		"typescript": "^3.8.3",
-		"typescript-esbuild": "0.4.5",
-		"vsce": "^1.74.0",
-		"vscode": "^1.1.37",
-		"vscode-azureextensiondev": "^0.6.0",
-		"vscode-debugadapter-testsupport": "1.40.2",
-		"vscode-extension-telemetry": "^0.0.18",
-		"webpack": "4.29.6",
-		"webpack-cli": "^3.3.11"
+		"@playform/build": "0.0.7",
+		"@playform/document": "0.0.6",
+		"@types/fs-extra": "11.0.4",
+		"@types/node": "20.12.7",
+		"@types/request": "2.48.12",
+		"@types/request-promise": "4.1.51",
+		"@types/request-promise-native": "1.0.21",
+		"@types/swagger-parser": "4.0.3",
+		"@types/ws": "8.5.10"
 	},
 	"extensionDependencies": [
 		"humao.rest-client",
@@ -873,6 +848,6 @@
 	},
 	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
 	"overrides": {
-		"fsevents": "~2.3.2"
+		"fsevents": "2.3.2"
 	}
 }
