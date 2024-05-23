@@ -290,7 +290,6 @@ __pycache__/
 
 # VS Code Extension Development
 out
-node_modules
 *.vsix
 dist
 *.zip
