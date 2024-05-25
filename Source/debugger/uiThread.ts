@@ -1,7 +1,10 @@
-import { StackFrame } from 'vscode-debugadapter';
-import { DebugProtocol } from 'vscode-debugprotocol';
-import { StackFrameContract, StackFrameScopeContract } from './debuggerConnection';
-import { PolicySource } from './policySource';
+import { StackFrame } from "vscode-debugadapter";
+import type { DebugProtocol } from "vscode-debugprotocol";
+import {
+	type StackFrameContract,
+	StackFrameScopeContract,
+} from "./debuggerConnection";
+import type { PolicySource } from "./policySource";
 
 // tslint:disable: indent
 // tslint:disable: export-name
@@ -17,8 +20,8 @@ interface PendingSource {
 }
 
 export class UiThread {
-	private static NextThreadId: number = 1;
-	private static NextStackFrameId: number = 1;
+	private static NextThreadId = 1;
+	private static NextStackFrameId = 1;
 
 	public id: number;
 	public uiId: number;
@@ -27,11 +30,17 @@ export class UiThread {
 	private apiId: string;
 	private productId: string;
 	private stackFrames: {
-		[key: string]: StackFrame
+		[key: string]: StackFrame;
 	} = {};
 	private policySource: PolicySource;
 
-	constructor(id: number, operationId: string, apiId: string, productId: string, policySource: PolicySource) {
+	constructor(
+		id: number,
+		operationId: string,
+		apiId: string,
+		productId: string,
+		policySource: PolicySource,
+	) {
 		this.id = id;
 		this.uiId = UiThread.NextThreadId++;
 
@@ -41,13 +50,21 @@ export class UiThread {
 		this.policySource = policySource;
 	}
 
-	private static addPendingSource(pendingSources: PendingSource[], frame: StackFrameContract, stackFrame: StackFrame): void {
-		let pendingSource = pendingSources.find(s => s.scopeId === frame.scopeId);
+	private static addPendingSource(
+		pendingSources: PendingSource[],
+		frame: StackFrameContract,
+		stackFrame: StackFrame,
+	): void {
+		let pendingSource = pendingSources.find(
+			(s) => s.scopeId === frame.scopeId,
+		);
 		if (!pendingSource) {
-			pendingSources.push(pendingSource = {
-				scopeId: frame.scopeId,
-				stackFrames: []
-			});
+			pendingSources.push(
+				(pendingSource = {
+					scopeId: frame.scopeId,
+					stackFrames: [],
+				}),
+			);
 		}
 
 		pendingSource.stackFrames.push(stackFrame);
@@ -64,46 +81,57 @@ export class UiThread {
 	}
 
 	// tslint:disable-next-line: cyclomatic-complexity
-	public async getStackFrames(frames: StackFrameContract[]): Promise<StackFrame[]> {
+	public async getStackFrames(
+		frames: StackFrameContract[],
+	): Promise<StackFrame[]> {
 		if (!frames.length) {
 			return [];
 		}
 
 		// Create UI stack frames
 		const stack: {
-			key: string,
-			frame: StackFrameContract,
-			isVirtual?: boolean,
-			stackFrame: StackFrame
+			key: string;
+			frame: StackFrameContract;
+			isVirtual?: boolean;
+			stackFrame: StackFrame;
 		}[] = [];
 		const allFrames = this.addVirtualStack(frames);
 		const pendingSources: PendingSource[] = [];
 		let prevFrame: StackFrameContract | null = null;
 		let path: string[] = [];
 		for (const frame of allFrames.reverse()) {
-			if (!path.length || prevFrame && (prevFrame.scopeId !== frame.scopeId)) {
+			if (
+				!path.length ||
+				(prevFrame && prevFrame.scopeId !== frame.scopeId)
+			) {
 				// tslint:disable-next-line: prefer-template
-				path = ['policies[1]', frame.section + "[1]"];
+				path = ["policies[1]", frame.section + "[1]"];
 			}
 			prevFrame = frame;
-			if (!frame.name.endsWith(']')) {
-				path.push(`${frame.name}[${frame.index || 1}]`);
-			} else {
+			if (frame.name.endsWith("]")) {
 				path.push(`${frame.name}`);
+			} else {
+				path.push(`${frame.name}[${frame.index || 1}]`);
 			}
-			const stackFrameKey = path.join('/');
+			const stackFrameKey = path.join("/");
 
 			stack.push({
 				key: stackFrameKey,
 				frame: frame,
 				isVirtual: frame.isVirtual,
-				stackFrame: this.getStackFrame(frame, stackFrameKey, pendingSources)
+				stackFrame: this.getStackFrame(
+					frame,
+					stackFrameKey,
+					pendingSources,
+				),
 			});
 		}
 
 		// Fetch any sources if necessary
 		if (pendingSources.length > 0) {
-			await this.policySource.fetchPolicies(pendingSources.map(p => p.scopeId));
+			await this.policySource.fetchPolicies(
+				pendingSources.map((p) => p.scopeId),
+			);
 		}
 
 		// Assign source line numbers as per scope, name, and index
@@ -116,7 +144,10 @@ export class UiThread {
 				stackFrame.source = policy && policy.source;
 			}
 
-			const location = this.policySource.getPolicyLocation(frame.scopeId, item.key);
+			const location = this.policySource.getPolicyLocation(
+				frame.scopeId,
+				item.key,
+			);
 			if (location) {
 				stackFrame.line = location.line;
 				stackFrame.column = location.column;
@@ -126,59 +157,95 @@ export class UiThread {
 		}
 
 		// Remove any 'virtual' UI stack frames if no policy present
-		for (let index = 0; index < stack.length;) {
-			if (stack[index].isVirtual && (!stack[index].stackFrame.source || !stack[index].stackFrame.line && !stack[index].stackFrame.column)) {
+		for (let index = 0; index < stack.length; ) {
+			if (
+				stack[index].isVirtual &&
+				(!stack[index].stackFrame.source ||
+					(!stack[index].stackFrame.line &&
+						!stack[index].stackFrame.column))
+			) {
 				stack.splice(index, 1);
 			} else {
 				index++;
 			}
 		}
 
-		return stack.map(s => s.stackFrame).reverse();
+		return stack.map((s) => s.stackFrame).reverse();
 	}
 
-	private addVirtualStack(frames: StackFrameContract[]): (StackFrameContract & { isVirtual?: true })[] {
-		const allFrames: (StackFrameContract & { isVirtual?: true })[] = [...frames];
+	private addVirtualStack(
+		frames: StackFrameContract[],
+	): (StackFrameContract & { isVirtual?: true })[] {
+		const allFrames: (StackFrameContract & { isVirtual?: true })[] = [
+			...frames,
+		];
 
 		let lastFrame = allFrames[frames.length - 1];
-		if (lastFrame.scopeId === StackFrameScopeContract.tenant && this.productId) {
-			allFrames.push(lastFrame = {
-				scopeId: `/products/${this.productId}`,
-				name: 'base',
-				section: lastFrame.section,
-				index: 0,
-				isVirtual: true
-			});
+		if (
+			lastFrame.scopeId === StackFrameScopeContract.tenant &&
+			this.productId
+		) {
+			allFrames.push(
+				(lastFrame = {
+					scopeId: `/products/${this.productId}`,
+					name: "base",
+					section: lastFrame.section,
+					index: 0,
+					isVirtual: true,
+				}),
+			);
 		}
 
-		if ((lastFrame.scopeId === StackFrameScopeContract.tenant || lastFrame.scopeId.startsWith(StackFrameScopeContract.product)) && this.apiId) {
-			allFrames.push(lastFrame = {
-				scopeId: `/apis/${this.apiId}`,
-				name: 'base',
-				section: lastFrame.section,
-				index: 0,
-				isVirtual: true
-			});
+		if (
+			(lastFrame.scopeId === StackFrameScopeContract.tenant ||
+				lastFrame.scopeId.startsWith(
+					StackFrameScopeContract.product,
+				)) &&
+			this.apiId
+		) {
+			allFrames.push(
+				(lastFrame = {
+					scopeId: `/apis/${this.apiId}`,
+					name: "base",
+					section: lastFrame.section,
+					index: 0,
+					isVirtual: true,
+				}),
+			);
 		}
 
-		if (lastFrame.scopeId.startsWith(StackFrameScopeContract.api) && !lastFrame.scopeId.includes('/operations/') && this.apiId && this.operationId) {
-			allFrames.push(lastFrame = {
-				scopeId: `/apis/${this.apiId}/operations/${this.operationId}`,
-				name: 'base',
-				section: lastFrame.section,
-				index: 0,
-				isVirtual: true
-			});
+		if (
+			lastFrame.scopeId.startsWith(StackFrameScopeContract.api) &&
+			!lastFrame.scopeId.includes("/operations/") &&
+			this.apiId &&
+			this.operationId
+		) {
+			allFrames.push(
+				(lastFrame = {
+					scopeId: `/apis/${this.apiId}/operations/${this.operationId}`,
+					name: "base",
+					section: lastFrame.section,
+					index: 0,
+					isVirtual: true,
+				}),
+			);
 		}
 
 		return allFrames;
 	}
 
-	private getStackFrame(frame: StackFrameContract, path: string, pendingSources: PendingSource[]): StackFrame {
+	private getStackFrame(
+		frame: StackFrameContract,
+		path: string,
+		pendingSources: PendingSource[],
+	): StackFrame {
 		const frameKey = `${frame.scopeId}/${path}`;
 		let stackFrame = this.stackFrames[frameKey];
 		if (!stackFrame) {
-			this.stackFrames[frameKey] = stackFrame = new StackFrame(UiThread.NextStackFrameId++, frame.name);
+			this.stackFrames[frameKey] = stackFrame = new StackFrame(
+				UiThread.NextStackFrameId++,
+				frame.name,
+			);
 			const policy = this.policySource.getPolicy(frame.scopeId);
 			stackFrame.source = policy && policy.source;
 			if (!stackFrame.source) {
