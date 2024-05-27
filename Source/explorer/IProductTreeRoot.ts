@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import type { IServiceTreeRoot } from "./IServiceTreeRoot";
+import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export interface IProductTreeRoot extends IServiceTreeRoot {
-	productName: string;
+    productName: string;
 }

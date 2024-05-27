@@ -2,6 +2,6 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
-import { ApimDebugSession } from "./apimDebug";
+ import { ApimDebugSession } from './apimDebug';
 
-ApimDebugSession.run(ApimDebugSession);
+ ApimDebugSession.run(ApimDebugSession);

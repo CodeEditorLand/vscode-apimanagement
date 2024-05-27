@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import type { IApiTreeRoot } from "./IApiTreeRoot";
+import { IApiTreeRoot } from "./IApiTreeRoot";
 
 export interface IOperationTreeRoot extends IApiTreeRoot {
-	opName: string;
+    opName: string;
 }

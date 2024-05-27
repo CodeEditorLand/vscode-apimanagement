@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import type { IAuthorizationProviderTreeRoot } from "./IAuthorizationProviderTreeRoot";
+import { IAuthorizationProviderTreeRoot } from "./IAuthorizationProviderTreeRoot";
 
 export interface IAuthorizationTreeRoot extends IAuthorizationProviderTreeRoot {
-	authorizationName: string;
+    authorizationName: string;
 }
