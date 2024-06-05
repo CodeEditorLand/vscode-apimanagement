@@ -1,880 +1,826 @@
 {
-    "name": "vscode-apimanagement",
-    "displayName": "Azure API Management",
-    "description": "An Azure API Management extension for Visual Studio Code.",
-    "version": "1.0.8",
-    "publisher": "ms-azuretools",
-    "icon": "resources/apim-icon-newone.png",
-    "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
-    "engines": {
-        "vscode": "^1.50.1"
-    },
-    "categories": [
-        "Azure"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Microsoft/vscode-apimanagement"
-    },
-    "galleryBanner": {
-        "color": "#0072c6",
-        "theme": "dark"
-    },
-    "keywords": [
-        "Azure",
-        "API Management",
-        "APIM",
-        "OpenAPI",
-        "swagger"
-    ],
-    "activationEvents": [
-        "onCommand:azureApiManagement.Refresh",
-        "onCommand:azureApiManagement.selectSubscriptions",
-        "onView:azureApiManagementExplorer",
-        "onLanguage:policy",
-        "onLanguage:apim-policy",
-        "onCommand:azureApiManagement.createService",
-        "onCommand:azureApiManagement.deleteService",
-        "onCommand:azureApiManagement.copySubscriptionKey",
-        "onCommand:azureApiManagement.deleteApi",
-        "onCommand:azureApiManagement.deleteOperation",
-        "onCommand:azureApiManagement.importOpenApiByFile",
-        "onCommand:azureApiManagement.importOpenApiByLink",
-        "onCommand:azureApiManagement.testOperation",
-        "onCommand:azureApiManagement.openInPortal",
-        "onCommand:azureApiManagement.showApi",
-        "onCommand:azureApiManagement.showArmApi",
-        "onCommand:azureApiManagement.showArmApiOperation",
-        "onCommand:azureApiManagement.showArmProduct",
-        "onCommand:azureApiManagement.showServicePolicy",
-        "onCommand:azureApiManagement.showApiPolicy",
-        "onCommand:azureApiManagement.showOperationPolicy",
-        "onCommand:azureApiManagement.createNamedValue",
-        "onCommand:azureApiManagement.deleteNamedValue",
-        "onCommand:azureApiManagement.updateNamedValue",
-        "onCommand:azureApiManagement.addApiToProduct",
-        "onCommand:azureApiManagement.removeApiFromProduct",
-        "onCommand:azureApiManagement.addApiToGateway",
-        "onCommand:azureApiManagement.removeApiFromGateway",
-        "onCommand:azureApiManagement.showProductPolicy",
-        "onCommand:azureApiManagement.openWorkingFolder",
-        "onCommand:azureApiManagement.setupWorkingFolder",
-        "onCommand:azureApiManagement.extractService",
-        "onCommand:azureApiManagement.extractApi",
-        "onCommand:azureApiManagement.importFunctionApp",
-        "onCommand:azureApiManagement.importFunctionAppToApi",
-        "onCommand:azureApiManagement.importWebApp",
-        "onCommand:azureApiManagement.importWebAppToApi",
-        "onCommand:azureApiManagement.addApiFilter",
-        "onCommand:azureApiManagement.copyDockerRunCommand",
-        "onCommand:azureApiManagement.generateKubernetesDeployment",
-        "onCommand:azureApiManagement.generateNewGatewayToken",
-        "onCommand:azureApiManagement.debugPolicy",
-        "onCommand:azureApiManagement.generateFunctions",
-        "onCommand:azureApiManagement.revisions",
-        "onCommand:azureApiManagement.setCustomHostName",
-        "onCommand:azureApiManagement.createSubscription",
-        "onCommand:azureApiManagement.deleteSubscription",
-        "onCommand:azureApiManagement.createAuthorizationProvider",
-        "onCommand:azureApiManagement.deleteAuthorizationProvider",
-        "onCommand:azureApiManagement.copyAuthorizationProviderRedirectUrl",
-        "onCommand:azureApiManagement.createAuthorization",
-        "onCommand:azureApiManagement.authorizeAuthorization",
-        "onCommand:azureApiManagement.deleteAuthorization",
-        "onCommand:azureApiManagement.createAuthorizationAccessPolicy",
-        "onCommand:azureApiManagement.deleteAuthorizationAccessPolicy",
-        "onCommand:azureApiManagement.copyAuthorizationPolicy",
-        "onCommand:azureApiManagement.showArmAuthorizationProvider",
-        "onCommand:azureApiManagement.showArmAuthorization",
-        "onCommand:azureApiManagement.showArmAuthorizationAccessPolicy"
-    ],
-    "main": "main",
-    "contributes": {
-        "breakpoints": [
-            {
-                "language": "apim-policy"
-            }
-        ],
-        "languages": [
-            {
-                "id": "apim-policy",
-                "mimetypes": [
-                    "application/vnd.ms-azure-apim.policy.raw+xml"
-                ]
-            }
-        ],
-        "debuggers": [
-            {
-                "type": "apim-policy",
-                "label": "Attach to APIM",
-                "runtime": "node",
-                "configurationAttributes": {
-                    "launch": {
-                        "properties": {
-                            "stopOnEntry": {
-                                "type": "boolean",
-                                "description": "Automatically stop after launch.",
-                                "default": true
-                            }
-                        }
-                    }
-                },
-                "initialConfigurations": [
-                    {
-                        "type": "apim-policy",
-                        "request": "launch",
-                        "name": "Attach to APIM",
-                        "stopOnEntry": true
-                    }
-                ]
-            }
-        ],
-        "jsonValidation": [
-            {
-                "fileMatch": "/*-api-arm.json",
-                "url": "./resources/schemas/ApiCreateOrUpdateParameter.json"
-            },
-            {
-                "fileMatch": "/*-operation-arm.json",
-                "url": "./resources/schemas/OperationUpdateContract.json"
-            }
-        ],
-        "snippets": [
-            {
-                "language": "aspnetcorerazor",
-                "path": "./aspnetcorerazor.json"
-            }
-        ],
-        "commands": [
-            {
-                "command": "azureApiManagement.createService",
-                "title": "%azureApiManagement.createService%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.deleteService",
-                "title": "%azureApiManagement.deleteService%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.copySubscriptionKey",
-                "title": "%azureApiManagement.copySubscriptionKey%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.deleteApi",
-                "title": "%azureApiManagement.deleteApi%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.deleteOperation",
-                "title": "%azureApiManagement.deleteOperation%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.importOpenApiByFile",
-                "title": "%azureApiManagement.importOpenApiByFile%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.importOpenApiByLink",
-                "title": "%azureApiManagement.importOpenApiByLink%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.testOperation",
-                "title": "%azureApiManagement.testOperation%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.openInPortal",
-                "title": "%azureApiManagement.openInPortal%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.selectSubscriptions",
-                "title": "Select Subscription...",
-                "icon": {
-                    "light": "resources/light/filter.svg",
-                    "dark": "resources/dark/filter.svg"
-                }
-            },
-            {
-                "command": "azureApiManagement.Refresh",
-                "title": "Refresh",
-                "category": "Azure Api Management",
-                "icon": {
-                    "light": "resources/light/refresh.svg",
-                    "dark": "resources/dark/refresh.svg"
-                }
-            },
-            {
-                "command": "azureApiManagement.LoadMore",
-                "title": "Load More",
-                "category": "Azure Api Management",
-                "icon": {
-                    "light": "resources/light/refresh.svg",
-                    "dark": "resources/dark/refresh.svg"
-                }
-            },
-            {
-                "command": "azureApiManagement.showApi",
-                "title": "%azureApiManagement.showApi%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showArmApi",
-                "title": "%azureApiManagement.showArmApi%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showArmApiOperation",
-                "title": "%azureApiManagement.showArmApiOperation%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showArmProduct",
-                "title": "%azureApiManagement.showArmProduct%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showServicePolicy",
-                "title": "%azureApiManagement.showServicePolicy%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showApiPolicy",
-                "title": "%azureApiManagement.showApiPolicy%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showOperationPolicy",
-                "title": "%azureApiManagement.showOperationPolicy%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.createNamedValue",
-                "title": "%azureApiManagement.createNamedValue%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.createSubscription",
-                "title": "%azureApiManagement.createSubscription%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.deleteSubscription",
-                "title": "%azureApiManagement.deleteSubscription%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.deleteNamedValue",
-                "title": "%azureApiManagement.deleteNamedValue%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.updateNamedValue",
-                "title": "%azureApiManagement.updateNamedValue%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.addApiToProduct",
-                "title": "%azureApiManagement.addApiToProduct%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.removeApiFromProduct",
-                "title": "%azureApiManagement.removeApiFromProduct%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.addApiToGateway",
-                "title": "%azureApiManagement.addApiToGateway%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.removeApiFromGateway",
-                "title": "%azureApiManagement.removeApiFromGateway%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showProductPolicy",
-                "title": "%azureApiManagement.showProductPolicy%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.openExtensionWorkspaceFolder",
-                "title": "%azureApiManagement.openExtensionWorkspaceFolder%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.initializeExtensionWorkspaceFolder",
-                "title": "%azureApiManagement.initializeExtensionWorkspaceFolder%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.extractService",
-                "title": "%azureApiManagement.extractService%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.extractApi",
-                "title": "%azureApiManagement.extractApi%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.importFunctionApp",
-                "title": "%azureApiManagement.importFunctionApp%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.importFunctionAppToApi",
-                "title": "%azureApiManagement.importFunctionAppToApi%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.importWebApp",
-                "title": "%azureApiManagement.importWebApp%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.importWebAppToApi",
-                "title": "%azureApiManagement.importWebAppToApi%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.addApiFilter",
-                "title": "%azureApiManagement.addApiFilter%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.setApiFilter",
-                "title": "%azureApiManagement.setApiFilter%",
-                "icon": {
-                    "light": "resources/light/filter.svg",
-                    "dark": "resources/dark/filter.svg"
-                }
-            },
-            {
-                "command": "azureApiManagement.debugPolicy",
-                "title": "%azureApiManagement.debugPolicy%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.copyDockerRunCommand",
-                "title": "%azureApiManagement.copyDockerRunCommand%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.generateKubernetesDeployment",
-                "title": "%azureApiManagement.generateKubernetesDeployment%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.generateNewGatewayToken",
-                "title": "%azureApiManagement.generateNewGatewayToken%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.generateFunctions",
-                "title": "%azureApiManagement.generateFunctions%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.setCustomHostName",
-                "title": "%azureApiManagement.setCustomHostName%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.revisions",
-                "title": "%azureApiManagement.revisions%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.openDiffEditor",
-                "title": "Show diffs against the last saved version",
-                "icon": {
-                    "light": "resources/light/diff.svg",
-                    "dark": "resources/dark/diff.svg"
-                }
-            },
-            {
-                "command": "azureApiManagement.createAuthorizationProvider",
-                "title": "%azureApiManagement.createAuthorizationProvider%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.deleteAuthorizationProvider",
-                "title": "%azureApiManagement.deleteAuthorizationProvider%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.copyAuthorizationProviderRedirectUrl",
-                "title": "%azureApiManagement.copyAuthorizationProviderRedirectUrl%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.createAuthorization",
-                "title": "%azureApiManagement.createAuthorization%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.authorizeAuthorization",
-                "title": "%azureApiManagement.authorizeAuthorization%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.deleteAuthorization",
-                "title": "%azureApiManagement.deleteAuthorization%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.copyAuthorizationPolicy",
-                "title": "%azureApiManagement.copyAuthorizationPolicy%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.createAuthorizationAccessPolicy",
-                "title": "%azureApiManagement.createAuthorizationAccessPolicy%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.deleteAuthorizationAccessPolicy",
-                "title": "%azureApiManagement.deleteAuthorizationAccessPolicy%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showArmAuthorizationProvider",
-                "title": "%azureApiManagement.showArmAuthorizationProvider%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showArmAuthorization",
-                "title": "%azureApiManagement.showArmAuthorization%",
-                "category": "Azure API Management"
-            },
-            {
-                "command": "azureApiManagement.showArmAuthorizationAccessPolicy",
-                "title": "%azureApiManagement.showArmAuthorizationAccessPolicy%",
-                "category": "Azure API Management"
-            }
-        ],
-        "viewsContainers": {
-            "activitybar": [
-                {
-                    "id": "azure",
-                    "title": "Azure",
-                    "icon": "resources/azure.svg"
-                }
-            ]
-        },
-        "views": {
-            "azure": [
-                {
-                    "id": "azureApiManagementExplorer",
-                    "name": "Api Management",
-                    "when": "config.azureApiManagement.showExplorer == true"
-                }
-            ]
-        },
-        "menus": {
-            "editor/title": [
-                {
-                    "when": "isEditorEnabled",
-                    "command": "azureApiManagement.openDiffEditor",
-                    "group": "navigation"
-                }
-            ],
-            "commandPalette": [
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "never"
-                },
-                {
-                    "command": "azureApiManagement.LoadMore",
-                    "when": "never"
-                }
-            ],
-            "view/title": [
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "view == azureApiManagementExplorer",
-                    "group": "navigation@1"
-                }
-            ],
-            "view/item/context": [
-                {
-                    "command": "azureApiManagement.selectSubscriptions",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureextensionui.azureSubscription",
-                    "group": "inline"
-                },
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureextensionui.azureSubscription",
-                    "group": "3@1"
-                },
-                {
-                    "command": "azureApiManagement.createService",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureextensionui.azureSubscription",
-                    "group": "2@1"
-                },
-                {
-                    "command": "azureApiManagement.openInPortal",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureextensionui.azureSubscription",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.openInPortal",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.copySubscriptionKey",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService",
-                    "group": "1@2"
-                },
-                {
-                    "command": "azureApiManagement.setCustomHostName",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService",
-                    "group": "1@3"
-                },
-                {
-                    "command": "azureApiManagement.extractService",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService",
-                    "group": "2@1"
-                },
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService",
-                    "group": "3@1"
-                },
-                {
-                    "command": "azureApiManagement.deleteService",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService",
-                    "group": "4@1"
-                },
-                {
-                    "command": "azureApiManagement.importOpenApiByFile",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.importOpenApiByLink",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis",
-                    "group": "1@2"
-                },
-                {
-                    "command": "azureApiManagement.importFunctionApp",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis",
-                    "group": "2@1"
-                },
-                {
-                    "command": "azureApiManagement.importWebApp",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis",
-                    "group": "2@2"
-                },
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis",
-                    "group": "3@1"
-                },
-                {
-                    "command": "azureApiManagement.addApiFilter",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis",
-                    "group": "4@1"
-                },
-                {
-                    "command": "azureApiManagement.setApiFilter",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis",
-                    "group": "inline"
-                },
-                {
-                    "command": "azureApiManagement.showApi",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.importFunctionAppToApi",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi",
-                    "group": "2@1"
-                },
-                {
-                    "command": "azureApiManagement.importWebAppToApi",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi",
-                    "group": "2@2"
-                },
-                {
-                    "command": "azureApiManagement.generateFunctions",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi && config.azureApiManagement.scaffoldAzureFunctions == true",
-                    "group": "3@1"
-                },
-                {
-                    "command": "azureApiManagement.extractApi",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi",
-                    "group": "4@1"
-                },
-                {
-                    "command": "azureApiManagement.revisions",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi",
-                    "group": "5@1"
-                },
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi",
-                    "group": "6@1"
-                },
-                {
-                    "command": "azureApiManagement.deleteApi",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi",
-                    "group": "7@1"
-                },
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementOperations",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.deleteOperation",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApiOperation",
-                    "group": "1@2"
-                },
-                {
-                    "command": "azureApiManagement.testOperation",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApiOperation",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.debugPolicy",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApiOperation",
-                    "group": "2@1"
-                },
-                {
-                    "command": "azureApiManagement.createNamedValue",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementNamedValues",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.deleteNamedValue",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementNamedValue",
-                    "group": "1@2"
-                },
-                {
-                    "command": "azureApiManagement.updateNamedValue",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementNamedValue",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.addApiToProduct",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementProductApis",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.removeApiFromProduct",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementProductApi",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.addApiToGateway",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayApis",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.removeApiFromGateway",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayApi",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.copyDockerRunCommand",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayTreeItem",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.generateKubernetesDeployment",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayTreeItem",
-                    "group": "1@2"
-                },
-                {
-                    "command": "azureApiManagement.generateNewGatewayToken",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayTreeItem",
-                    "group": "1@3"
-                },
-                {
-                    "command": "azureApiManagement.createSubscription",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementSubscriptions",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.deleteSubscription",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementSubscriptionTreeItem",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.createAuthorizationProvider",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationProviders",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationProviders",
-                    "group": "2@1"
-                },
-                {
-                    "command": "azureApiManagement.copyAuthorizationProviderRedirectUrl",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationProvider",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.deleteAuthorizationProvider",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationProvider",
-                    "group": "3@1"
-                },
-                {
-                    "command": "azureApiManagement.createAuthorization",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizations",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizations",
-                    "group": "2@1"
-                },
-                {
-                    "command": "azureApiManagement.authorizeAuthorization",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorization",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.copyAuthorizationPolicy",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorization",
-                    "group": "1@2"
-                },
-                {
-                    "command": "azureApiManagement.deleteAuthorization",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorization",
-                    "group": "3@1"
-                },
-                {
-                    "command": "azureApiManagement.createAuthorizationAccessPolicy",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationAccessPolicies",
-                    "group": "1@1"
-                },
-                {
-                    "command": "azureApiManagement.Refresh",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationAccessPolicies",
-                    "group": "2@1"
-                },
-                {
-                    "command": "azureApiManagement.deleteAuthorizationAccessPolicy",
-                    "when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationAccessPolicy",
-                    "group": "3@1"
-                }
-            ]
-        },
-        "configuration": [
-            {
-                "title": "Azure API Management",
-                "properties": {
-                    "azureApiManagement.showExplorer": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "%azureApiManagement.showExplorer%"
-                    },
-                    "azureApiManagement.showSavePrompt": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "%azureApiManagement.showSavePrompt%"
-                    },
-                    "azureApiManagement.advancedCreation": {
-                        "type": "boolean",
-                        "default": false,
-                        "description": "%azureApiManagement.advancedCreationDescription%"
-                    },
-                    "azureApiManagement.advancedPolicyAuthoringExperience": {
-                        "type": "boolean",
-                        "default": false,
-                        "description": "%azureApiManagement.advancedPolicyAuthoringExperience%"
-                    },
-                    "azureApiManagement.scaffoldAzureFunctions": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "%azureApiManagement.scaffoldAzureFunctions%"
-                    }
-                }
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run webpack-prod",
-        "build": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
-        "package": "vsce package",
-        "lint": "tslint --project tsconfig.json -e src/*.d.ts -t verbose",
-        "lint-fix": "tslint --project tsconfig.json -t verbose --fix",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "pretest": "npm run build && npm run webpack",
-        "test": "gulp test",
-        "watch": "tsc -watch -p ./",
-        "all": "npm i && npm run lint && npm test",
-        "webpack": "npm run build && gulp webpack-dev",
-        "webpack-prod": "npm run build && gulp webpack-prod",
-        "webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
-    },
-    "devDependencies": {
-        "@azure/ms-rest-js": "^2.7.0",
-        "@types/fs-extra": "^4.0.3",
-        "@types/gulp": "^4.0.6",
-        "@types/mocha": "^5.2.6",
-        "@types/node": "^8.10.59",
-        "@types/request": "^2.48.4",
-        "@types/request-promise": "^4.1.46",
-        "@types/request-promise-native": "^1.0.17",
-        "@types/swagger-parser": "^4.0.3",
-        "@types/ws": "^6.0.4",
-        "gulp": "^4.0.0",
-        "mocha": "^5.2.0",
-        "mocha-junit-reporter": "^1.23.3",
-        "mocha-multi-reporters": "^1.1.7",
-        "ts-node": "^7.0.1",
-        "tslint": "^5.20.1",
-        "tslint-microsoft-contrib": "5.0.1",
-        "typescript": "^3.8.3",
-        "vsce": "^1.74.0",
-        "vscode": "^1.1.37",
-        "vscode-azureextensiondev": "^0.6.0",
-        "vscode-debugadapter-testsupport": "1.40.2",
-        "vscode-extension-telemetry": "^0.0.18",
-        "webpack": "4.29.6",
-        "webpack-cli": "^3.3.11"
-    },
-    "dependencies": {
-        "@azure/arm-apimanagement": "^6.0.0",
-        "@azure/arm-appservice": "^7.0.0",
-        "@azure/arm-resources": "^4.0.0",
-        "@types/xml": "^1.0.4",
-        "adal-node": "^0.2.2",
-        "await-notify": "1.0.1",
-        "decompress": "^4.2.1",
-        "fs-extra": "^4.0.2",
-        "guid-typescript": "^1.0.9",
-        "gulp-decompress": "^3.0.0",
-        "gulp-download": "0.0.1",
-        "opn": "^5.3.0",
-        "request": "^2.88.2",
-        "request-promise": "^4.2.5",
-        "request-promise-native": "^1.0.8",
-        "swagger-parser": "^6.0.5",
-        "vscode-azureextensionui": "^0.38.5",
-        "vscode-debugadapter": "^1.39.1",
-        "vscode-debugprotocol": "^1.39.0",
-        "vscode-nls": "^4.1.2",
-        "ws": "^7.4.6",
-        "xregexp": "^4.3.0"
-    },
-    "extensionDependencies": [
-        "ms-vscode.azure-account",
-        "humao.rest-client"
-    ],
-    "overrides": {
-        "fsevents": "~2.3.2"
-    }
+	"name": "vscode-apimanagement",
+	"displayName": "Azure API Management",
+	"description": "An Azure API Management extension for Visual Studio Code.",
+	"main": "main",
+	"scripts": {
+		"all": "npm i && npm run lint && npm test",
+		"build": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"webpack": "npm run build && gulp webpack-dev",
+		"webpack-prod": "npm run build && gulp webpack-prod",
+		"webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
+	},
+	"contributes": {
+		"breakpoints": [
+			{
+				"language": "apim-policy"
+			}
+		],
+		"commands": [
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.createService",
+				"title": "%azureApiManagement.createService%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.deleteService",
+				"title": "%azureApiManagement.deleteService%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.copySubscriptionKey",
+				"title": "%azureApiManagement.copySubscriptionKey%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.deleteApi",
+				"title": "%azureApiManagement.deleteApi%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.deleteOperation",
+				"title": "%azureApiManagement.deleteOperation%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.importOpenApiByFile",
+				"title": "%azureApiManagement.importOpenApiByFile%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.importOpenApiByLink",
+				"title": "%azureApiManagement.importOpenApiByLink%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.testOperation",
+				"title": "%azureApiManagement.testOperation%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.openInPortal",
+				"title": "%azureApiManagement.openInPortal%"
+			},
+			{
+				"command": "azureApiManagement.selectSubscriptions",
+				"icon": {
+					"dark": "resources/dark/filter.svg",
+					"light": "resources/light/filter.svg"
+				},
+				"title": "Select Subscription..."
+			},
+			{
+				"category": "Azure Api Management",
+				"command": "azureApiManagement.Refresh",
+				"icon": {
+					"dark": "resources/dark/refresh.svg",
+					"light": "resources/light/refresh.svg"
+				},
+				"title": "Refresh"
+			},
+			{
+				"category": "Azure Api Management",
+				"command": "azureApiManagement.LoadMore",
+				"icon": {
+					"dark": "resources/dark/refresh.svg",
+					"light": "resources/light/refresh.svg"
+				},
+				"title": "Load More"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showApi",
+				"title": "%azureApiManagement.showApi%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showArmApi",
+				"title": "%azureApiManagement.showArmApi%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showArmApiOperation",
+				"title": "%azureApiManagement.showArmApiOperation%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showArmProduct",
+				"title": "%azureApiManagement.showArmProduct%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showServicePolicy",
+				"title": "%azureApiManagement.showServicePolicy%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showApiPolicy",
+				"title": "%azureApiManagement.showApiPolicy%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showOperationPolicy",
+				"title": "%azureApiManagement.showOperationPolicy%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.createNamedValue",
+				"title": "%azureApiManagement.createNamedValue%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.createSubscription",
+				"title": "%azureApiManagement.createSubscription%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.deleteSubscription",
+				"title": "%azureApiManagement.deleteSubscription%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.deleteNamedValue",
+				"title": "%azureApiManagement.deleteNamedValue%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.updateNamedValue",
+				"title": "%azureApiManagement.updateNamedValue%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.addApiToProduct",
+				"title": "%azureApiManagement.addApiToProduct%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.removeApiFromProduct",
+				"title": "%azureApiManagement.removeApiFromProduct%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.addApiToGateway",
+				"title": "%azureApiManagement.addApiToGateway%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.removeApiFromGateway",
+				"title": "%azureApiManagement.removeApiFromGateway%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showProductPolicy",
+				"title": "%azureApiManagement.showProductPolicy%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.openExtensionWorkspaceFolder",
+				"title": "%azureApiManagement.openExtensionWorkspaceFolder%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.initializeExtensionWorkspaceFolder",
+				"title": "%azureApiManagement.initializeExtensionWorkspaceFolder%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.extractService",
+				"title": "%azureApiManagement.extractService%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.extractApi",
+				"title": "%azureApiManagement.extractApi%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.importFunctionApp",
+				"title": "%azureApiManagement.importFunctionApp%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.importFunctionAppToApi",
+				"title": "%azureApiManagement.importFunctionAppToApi%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.importWebApp",
+				"title": "%azureApiManagement.importWebApp%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.importWebAppToApi",
+				"title": "%azureApiManagement.importWebAppToApi%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.addApiFilter",
+				"title": "%azureApiManagement.addApiFilter%"
+			},
+			{
+				"command": "azureApiManagement.setApiFilter",
+				"icon": {
+					"dark": "resources/dark/filter.svg",
+					"light": "resources/light/filter.svg"
+				},
+				"title": "%azureApiManagement.setApiFilter%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.debugPolicy",
+				"title": "%azureApiManagement.debugPolicy%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.copyDockerRunCommand",
+				"title": "%azureApiManagement.copyDockerRunCommand%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.generateKubernetesDeployment",
+				"title": "%azureApiManagement.generateKubernetesDeployment%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.generateNewGatewayToken",
+				"title": "%azureApiManagement.generateNewGatewayToken%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.generateFunctions",
+				"title": "%azureApiManagement.generateFunctions%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.setCustomHostName",
+				"title": "%azureApiManagement.setCustomHostName%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.revisions",
+				"title": "%azureApiManagement.revisions%"
+			},
+			{
+				"command": "azureApiManagement.openDiffEditor",
+				"icon": {
+					"dark": "resources/dark/diff.svg",
+					"light": "resources/light/diff.svg"
+				},
+				"title": "Show diffs against the last saved version"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.createAuthorizationProvider",
+				"title": "%azureApiManagement.createAuthorizationProvider%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.deleteAuthorizationProvider",
+				"title": "%azureApiManagement.deleteAuthorizationProvider%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.copyAuthorizationProviderRedirectUrl",
+				"title": "%azureApiManagement.copyAuthorizationProviderRedirectUrl%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.createAuthorization",
+				"title": "%azureApiManagement.createAuthorization%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.authorizeAuthorization",
+				"title": "%azureApiManagement.authorizeAuthorization%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.deleteAuthorization",
+				"title": "%azureApiManagement.deleteAuthorization%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.copyAuthorizationPolicy",
+				"title": "%azureApiManagement.copyAuthorizationPolicy%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.createAuthorizationAccessPolicy",
+				"title": "%azureApiManagement.createAuthorizationAccessPolicy%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.deleteAuthorizationAccessPolicy",
+				"title": "%azureApiManagement.deleteAuthorizationAccessPolicy%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showArmAuthorizationProvider",
+				"title": "%azureApiManagement.showArmAuthorizationProvider%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showArmAuthorization",
+				"title": "%azureApiManagement.showArmAuthorization%"
+			},
+			{
+				"category": "Azure API Management",
+				"command": "azureApiManagement.showArmAuthorizationAccessPolicy",
+				"title": "%azureApiManagement.showArmAuthorizationAccessPolicy%"
+			}
+		],
+		"configuration": [
+			{
+				"properties": {
+					"azureApiManagement.advancedCreation": {
+						"default": false,
+						"description": "%azureApiManagement.advancedCreationDescription%",
+						"type": "boolean"
+					},
+					"azureApiManagement.advancedPolicyAuthoringExperience": {
+						"default": false,
+						"description": "%azureApiManagement.advancedPolicyAuthoringExperience%",
+						"type": "boolean"
+					},
+					"azureApiManagement.scaffoldAzureFunctions": {
+						"default": true,
+						"description": "%azureApiManagement.scaffoldAzureFunctions%",
+						"type": "boolean"
+					},
+					"azureApiManagement.showExplorer": {
+						"default": true,
+						"description": "%azureApiManagement.showExplorer%",
+						"type": "boolean"
+					},
+					"azureApiManagement.showSavePrompt": {
+						"default": true,
+						"description": "%azureApiManagement.showSavePrompt%",
+						"type": "boolean"
+					}
+				},
+				"title": "Azure API Management"
+			}
+		],
+		"debuggers": [
+			{
+				"configurationAttributes": {
+					"launch": {
+						"properties": {
+							"stopOnEntry": {
+								"default": true,
+								"description": "Automatically stop after launch.",
+								"type": "boolean"
+							}
+						}
+					}
+				},
+				"initialConfigurations": [
+					{
+						"name": "Attach to APIM",
+						"request": "launch",
+						"stopOnEntry": true,
+						"type": "apim-policy"
+					}
+				],
+				"label": "Attach to APIM",
+				"runtime": "node",
+				"type": "apim-policy"
+			}
+		],
+		"jsonValidation": [
+			{
+				"fileMatch": "/*-api-arm.json",
+				"url": "./resources/schemas/ApiCreateOrUpdateParameter.json"
+			},
+			{
+				"fileMatch": "/*-operation-arm.json",
+				"url": "./resources/schemas/OperationUpdateContract.json"
+			}
+		],
+		"languages": [
+			{
+				"id": "apim-policy",
+				"mimetypes": [
+					"application/vnd.ms-azure-apim.policy.raw+xml"
+				]
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "azureApiManagement.Refresh",
+					"when": "never"
+				},
+				{
+					"command": "azureApiManagement.LoadMore",
+					"when": "never"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "azureApiManagement.openDiffEditor",
+					"group": "navigation",
+					"when": "isEditorEnabled"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "azureApiManagement.selectSubscriptions",
+					"group": "inline",
+					"when": "view == azureApiManagementExplorer && viewItem == azureextensionui.azureSubscription"
+				},
+				{
+					"command": "azureApiManagement.Refresh",
+					"group": "3@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureextensionui.azureSubscription"
+				},
+				{
+					"command": "azureApiManagement.createService",
+					"group": "2@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureextensionui.azureSubscription"
+				},
+				{
+					"command": "azureApiManagement.openInPortal",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureextensionui.azureSubscription"
+				},
+				{
+					"command": "azureApiManagement.openInPortal",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService"
+				},
+				{
+					"command": "azureApiManagement.copySubscriptionKey",
+					"group": "1@2",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService"
+				},
+				{
+					"command": "azureApiManagement.setCustomHostName",
+					"group": "1@3",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService"
+				},
+				{
+					"command": "azureApiManagement.extractService",
+					"group": "2@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService"
+				},
+				{
+					"command": "azureApiManagement.Refresh",
+					"group": "3@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService"
+				},
+				{
+					"command": "azureApiManagement.deleteService",
+					"group": "4@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementService"
+				},
+				{
+					"command": "azureApiManagement.importOpenApiByFile",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis"
+				},
+				{
+					"command": "azureApiManagement.importOpenApiByLink",
+					"group": "1@2",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis"
+				},
+				{
+					"command": "azureApiManagement.importFunctionApp",
+					"group": "2@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis"
+				},
+				{
+					"command": "azureApiManagement.importWebApp",
+					"group": "2@2",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis"
+				},
+				{
+					"command": "azureApiManagement.Refresh",
+					"group": "3@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis"
+				},
+				{
+					"command": "azureApiManagement.addApiFilter",
+					"group": "4@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis"
+				},
+				{
+					"command": "azureApiManagement.setApiFilter",
+					"group": "inline",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApis"
+				},
+				{
+					"command": "azureApiManagement.showApi",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi"
+				},
+				{
+					"command": "azureApiManagement.importFunctionAppToApi",
+					"group": "2@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi"
+				},
+				{
+					"command": "azureApiManagement.importWebAppToApi",
+					"group": "2@2",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi"
+				},
+				{
+					"command": "azureApiManagement.generateFunctions",
+					"group": "3@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi && config.azureApiManagement.scaffoldAzureFunctions == true"
+				},
+				{
+					"command": "azureApiManagement.extractApi",
+					"group": "4@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi"
+				},
+				{
+					"command": "azureApiManagement.revisions",
+					"group": "5@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi"
+				},
+				{
+					"command": "azureApiManagement.Refresh",
+					"group": "6@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi"
+				},
+				{
+					"command": "azureApiManagement.deleteApi",
+					"group": "7@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApi"
+				},
+				{
+					"command": "azureApiManagement.Refresh",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementOperations"
+				},
+				{
+					"command": "azureApiManagement.deleteOperation",
+					"group": "1@2",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApiOperation"
+				},
+				{
+					"command": "azureApiManagement.testOperation",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApiOperation"
+				},
+				{
+					"command": "azureApiManagement.debugPolicy",
+					"group": "2@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementApiOperation"
+				},
+				{
+					"command": "azureApiManagement.createNamedValue",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementNamedValues"
+				},
+				{
+					"command": "azureApiManagement.deleteNamedValue",
+					"group": "1@2",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementNamedValue"
+				},
+				{
+					"command": "azureApiManagement.updateNamedValue",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementNamedValue"
+				},
+				{
+					"command": "azureApiManagement.addApiToProduct",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementProductApis"
+				},
+				{
+					"command": "azureApiManagement.removeApiFromProduct",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementProductApi"
+				},
+				{
+					"command": "azureApiManagement.addApiToGateway",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayApis"
+				},
+				{
+					"command": "azureApiManagement.removeApiFromGateway",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayApi"
+				},
+				{
+					"command": "azureApiManagement.copyDockerRunCommand",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayTreeItem"
+				},
+				{
+					"command": "azureApiManagement.generateKubernetesDeployment",
+					"group": "1@2",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayTreeItem"
+				},
+				{
+					"command": "azureApiManagement.generateNewGatewayToken",
+					"group": "1@3",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementGatewayTreeItem"
+				},
+				{
+					"command": "azureApiManagement.createSubscription",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementSubscriptions"
+				},
+				{
+					"command": "azureApiManagement.deleteSubscription",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementSubscriptionTreeItem"
+				},
+				{
+					"command": "azureApiManagement.createAuthorizationProvider",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationProviders"
+				},
+				{
+					"command": "azureApiManagement.Refresh",
+					"group": "2@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationProviders"
+				},
+				{
+					"command": "azureApiManagement.copyAuthorizationProviderRedirectUrl",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationProvider"
+				},
+				{
+					"command": "azureApiManagement.deleteAuthorizationProvider",
+					"group": "3@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationProvider"
+				},
+				{
+					"command": "azureApiManagement.createAuthorization",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizations"
+				},
+				{
+					"command": "azureApiManagement.Refresh",
+					"group": "2@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizations"
+				},
+				{
+					"command": "azureApiManagement.authorizeAuthorization",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorization"
+				},
+				{
+					"command": "azureApiManagement.copyAuthorizationPolicy",
+					"group": "1@2",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorization"
+				},
+				{
+					"command": "azureApiManagement.deleteAuthorization",
+					"group": "3@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorization"
+				},
+				{
+					"command": "azureApiManagement.createAuthorizationAccessPolicy",
+					"group": "1@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationAccessPolicies"
+				},
+				{
+					"command": "azureApiManagement.Refresh",
+					"group": "2@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationAccessPolicies"
+				},
+				{
+					"command": "azureApiManagement.deleteAuthorizationAccessPolicy",
+					"group": "3@1",
+					"when": "view == azureApiManagementExplorer && viewItem == azureApiManagementAuthorizationAccessPolicy"
+				}
+			],
+			"view/title": [
+				{
+					"command": "azureApiManagement.Refresh",
+					"group": "navigation@1",
+					"when": "view == azureApiManagementExplorer"
+				}
+			]
+		},
+		"snippets": [
+			{
+				"language": "aspnetcorerazor",
+				"path": "./aspnetcorerazor.json"
+			}
+		],
+		"views": {
+			"azure": [
+				{
+					"id": "azureApiManagementExplorer",
+					"name": "Api Management",
+					"when": "config.azureApiManagement.showExplorer == true"
+				}
+			]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"icon": "resources/azure.svg",
+					"id": "azure",
+					"title": "Azure"
+				}
+			]
+		}
+	},
+	"activationEvents": [
+		"onCommand:azureApiManagement.Refresh",
+		"onCommand:azureApiManagement.selectSubscriptions",
+		"onView:azureApiManagementExplorer",
+		"onLanguage:policy",
+		"onLanguage:apim-policy",
+		"onCommand:azureApiManagement.createService",
+		"onCommand:azureApiManagement.deleteService",
+		"onCommand:azureApiManagement.copySubscriptionKey",
+		"onCommand:azureApiManagement.deleteApi",
+		"onCommand:azureApiManagement.deleteOperation",
+		"onCommand:azureApiManagement.importOpenApiByFile",
+		"onCommand:azureApiManagement.importOpenApiByLink",
+		"onCommand:azureApiManagement.testOperation",
+		"onCommand:azureApiManagement.openInPortal",
+		"onCommand:azureApiManagement.showApi",
+		"onCommand:azureApiManagement.showArmApi",
+		"onCommand:azureApiManagement.showArmApiOperation",
+		"onCommand:azureApiManagement.showArmProduct",
+		"onCommand:azureApiManagement.showServicePolicy",
+		"onCommand:azureApiManagement.showApiPolicy",
+		"onCommand:azureApiManagement.showOperationPolicy",
+		"onCommand:azureApiManagement.createNamedValue",
+		"onCommand:azureApiManagement.deleteNamedValue",
+		"onCommand:azureApiManagement.updateNamedValue",
+		"onCommand:azureApiManagement.addApiToProduct",
+		"onCommand:azureApiManagement.removeApiFromProduct",
+		"onCommand:azureApiManagement.addApiToGateway",
+		"onCommand:azureApiManagement.removeApiFromGateway",
+		"onCommand:azureApiManagement.showProductPolicy",
+		"onCommand:azureApiManagement.openWorkingFolder",
+		"onCommand:azureApiManagement.setupWorkingFolder",
+		"onCommand:azureApiManagement.extractService",
+		"onCommand:azureApiManagement.extractApi",
+		"onCommand:azureApiManagement.importFunctionApp",
+		"onCommand:azureApiManagement.importFunctionAppToApi",
+		"onCommand:azureApiManagement.importWebApp",
+		"onCommand:azureApiManagement.importWebAppToApi",
+		"onCommand:azureApiManagement.addApiFilter",
+		"onCommand:azureApiManagement.copyDockerRunCommand",
+		"onCommand:azureApiManagement.generateKubernetesDeployment",
+		"onCommand:azureApiManagement.generateNewGatewayToken",
+		"onCommand:azureApiManagement.debugPolicy",
+		"onCommand:azureApiManagement.generateFunctions",
+		"onCommand:azureApiManagement.revisions",
+		"onCommand:azureApiManagement.setCustomHostName",
+		"onCommand:azureApiManagement.createSubscription",
+		"onCommand:azureApiManagement.deleteSubscription",
+		"onCommand:azureApiManagement.createAuthorizationProvider",
+		"onCommand:azureApiManagement.deleteAuthorizationProvider",
+		"onCommand:azureApiManagement.copyAuthorizationProviderRedirectUrl",
+		"onCommand:azureApiManagement.createAuthorization",
+		"onCommand:azureApiManagement.authorizeAuthorization",
+		"onCommand:azureApiManagement.deleteAuthorization",
+		"onCommand:azureApiManagement.createAuthorizationAccessPolicy",
+		"onCommand:azureApiManagement.deleteAuthorizationAccessPolicy",
+		"onCommand:azureApiManagement.copyAuthorizationPolicy",
+		"onCommand:azureApiManagement.showArmAuthorizationProvider",
+		"onCommand:azureApiManagement.showArmAuthorization",
+		"onCommand:azureApiManagement.showArmAuthorizationAccessPolicy"
+	],
+	"dependencies": {
+		"@types/xml": "^1.0.11",
+		"adal-node": "^0.2.2",
+		"await-notify": "1.0.1",
+		"decompress": "^4.2.1",
+		"fs-extra": "^11.2.0",
+		"guid-typescript": "^1.0.9",
+		"opn": "^5.5.0",
+		"request": "^2.88.2",
+		"request-promise": "^4.2.5",
+		"request-promise-native": "^1.0.8",
+		"swagger-parser": "^10.0.3",
+		"ws": "^8.17.0",
+		"xregexp": "^5.1.1"
+	},
+	"devDependencies": {
+		"@types/fs-extra": "^11.0.4",
+		"@types/node": "^20.14.0",
+		"@types/request": "^2.48.12",
+		"@types/request-promise": "^4.1.51",
+		"@types/request-promise-native": "^1.0.21",
+		"@types/swagger-parser": "^4.0.3",
+		"@types/ws": "^8.5.10"
+	},
+	"extensionDependencies": [
+		"humao.rest-client",
+		"ms-vscode.azure-account"
+	],
+	"icon": "resources/apim-icon-newone.png",
+	"galleryBanner": {
+		"color": "#0072c6",
+		"theme": "dark"
+	},
+	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
+	"overrides": {
+		"fsevents": "~2.3.2"
+	}
 }
