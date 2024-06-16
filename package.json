@@ -798,7 +798,7 @@
 		"request-promise": "^4.2.5",
 		"request-promise-native": "^1.0.8",
 		"swagger-parser": "^10.0.3",
-		"ws": "^8.17.0",
+		"ws": "^8.17.1",
 		"xregexp": "^5.1.1"
 	},
 	"devDependencies": {
