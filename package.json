@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 	"activationEvents": [
 		"onCommand:azureApiManagement.Refresh",
 		"onCommand:azureApiManagement.selectSubscriptions",
@@ -61,6 +62,20 @@
 		"onCommand:azureApiManagement.showArmAuthorizationAccessPolicy"
 	],
 	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
+=======
+	"name": "vscode-apimanagement",
+	"displayName": "Azure API Management",
+	"description": "An Azure API Management extension for Visual Studio Code.",
+	"main": "main",
+	"scripts": {
+		"all": "npm i && npm run lint && npm test",
+		"build": "tsc -p ./",
+		"compile": "tsc -watch -p ./",
+		"webpack": "npm run build && gulp webpack-dev",
+		"webpack-prod": "npm run build && gulp webpack-prod",
+		"webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
+	},
+>>>>>>> 08f9d6a436f159665f4dd913806a1d7dc1d83492
 	"contributes": {
 		"breakpoints": [
 			{
@@ -775,6 +790,7 @@
 			]
 		}
 	},
+<<<<<<< HEAD
 	"dependencies": {
 		"@types/xml": "^1.0.4",
 		"adal-node": "^0.2.2",
@@ -805,10 +821,103 @@
 		"ms-vscode.azure-account",
 		"humao.rest-client"
 	],
+=======
+	"activationEvents": [
+		"onCommand:azureApiManagement.Refresh",
+		"onCommand:azureApiManagement.selectSubscriptions",
+		"onView:azureApiManagementExplorer",
+		"onLanguage:policy",
+		"onLanguage:apim-policy",
+		"onCommand:azureApiManagement.createService",
+		"onCommand:azureApiManagement.deleteService",
+		"onCommand:azureApiManagement.copySubscriptionKey",
+		"onCommand:azureApiManagement.deleteApi",
+		"onCommand:azureApiManagement.deleteOperation",
+		"onCommand:azureApiManagement.importOpenApiByFile",
+		"onCommand:azureApiManagement.importOpenApiByLink",
+		"onCommand:azureApiManagement.testOperation",
+		"onCommand:azureApiManagement.openInPortal",
+		"onCommand:azureApiManagement.showApi",
+		"onCommand:azureApiManagement.showArmApi",
+		"onCommand:azureApiManagement.showArmApiOperation",
+		"onCommand:azureApiManagement.showArmProduct",
+		"onCommand:azureApiManagement.showServicePolicy",
+		"onCommand:azureApiManagement.showApiPolicy",
+		"onCommand:azureApiManagement.showOperationPolicy",
+		"onCommand:azureApiManagement.createNamedValue",
+		"onCommand:azureApiManagement.deleteNamedValue",
+		"onCommand:azureApiManagement.updateNamedValue",
+		"onCommand:azureApiManagement.addApiToProduct",
+		"onCommand:azureApiManagement.removeApiFromProduct",
+		"onCommand:azureApiManagement.addApiToGateway",
+		"onCommand:azureApiManagement.removeApiFromGateway",
+		"onCommand:azureApiManagement.showProductPolicy",
+		"onCommand:azureApiManagement.openWorkingFolder",
+		"onCommand:azureApiManagement.setupWorkingFolder",
+		"onCommand:azureApiManagement.extractService",
+		"onCommand:azureApiManagement.extractApi",
+		"onCommand:azureApiManagement.importFunctionApp",
+		"onCommand:azureApiManagement.importFunctionAppToApi",
+		"onCommand:azureApiManagement.importWebApp",
+		"onCommand:azureApiManagement.importWebAppToApi",
+		"onCommand:azureApiManagement.addApiFilter",
+		"onCommand:azureApiManagement.copyDockerRunCommand",
+		"onCommand:azureApiManagement.generateKubernetesDeployment",
+		"onCommand:azureApiManagement.generateNewGatewayToken",
+		"onCommand:azureApiManagement.debugPolicy",
+		"onCommand:azureApiManagement.generateFunctions",
+		"onCommand:azureApiManagement.revisions",
+		"onCommand:azureApiManagement.setCustomHostName",
+		"onCommand:azureApiManagement.createSubscription",
+		"onCommand:azureApiManagement.deleteSubscription",
+		"onCommand:azureApiManagement.createAuthorizationProvider",
+		"onCommand:azureApiManagement.deleteAuthorizationProvider",
+		"onCommand:azureApiManagement.copyAuthorizationProviderRedirectUrl",
+		"onCommand:azureApiManagement.createAuthorization",
+		"onCommand:azureApiManagement.authorizeAuthorization",
+		"onCommand:azureApiManagement.deleteAuthorization",
+		"onCommand:azureApiManagement.createAuthorizationAccessPolicy",
+		"onCommand:azureApiManagement.deleteAuthorizationAccessPolicy",
+		"onCommand:azureApiManagement.copyAuthorizationPolicy",
+		"onCommand:azureApiManagement.showArmAuthorizationProvider",
+		"onCommand:azureApiManagement.showArmAuthorization",
+		"onCommand:azureApiManagement.showArmAuthorizationAccessPolicy"
+	],
+	"dependencies": {
+		"@types/xml": "1.0.11",
+		"adal-node": "0.2.2",
+		"await-notify": "1.0.1",
+		"decompress": "4.2.1",
+		"fs-extra": "11.2.0",
+		"guid-typescript": "1.0.9",
+		"opn": "5.5.0",
+		"request": "2.88.2",
+		"request-promise": "4.2.5",
+		"request-promise-native": "1.0.8",
+		"swagger-parser": "10.0.3",
+		"ws": "8.18.0",
+		"xregexp": "5.1.1"
+	},
+	"devDependencies": {
+		"@types/fs-extra": "11.0.4",
+		"@types/node": "20.14.12",
+		"@types/request": "2.48.12",
+		"@types/request-promise": "4.1.51",
+		"@types/request-promise-native": "1.0.21",
+		"@types/swagger-parser": "4.0.3",
+		"@types/ws": "8.5.11"
+	},
+	"extensionDependencies": [
+		"humao.rest-client",
+		"ms-vscode.azure-account"
+	],
+	"icon": "resources/apim-icon-newone.png",
+>>>>>>> 08f9d6a436f159665f4dd913806a1d7dc1d83492
 	"galleryBanner": {
 		"color": "#0072c6",
 		"theme": "dark"
 	},
+<<<<<<< HEAD
 	"icon": "resources/apim-icon-newone.png",
 	"main": "main",
 	"name": "vscode-apimanagement",
@@ -822,5 +931,10 @@
 		"webpack": "npm run build && gulp webpack-dev",
 		"webpack-prod": "npm run build && gulp webpack-prod",
 		"webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
+=======
+	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
+	"overrides": {
+		"fsevents": "2.3.2"
+>>>>>>> 08f9d6a436f159665f4dd913806a1d7dc1d83492
 	}
 }
