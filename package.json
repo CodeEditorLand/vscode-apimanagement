@@ -787,7 +787,7 @@
 		"request-promise": "4.2.5",
 		"request-promise-native": "1.0.8",
 		"swagger-parser": "6.0.5",
-		"ws": "7.4.6",
+		"ws": "7.5.10",
 		"xregexp": "4.3.0"
 	},
 	"description": "An Azure API Management extension for Visual Studio Code.",
