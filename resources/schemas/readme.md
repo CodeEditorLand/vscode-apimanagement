@@ -1,1 +1,0 @@
-The files are generated using https://marketplace.visualstudio.com/items?itemName=marcoq.vscode-typescript-to-json-schema
