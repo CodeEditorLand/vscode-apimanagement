@@ -2,14 +2,15 @@
  * Copyright (C) Microsoft Corporation. All rights reserved.
  *--------------------------------------------------------*/
 
+import * as path from "path";
 import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
-import * as path from 'path';
-import * as request from 'request-promise-native';
-import { Source } from 'vscode-debugadapter';
+import * as request from "request-promise-native";
+import { Source } from "vscode-debugadapter";
+
 import * as Constants from "../constants";
-import { getBearerToken } from '../utils/requestUtil';
-import { StackFrameScopeContract } from './debuggerConnection';
-import { PolicyLocation, PolicyMap, PolicyMapper } from './policyMapper';
+import { getBearerToken } from "../utils/requestUtil";
+import { StackFrameScopeContract } from "./debuggerConnection";
+import { PolicyLocation, PolicyMap, PolicyMapper } from "./policyMapper";
 
 // tslint:disable: no-unsafe-any
 // tslint:disable: indent
@@ -22,14 +23,18 @@ import { PolicyLocation, PolicyMap, PolicyMapper } from './policyMapper';
 // tslint:disable: interface-name
 
 export class PolicySource {
-	private static NextSourceReference : number = 1;
+	private static NextSourceReference: number = 1;
 
 	private managementAddress: string;
 	private credential: TokenCredentialsBase | undefined;
 	private auth: string | undefined;
 	private policies: { [key: string]: Policy } = {};
 
-	constructor(managementAddress: string, credential?: TokenCredentialsBase, auth?: string) {
+	constructor(
+		managementAddress: string,
+		credential?: TokenCredentialsBase,
+		auth?: string,
+	) {
 		this.managementAddress = managementAddress;
 		this.credential = credential;
 		this.auth = auth;
@@ -38,7 +43,10 @@ export class PolicySource {
 		}
 	}
 
-	public getPolicyLocation(scopeId: string, path: string): PolicyLocation | null {
+	public getPolicyLocation(
+		scopeId: string,
+		path: string,
+	): PolicyLocation | null {
 		const policy = this.policies[this.normalizeScopeId(scopeId)];
 		if (!policy) {
 			return null;
@@ -49,7 +57,9 @@ export class PolicySource {
 		}
 
 		const paths = path.split("/");
-		const mapKeys = Object.keys(policy.map).map(s => s.split("/")).filter(s => s.length === paths.length);
+		const mapKeys = Object.keys(policy.map)
+			.map((s) => s.split("/"))
+			.filter((s) => s.length === paths.length);
 
 		for (const curKey of mapKeys) {
 			let isEqual = true;
@@ -69,18 +79,28 @@ export class PolicySource {
 	}
 
 	public async fetchPolicies(scopes: string[]): Promise<void> {
-		const policiesToRequest = scopes.map(s => this.normalizeScopeId(s)).filter(s => !this.policies[s]);
+		const policiesToRequest = scopes
+			.map((s) => this.normalizeScopeId(s))
+			.filter((s) => !this.policies[s]);
 
 		if (policiesToRequest.length) {
 			// Batching goes here
-			await Promise.all(policiesToRequest.map(s => this.fetchPolicy(s).catch(_e => null)));
+			await Promise.all(
+				policiesToRequest.map((s) =>
+					this.fetchPolicy(s).catch((_e) => null),
+				),
+			);
 		}
 	}
 
 	public getPolicyBySourceReference(id: number | undefined): Policy | null {
 		for (const scope in this.policies) {
 			const policy = this.policies[scope];
-			if (policy && policy.source && policy.source.sourceReference === id) {
+			if (
+				policy &&
+				policy.source &&
+				policy.source.sourceReference === id
+			) {
 				return policy;
 			}
 		}
@@ -103,26 +123,39 @@ export class PolicySource {
 		if (this.auth) {
 			authToken = this.auth;
 		} else {
-			authToken = await getBearerToken(policyUrl, "GET", this.credential!);
+			authToken = await getBearerToken(
+				policyUrl,
+				"GET",
+				this.credential!,
+			);
 		}
-		const policyContract: PolicyContract = await request.get(policyUrl, {
-			headers: {
-				Authorization: authToken
-			},
-			strictSSL: false,
-			json: true
-		}).on('error', _e => {
-			//const a = 5;
-		}).on('response', _e => {
-			//const a = 5;
-		});
+		const policyContract: PolicyContract = await request
+			.get(policyUrl, {
+				headers: {
+					Authorization: authToken,
+				},
+				strictSSL: false,
+				json: true,
+			})
+			.on("error", (_e) => {
+				//const a = 5;
+			})
+			.on("response", (_e) => {
+				//const a = 5;
+			});
 
-		const policy = this.policies[scopeId] || (this.policies[scopeId] = {
-			scopeId: scopeId,
-			xml: null,
-			source: new Source(scopeId, path.normalize(scopeId), PolicySource.NextSourceReference++),
-			map: {}
-		});
+		const policy =
+			this.policies[scopeId] ||
+			(this.policies[scopeId] = {
+				scopeId: scopeId,
+				xml: null,
+				source: new Source(
+					scopeId,
+					path.normalize(scopeId),
+					PolicySource.NextSourceReference++,
+				),
+				map: {},
+			});
 		policy.xml = policyContract.properties.value;
 
 		this.mapPolicy(policy);
@@ -131,7 +164,7 @@ export class PolicySource {
 	}
 
 	private normalizeScopeId(scopeId: string): string {
-		return scopeId.replace(/\\/g, '/');
+		return scopeId.replace(/\\/g, "/");
 	}
 
 	private mapPolicy(policy: Policy): void {
@@ -153,8 +186,8 @@ export class PolicySource {
 
 interface PolicyContract {
 	properties: {
-		format: string,
-		value: string
+		format: string;
+		value: string;
 	};
 }
 

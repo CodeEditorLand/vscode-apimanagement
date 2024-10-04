@@ -5,6 +5,7 @@
 
 import { IAuthorizationTreeRoot } from "./IAuthorizationTreeRoot";
 
-export interface IAuthorizationAccessPolicyTreeRoot extends IAuthorizationTreeRoot {
-    accessPolicyName: string;
+export interface IAuthorizationAccessPolicyTreeRoot
+	extends IAuthorizationTreeRoot {
+	accessPolicyName: string;
 }

@@ -6,19 +6,19 @@
 import { ParameterContract } from "@azure/arm-apimanagement/src/models";
 
 export class ConsoleParameter {
-    public name: string;
-    public value: string;
+	public name: string;
+	public value: string;
 
-    constructor(contract?: ParameterContract) {
-        this.name = "";
-        this.value = "";
+	constructor(contract?: ParameterContract) {
+		this.name = "";
+		this.value = "";
 
-        if (contract) {
-            this.name = contract.name;
+		if (contract) {
+			this.name = contract.name;
 
-            if (contract.defaultValue) {
-                this.value = contract.defaultValue;
-            }
-        }
-    }
+			if (contract.defaultValue) {
+				this.value = contract.defaultValue;
+			}
+		}
+	}
 }

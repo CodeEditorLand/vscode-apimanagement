@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export async function openUrl(url: string): Promise<void> {
-    await vscode.env.openExternal(vscode.Uri.parse(url));
+	await vscode.env.openExternal(vscode.Uri.parse(url));
 }
