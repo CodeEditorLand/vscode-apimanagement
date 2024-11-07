@@ -793,12 +793,12 @@
 	"description": "An Azure API Management extension for Visual Studio Code.",
 	"devDependencies": {
 		"@types/fs-extra": "11.0.4",
-		"@types/node": "22.8.6",
+		"@types/node": "22.9.0",
 		"@types/request": "2.48.12",
 		"@types/request-promise": "4.1.51",
 		"@types/request-promise-native": "1.0.21",
 		"@types/swagger-parser": "7.0.1",
-		"@types/ws": "8.5.12"
+		"@types/ws": "8.5.13"
 	},
 	"displayName": "Azure API Management",
 	"extensionDependencies": [
