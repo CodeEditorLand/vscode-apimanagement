@@ -15,6 +15,7 @@ export class OpenApiParser {
 	public async parse(source: string): Promise<IOpenApiImportObject> {
 		// tslint:disable-next-line:no-any
 		let parsed: any;
+
 		try {
 			parsed = await parse(source);
 		} catch (e) {
@@ -24,8 +25,10 @@ export class OpenApiParser {
 			);
 			ext.outputChannel.appendLine(message);
 			ext.outputChannel.show();
+
 			const err = parseError(e);
 			ext.outputChannel.appendLine(`${err.message}`);
+
 			throw new Error(message);
 		}
 
@@ -40,12 +43,17 @@ export class OpenApiParser {
 
 		if (importObject.version === "2.0") {
 			const oai20 = <IOpenApi20>(<unknown>parsed);
+
 			importObject.schemes = oai20.schemes;
+
 			importObject.host = oai20.host;
+
 			importObject.basePath = oai20.basePath;
 		} else if (importObject.version.startsWith("3.")) {
 			importObject.importFormat = "openapi+json";
+
 			const oai30 = <IOpenApi30>(<unknown>parsed);
+
 			if (oai30.servers.length > 0) {
 				importObject.schemes = oai30.servers
 					.map((item) =>
@@ -54,8 +62,11 @@ export class OpenApiParser {
 					.filter(
 						(value, index, self) => self.indexOf(value) === index,
 					);
+
 				const url = Uri.parse(oai30.servers[0].url);
+
 				importObject.host = url.authority;
+
 				importObject.basePath = url.path;
 			}
 		}
@@ -96,6 +107,7 @@ export class OpenApiParser {
 
 	public updateBackend(source: object, url: string): void {
 		const parsedUrl = Uri.parse(url);
+
 		const version = this.getOpenApiVersion(source);
 
 		if (version === "2.0") {

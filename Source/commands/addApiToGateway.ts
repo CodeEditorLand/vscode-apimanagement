@@ -24,6 +24,7 @@ export async function addApiToGateway(
 	node?: GatewayApisTreeItem,
 ): Promise<void> {
 	let gatewayNode: GatewayTreeItem;
+
 	if (!node) {
 		gatewayNode = <GatewayTreeItem>(
 			await ext.tree.showTreeItemPicker(

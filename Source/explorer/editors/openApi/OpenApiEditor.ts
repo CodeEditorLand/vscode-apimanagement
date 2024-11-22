@@ -46,18 +46,24 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 				context.root.serviceName,
 				context.root.apiName,
 			);
+
 			let exportFormat: string = openApiExport;
+
 			let exportAcceptHeader: string = openApiAcceptHeader;
+
 			if (schemas.length > 0) {
 				const openApiSchemaSupported = schemas.find(
 					(s) => s.contentType === openApiSchema,
 				);
+
 				if (openApiSchemaSupported === undefined) {
 					const swaggerSchemaSupported = schemas.find(
 						(s) => s.contentType === swaggerSchema,
 					);
+
 					if (swaggerSchemaSupported !== undefined) {
 						exportFormat = swaggerExport;
+
 						exportAcceptHeader = swaggerAcceptHeader;
 					} else {
 						throw Error(
@@ -75,10 +81,12 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 				exportFormat,
 				exportAcceptHeader,
 			);
+
 			const sourceDocument = await this.processDocument(
 				context,
 				responseDocument,
 			);
+
 			return JSON.stringify(sourceDocument, null, "\t");
 		} catch (error) {
 			throw new Error(
@@ -99,8 +107,10 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 		data: string,
 	): Promise<string> {
 		let openApiDocument: IOpenApiImportObject | undefined;
+
 		try {
 			const documentJson = JSON.parse(data);
+
 			const openApiparser = new OpenApiParser();
 			openApiDocument = await openApiparser.parse(documentJson);
 
@@ -115,6 +125,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 			}
 
 			const swaggerJson = JSON.stringify(openApiDocument.sourceDocument);
+
 			const payload: ApiManagementModels.ApiCreateOrUpdateParameter = {
 				format: openApiDocument.importFormat,
 				value: swaggerJson,
@@ -147,6 +158,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 						),
 					);
 					//await context.refresh();
+
 					return this.getData(context);
 				});
 		} catch (error) {
@@ -191,6 +203,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 		const client: ServiceClient = await createGenericClient(
 			context.root.credentials,
 		);
+
 		const options: RequestPrepareOptions = {
 			method: "GET",
 			url: this.buildAPIExportUrl(context, exportFormat),
@@ -199,7 +212,9 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 			Accept: exportAcceptHeader,
 			"User-Agent": appendExtensionUserAgent(),
 		};
+
 		const result: HttpOperationResponse = await client.sendRequest(options);
+
 		return <string>result.bodyAsText;
 	}
 
@@ -209,6 +224,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 	): string {
 		let url = `${context.root.environment.resourceManagerEndpointUrl}/subscriptions/${context.root.subscriptionId}/resourceGroups/${context.root.resourceGroupName}/providers/Microsoft.ApiManagement/service/${context.root.serviceName}/apis/${context.root.apiName}`;
 		url = `${url}?export=true&format=${exportFormat}&api-version=${Constants.apimApiVersion}`;
+
 		return url;
 	}
 
@@ -218,20 +234,25 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 		swaggerDocument: string,
 	): Promise<any> {
 		const openApiparser = new OpenApiParser();
+
 		const swagger = JSON.parse(swaggerDocument);
 		// tslint:disable-next-line: no-unsafe-any
 		const importDocument = await openApiparser.parse(swagger);
+
 		const sourceDocument = importDocument.sourceDocument;
+
 		let basePath: string =
 			importDocument.basePath !== undefined
 				? importDocument.basePath
 				: "";
+
 		if (
 			context.apiContract.apiVersionSet &&
 			context.apiContract.apiVersionSet.versioningScheme === "Segment" &&
 			sourceDocument.basePath !== undefined
 		) {
 			const versionSegment = `/${context.apiContract.apiVersion}`;
+
 			if (basePath.endsWith(versionSegment)) {
 				// tslint:disable-next-line: no-unsafe-any
 				basePath = sourceDocument.basePath.replace(versionSegment, "");
@@ -247,6 +268,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 			basePath,
 			nonNullProp(service, "gatewayUrl"),
 		);
+
 		return sourceDocument;
 	}
 }

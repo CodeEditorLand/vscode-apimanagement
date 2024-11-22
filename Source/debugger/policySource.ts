@@ -38,6 +38,7 @@ export class PolicySource {
 		this.managementAddress = managementAddress;
 		this.credential = credential;
 		this.auth = auth;
+
 		if (!credential && !auth) {
 			throw new Error("Missing credentials!");
 		}
@@ -48,6 +49,7 @@ export class PolicySource {
 		path: string,
 	): PolicyLocation | null {
 		const policy = this.policies[this.normalizeScopeId(scopeId)];
+
 		if (!policy) {
 			return null;
 		}
@@ -57,6 +59,7 @@ export class PolicySource {
 		}
 
 		const paths = path.split("/");
+
 		const mapKeys = Object.keys(policy.map)
 			.map((s) => s.split("/"))
 			.filter((s) => s.length === paths.length);
@@ -96,6 +99,7 @@ export class PolicySource {
 	public getPolicyBySourceReference(id: number | undefined): Policy | null {
 		for (const scope in this.policies) {
 			const policy = this.policies[scope];
+
 			if (
 				policy &&
 				policy.source &&
@@ -114,12 +118,15 @@ export class PolicySource {
 
 	public async fetchPolicy(scopeId: string): Promise<Policy | null> {
 		scopeId = this.normalizeScopeId(scopeId);
+
 		const policyUrl = this.getPolicyUrl(scopeId);
+
 		if (!policyUrl) {
 			return null;
 		}
 
 		let authToken;
+
 		if (this.auth) {
 			authToken = this.auth;
 		} else {

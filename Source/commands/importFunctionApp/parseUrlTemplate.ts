@@ -10,11 +10,15 @@ export function parseUrlTemplate(uriTemplate: string): {
 	urlTemplate: string;
 } {
 	let cleanTemplate = "";
+
 	const parameters: ParameterContract[] = [];
 
 	let templateStart = 0;
+
 	let parameterStart = 0;
+
 	let parameterDepth = 0;
+
 	for (let i = 0; i < uriTemplate.length; i++) {
 		if (uriTemplate[i] === "{") {
 			if (parameterDepth === 0) {
@@ -45,6 +49,7 @@ export function parseUrlTemplate(uriTemplate: string): {
 
 function parseParameter(param: string): ParameterContract {
 	const nameAndType = param.split(/:|=|\?/, 3);
+
 	const defaultValue = param.split("=", 3);
 
 	const parameter: ParameterContract = {
@@ -73,15 +78,19 @@ function mapParameterType(type: string): string {
 		case "datetime":
 		case "guid":
 			return "string";
+
 		case "decimal":
 		case "float":
 		case "double":
 			return "number";
+
 		case "int":
 		case "long":
 			return "integer";
+
 		case "bool":
 			return "boolean";
+
 		default:
 			if (
 				type.startsWith("length(") ||

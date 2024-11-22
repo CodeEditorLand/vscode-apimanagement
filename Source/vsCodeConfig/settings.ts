@@ -18,8 +18,10 @@ export function getGlobalSetting<T>(
 ): T | undefined {
 	const projectConfiguration: WorkspaceConfiguration =
 		workspace.getConfiguration(prefix);
+
 	const result: { globalValue?: T } | undefined =
 		projectConfiguration.inspect<T>(key);
+
 	return result && result.globalValue;
 }
 
@@ -47,6 +49,7 @@ export function getWorkspaceSetting<T>(
 			prefix,
 			fsPath ? Uri.file(fsPath) : undefined,
 		);
+
 	return projectConfiguration.get<T>(key);
 }
 

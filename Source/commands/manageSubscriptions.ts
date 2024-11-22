@@ -35,10 +35,15 @@ export async function createSubscription(
 	}
 
 	const name = await askName(node);
+
 	const displayName = await askDisplayname();
+
 	const allowTrace = await askTrace();
+
 	const user = await askUser(node);
+
 	let scope = await askScope();
+
 	if (scope === "All APIs") {
 		scope = "/apis";
 	} else if (scope === "API") {
@@ -96,6 +101,7 @@ async function askName(node: SubscriptionsTreeItem): Promise<string> {
 		"subNamePrompt",
 		"Enter Subscription Name.",
 	);
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: subNamePrompt,
@@ -103,6 +109,7 @@ async function askName(node: SubscriptionsTreeItem): Promise<string> {
 				value: string | undefined,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				return validateSubscriptionName(value, subNames);
 			},
 		})
@@ -134,6 +141,7 @@ async function askDisplayname(): Promise<string> {
 		"idPrompt",
 		"Enter Subscription DisplayName.",
 	);
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: idPrompt,
@@ -141,6 +149,7 @@ async function askDisplayname(): Promise<string> {
 				value: string,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				return validateDisplayName(value);
 			},
 		})
@@ -149,6 +158,7 @@ async function askDisplayname(): Promise<string> {
 
 function validateDisplayName(id: string): string | undefined {
 	const test = "^[w]+$)|(^[w][w-]+[w]$";
+
 	if (id.match(test) === null) {
 		return localize("subscriptionInvalid", "Invalid Subscription Name.");
 	}
@@ -158,6 +168,7 @@ function validateDisplayName(id: string): string | undefined {
 
 async function askScope(): Promise<string> {
 	const items: string[] = ["All APIs", "API", "Product"];
+
 	return (
 		await ext.ui.showQuickPick(
 			items.map((s) => {
@@ -175,6 +186,7 @@ async function askUser(
 		node.root.resourceGroupName,
 		node.root.serviceName,
 	);
+
 	return await ext.ui.showQuickPick(
 		users.map((s) => {
 			return {
@@ -197,6 +209,7 @@ async function askAPI(
 		node.root.resourceGroupName,
 		node.root.serviceName,
 	);
+
 	return await ext.ui.showQuickPick(
 		apis.map((s) => {
 			return { label: s.displayName!, value: s };
@@ -212,6 +225,7 @@ async function askProduct(
 		node.root.resourceGroupName,
 		node.root.serviceName,
 	);
+
 	return await ext.ui.showQuickPick(
 		products.map((s) => {
 			return { label: s.displayName, value: s };
@@ -222,6 +236,7 @@ async function askProduct(
 
 async function askTrace(): Promise<string> {
 	const allowTrace = ["Yes", "No"];
+
 	return (
 		await ext.ui.showQuickPick(
 			allowTrace.map((s) => {

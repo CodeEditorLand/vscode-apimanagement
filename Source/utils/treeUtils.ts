@@ -44,6 +44,7 @@ export namespace treeUtils {
 		>(await tree.getChildren()).find(
 			(n: AzureTreeItem) => n.root.subscriptionId === subscriptionId,
 		);
+
 		if (node) {
 			return node;
 		} else {

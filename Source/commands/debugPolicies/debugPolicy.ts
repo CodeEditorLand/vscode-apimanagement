@@ -28,6 +28,7 @@ export async function debugPolicy(
 	}
 
 	const operationData = await node.getOperationDebugInfo();
+
 	const debugConfig: vscode.DebugConfiguration = {
 		type: "apim-policy",
 		request: "launch",
@@ -76,6 +77,7 @@ async function getDebugGatewayAddressUrl(
 	const gatewayUrl: string | undefined = ext.context.globalState.get(
 		node.root.serviceName + gatewayHostName,
 	);
+
 	if (gatewayUrl !== undefined) {
 		return `wss://${gatewayUrl}/debug-0123456789abcdef`;
 	}
@@ -85,12 +87,15 @@ async function getDebugGatewayAddressUrl(
 	);
 	// tslint:disable-next-line: no-non-null-assertion
 	const hostNameConfigs = service.hostnameConfigurations!;
+
 	if (hostNameConfigs.length !== 0) {
 		let gatewayHostNameUl = "";
+
 		if (hostNameConfigs.length > 1) {
 			const allHostNames = hostNameConfigs.filter(
 				(s) => s.type === "Proxy",
 			);
+
 			const pick = await ext.ui.showQuickPick(
 				allHostNames.map((s) => {
 					return { label: s.hostName, gateway: s };

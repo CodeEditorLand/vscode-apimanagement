@@ -29,10 +29,12 @@ export class ServiceNameStep extends AzureNameStep<IServiceWizardContext> {
 					value: string,
 				): Promise<string | undefined> => {
 					value = value ? value.trim() : "";
+
 					const nameAvailability: ApiManagementModels.ApiManagementServiceNameAvailabilityResult =
 						await wizardContext.client.apiManagementService.checkNameAvailability(
 							{ name: value },
 						);
+
 					if (
 						nameAvailability.nameAvailable !== undefined &&
 						!nameAvailability.nameAvailable

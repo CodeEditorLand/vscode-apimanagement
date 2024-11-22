@@ -34,8 +34,11 @@ export async function createOperationTestFile(
 ): Promise<vscode.TextEditor> {
 	// using https://github.com/Huachao/vscode-restclient
 	const fileName = `${nameUtil(node.root)}.http`;
+
 	const localFilePath: string = await createTemporaryFile(fileName);
+
 	let data: string;
+
 	if (mode === OperationRunMode.debug) {
 		data = await node.getOperationDebugInfo();
 	} else {
@@ -43,10 +46,12 @@ export async function createOperationTestFile(
 	}
 	const document: vscode.TextDocument =
 		await vscode.workspace.openTextDocument(localFilePath);
+
 	const textEditor: vscode.TextEditor =
 		await vscode.window.showTextDocument(document);
 	await writeToEditor(textEditor, data);
 	await textEditor.document.save();
+
 	return textEditor;
 }
 

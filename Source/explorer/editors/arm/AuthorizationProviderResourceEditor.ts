@@ -13,6 +13,7 @@ import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 // tslint:disable-next-line:no-any
 export class AuthorizationProviderResourceEditor extends BaseArmResourceEditor<IAuthorizationProviderTreeRoot> {
 	public entityType: string = "AuthorizationProvider";
+
 	constructor() {
 		super();
 	}
@@ -31,6 +32,7 @@ export class AuthorizationProviderResourceEditor extends BaseArmResourceEditor<I
 		const response = await apimService.getAuthorizationProvider(
 			context.root.authorizationProviderName,
 		);
+
 		return nonNullValue(response);
 	}
 
@@ -50,6 +52,7 @@ export class AuthorizationProviderResourceEditor extends BaseArmResourceEditor<I
 			context.root.authorizationProviderName,
 			payload.properties,
 		);
+
 		return nonNullValue(response);
 	}
 }

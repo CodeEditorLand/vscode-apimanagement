@@ -16,10 +16,15 @@ import { AzureAccountTreeItem } from "./explorer/AzureAccountTreeItem";
  */
 export namespace ext {
 	export let context: ExtensionContext;
+
 	export let tree: AzExtTreeDataProvider;
+
 	export let outputChannel: IAzExtOutputChannel;
+
 	export let ui: IAzureUserInput;
+
 	export let azureAccountTreeItem: AzureAccountTreeItem;
+
 	export const prefix: string = "azureAPIM";
 	//export let reporter: ITelemetryContext;
 }

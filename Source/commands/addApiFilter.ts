@@ -27,6 +27,7 @@ export async function addApiFilter(
 	}
 
 	let nextLink: string | undefined;
+
 	const apiCollection: ApiCollection =
 		nextLink === undefined
 			? await node.root.client.api.listByService(
@@ -53,6 +54,7 @@ export async function addApiFilter(
 	const picks = await ext.ui.showQuickPick(
 		apis.map((s) => {
 			let apiName = s.displayName!;
+
 			if (s.apiVersionSetId !== undefined) {
 				if (s.apiVersion !== undefined) {
 					apiName = apiName.concat(" (VersionSet) - ", s.apiVersion);
@@ -61,6 +63,7 @@ export async function addApiFilter(
 				}
 			}
 			let picked = false;
+
 			for (const api of node!.selectedApis) {
 				if (api.name! === s.name!) {
 					picked = true;

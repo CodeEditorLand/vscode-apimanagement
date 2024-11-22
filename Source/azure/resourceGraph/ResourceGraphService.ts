@@ -9,6 +9,7 @@ import { createGenericClient } from "vscode-azureextensionui";
 
 export class ResourceGraphService {
 	public resourceGraphUrl: string;
+
 	constructor(
 		public credentials: TokenCredentialsBase,
 		public endPointUrl: string,
@@ -28,6 +29,7 @@ export class ResourceGraphService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "POST",
 			url: this.resourceGraphUrl,
@@ -51,6 +53,7 @@ export class ResourceGraphService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "POST",
 			url: this.resourceGraphUrl,

@@ -29,6 +29,7 @@ export function getSetHeaderPolicy(
 	headerValues: string[],
 ): Object {
 	const setHeaderChildren: Object[] = [];
+
 	setHeaderChildren.push({
 		_attr: {
 			id: "apim-generated-policy",
@@ -36,6 +37,7 @@ export function getSetHeaderPolicy(
 			"exists-action": existsAction,
 		},
 	});
+
 	for (const headerValue of headerValues) {
 		setHeaderChildren.push({
 			value: headerValue,

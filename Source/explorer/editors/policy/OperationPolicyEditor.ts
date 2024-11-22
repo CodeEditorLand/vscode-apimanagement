@@ -21,6 +21,7 @@ export class OperationPolicyEditor extends BasePolicyEditor<IOperationTreeRoot> 
 			context.root.opName,
 			{ format: policyFormat },
 		);
+
 		return policy._response.bodyAsText;
 	}
 
@@ -36,6 +37,7 @@ export class OperationPolicyEditor extends BasePolicyEditor<IOperationTreeRoot> 
 				context.root.opName,
 				policy,
 			);
+
 		return policyResult._response.bodyAsText;
 	}
 

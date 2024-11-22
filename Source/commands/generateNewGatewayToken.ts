@@ -33,6 +33,7 @@ export async function generateNewGatewayToken(
 			"Please specify the expiry date for the Gateway token...",
 		),
 	);
+
 	const numOfDaysResponse = (
 		await ext.ui.showInputBox({
 			prompt: localize("gatewayPrompt", "Enter days to expire."),
@@ -41,6 +42,7 @@ export async function generateNewGatewayToken(
 				value: string,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				if (!validateDays(value)) {
 					return localize(
 						"InvalidDays",
@@ -51,13 +53,16 @@ export async function generateNewGatewayToken(
 			},
 		})
 	).trim();
+
 	const options = [GatewayKeyType.primary, GatewayKeyType.secondary];
+
 	const keyType = await ext.ui.showQuickPick(
 		options.map((s) => {
 			return { label: s, description: "", detail: "" };
 		}),
 		{ placeHolder: "Pick key to generate token?", canPickMany: false },
 	);
+
 	const numOfDays = Number.parseInt(numOfDaysResponse);
 	// tslint:disable: no-non-null-assertion
 	const apimService = new ApimService(
@@ -67,6 +72,7 @@ export async function generateNewGatewayToken(
 		node!.root.resourceGroupName,
 		node!.root.serviceName,
 	);
+
 	const gatewayToken = await apimService.generateNewGatewayToken(
 		node!.root.gatewayName,
 		numOfDays,
@@ -83,6 +89,7 @@ export async function generateNewGatewayToken(
 
 function validateDays(days: string): boolean {
 	const numOfDays = Number.parseInt(days);
+
 	return (
 		numOfDays.toString().length === days.length &&
 		numOfDays < 30 &&

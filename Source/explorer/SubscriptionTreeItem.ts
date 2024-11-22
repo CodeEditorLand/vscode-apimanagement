@@ -31,6 +31,7 @@ export class SubscriptionTreeItem extends AzureTreeItem<ISubscriptionTreeRoot> {
 		public readonly subscriptionContract: SubscriptionContract,
 	) {
 		super(parent);
+
 		if (
 			this.subscriptionContract.displayName === null ||
 			this.subscriptionContract.displayName === undefined
@@ -64,12 +65,14 @@ export class SubscriptionTreeItem extends AzureTreeItem<ISubscriptionTreeRoot> {
 			"confirmDeleteSubscription",
 			`Are you sure you want to delete subscription '${this.root.subscriptionSid}'?`,
 		);
+
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
 			DialogResponses.cancel,
 		);
+
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"",

@@ -41,6 +41,7 @@ export class DebuggerConnection extends EventEmitter {
 
 	public async attach(address: string, key: string, stopOnEntry: boolean) {
 		let connection: WebSocket;
+
 		return new Promise<void>((resolve, reject) => {
 			connection = new WebSocket(`${address}?key=${key}`)
 				.on("error", (e) => {
@@ -187,7 +188,9 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.apiId,
 						event.arguments.productId,
 					);
+
 					break;
+
 				case "stopOnStep":
 					this.sendEvent(
 						event.name,
@@ -197,7 +200,9 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.apiId,
 						event.arguments.productId,
 					);
+
 					break;
+
 				case "stopOnException":
 					this.sendEvent(
 						event.name,
@@ -208,7 +213,9 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.productId,
 						event.arguments.message,
 					);
+
 					break;
+
 				case "stopOnBreakpoint":
 					this.sendEvent(
 						event.name,
@@ -218,7 +225,9 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.apiId,
 						event.arguments.productId,
 					);
+
 					break;
+
 				case "threadExited":
 					this.sendEvent(
 						event.name,
@@ -228,10 +237,12 @@ export class DebuggerConnection extends EventEmitter {
 						event.arguments.apiId,
 						event.arguments.productId,
 					);
+
 					break;
 			}
 
 			const awaiters = this.responseAwaiters[event.name];
+
 			if (awaiters) {
 				for (const awaiter of awaiters) {
 					awaiter(event.arguments);

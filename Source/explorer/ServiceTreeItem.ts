@@ -80,6 +80,7 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 		//parent.iconPath =
 
 		const sku = nonNullValue(this.apiManagementService.sku.name);
+
 		if (sku === "Developer" || sku === "Premium") {
 			this.gatewaysTreeItem = new GatewaysTreeItem(this);
 		}
@@ -133,12 +134,14 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 			"confirmDeleteService",
 			`Are you sure you want to delete API Management instance '${this.root.serviceName}' and its contents?`,
 		);
+
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
 			DialogResponses.cancel,
 		);
+
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"deletingService",
@@ -175,6 +178,7 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				this.root.serviceName,
 				"master",
 			);
+
 		if (!subscriptionKeys.secondaryKey) {
 			window.showErrorMessage(
 				localize(
@@ -198,15 +202,19 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				case ApiOperationTreeItem.contextValue:
 				case OperationPolicyTreeItem.contextValue:
 					return this.apisTreeItem;
+
 				case NamedValueTreeItem.contextValue:
 					return this.namedValuesTreeItem;
+
 				case ProductTreeItem.contextValue:
 				case ProductPolicyTreeItem.contextValue:
 					return this.productsTreeItem;
+
 				case AuthorizationProviderTreeItem.contextValue:
 				case AuthorizationTreeItem.contextValue:
 				case AuthorizationAccessPolicyTreeItem.contextValue:
 					return this.authorizationProvidersTreeItem;
+
 				default:
 			}
 		}

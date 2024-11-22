@@ -25,13 +25,20 @@ import { openUrl } from "../utils/openUrl";
 import XRegExp = require("xregexp");
 
 const formattingCharacter: string = "\\p{Cf}";
+
 const connectingCharacter: string = "\\p{Pc}";
+
 const decimalDigitCharacter: string = "\\p{Nd}";
+
 const combiningCharacter: string = "\\p{Mn}|\\p{Mc}";
+
 const letterCharacter: string =
 	"\\p{Lu}|\\p{Ll}|\\p{Lt}|\\p{Lm}|\\p{Lo}|\\p{Nl}";
+
 const identifierPartCharacter: string = `${letterCharacter}|${decimalDigitCharacter}|${connectingCharacter}|${combiningCharacter}|${formattingCharacter}`;
+
 const identifierStartCharacter: string = `(${letterCharacter}|_)`;
+
 const identifierOrKeyword: string = `${identifierStartCharacter}(${identifierPartCharacter})*`;
 // tslint:disable-next-line: no-unsafe-any
 const identifierRegex: RegExp = XRegExp(`^${identifierOrKeyword}$`);
@@ -131,6 +138,7 @@ export async function generateFunctions(
 	ext.outputChannel.show();
 
 	const openApiEditor: OpenApiEditor = new OpenApiEditor();
+
 	const openAPIDocString = await openApiEditor.getData(node);
 
 	if (!(await validateAutorestInstalled())) {
@@ -141,6 +149,7 @@ export async function generateFunctions(
 	const languages: string[] = Object.keys(languageTypes).map(
 		(key) => languageTypes[key],
 	);
+
 	const language = await ext.ui.showQuickPick(
 		languages.map((s) => {
 			return { label: s, description: "", detail: "" };
@@ -158,6 +167,7 @@ export async function generateFunctions(
 	}
 
 	let namespace = "";
+
 	if (language.label === languageTypes.Java) {
 		namespace = await askJavaNamespace();
 	} else if (language.label === languageTypes.CSharp) {
@@ -219,20 +229,28 @@ export async function generateFunctions(
 					case languageTypes.TypeScript:
 						args.push("--azure-functions-typescript");
 						args.push("--no-namespace-folders:True");
+
 						break;
+
 					case languageTypes.CSharp:
 						args.push(`--namespace:${namespace}`);
 						args.push("--azure-functions-csharp");
+
 						break;
+
 					case languageTypes.Java:
 						args.push(`--namespace:${namespace}`);
 						args.push("--azure-functions-java");
+
 						break;
+
 					case languageTypes.Python:
 						args.push("--azure-functions-python");
 						args.push("--no-namespace-folders:True");
 						args.push("--no-async");
+
 						break;
+
 					default:
 						throw new Error(
 							localize(
@@ -248,7 +266,9 @@ export async function generateFunctions(
 						undefined,
 						"dotnet --version",
 					);
+
 					const versionNumber = Number(versionResult.charAt(0));
+
 					if (versionNumber < 3) {
 						throw new Error(
 							localize(
@@ -314,7 +334,9 @@ async function askFolder(): Promise<Uri[]> {
 			JSON: ["json"],
 		},
 	};
+
 	const rootPath = workspace.rootPath;
+
 	if (rootPath) {
 		openDialogOptions.defaultUri = Uri.file(rootPath);
 	}
@@ -326,7 +348,9 @@ async function askJavaNamespace(): Promise<string> {
 		"namespacePrompt",
 		"Enter Java Package Name.",
 	);
+
 	const defaultName = "com.function";
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: namespacePrompt,
@@ -335,6 +359,7 @@ async function askJavaNamespace(): Promise<string> {
 				value: string | undefined,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				return undefined;
 			},
 		})
@@ -346,7 +371,9 @@ async function askCSharpNamespace(): Promise<string> {
 		"namespacePrompt",
 		"Enter CSharp namespace folder.",
 	);
+
 	const defaultName = "Company.Function";
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: namespacePrompt,
@@ -367,6 +394,7 @@ function validateCSharpNamespace(
 	}
 
 	const identifiers: string[] = value.split(".");
+
 	for (const identifier of identifiers) {
 		if (identifier === "") {
 			return localize(
@@ -423,7 +451,9 @@ async function validateAutorestInstalled(): Promise<boolean> {
 
 async function promptOpenFileFolder(filePath: string): Promise<void> {
 	const yes: vscode.MessageItem = { title: localize("open", "Yes") };
+
 	const no: vscode.MessageItem = { title: localize("notOpen", "No") };
+
 	const message: string = localize(
 		"openFolder",
 		"Do you want to open the folder for the generated files?",
@@ -441,21 +471,26 @@ async function promptOpenFileFolder(filePath: string): Promise<void> {
 
 async function checkEnvironmentInstalled(language: string): Promise<boolean> {
 	let command = "";
+
 	switch (language) {
 		case languageTypes.CSharp: {
 			command = "dotnet -h";
+
 			break;
 		}
 		case languageTypes.Java: {
 			command = "java -version";
+
 			break;
 		}
 		case languageTypes.Python: {
 			command = "python --version";
+
 			break;
 		}
 		case languageTypes.TypeScript: {
 			command = "tsc --version";
+
 			break;
 		}
 		default: {
@@ -465,6 +500,7 @@ async function checkEnvironmentInstalled(language: string): Promise<boolean> {
 
 	try {
 		await cpUtils.executeCommand(undefined, undefined, command);
+
 		return true;
 	} catch (error) {
 		return false;

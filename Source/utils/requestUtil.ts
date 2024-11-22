@@ -28,6 +28,7 @@ export async function request(
 	body?: any,
 ): Promise<HttpOperationResponse> {
 	const client: ServiceClient = await createGenericClient(credentials);
+
 	return await client.sendRequest({
 		method: method,
 		url: url,
@@ -50,6 +51,7 @@ export async function getBearerToken(
 	requestOptions.headers.set("User-Agent", appendExtensionUserAgent());
 	requestOptions.url = url;
 	requestOptions.method = method;
+
 	try {
 		await credentials.signRequest(requestOptions);
 	} catch (err) {
@@ -58,6 +60,7 @@ export async function getBearerToken(
 	const headers = requestOptions.headers;
 	// tslint:disable-next-line: no-string-literal
 	const authToken: string = headers["authorization"];
+
 	if (authToken === undefined) {
 		throw new Error("Authorization header is missing");
 	} else {

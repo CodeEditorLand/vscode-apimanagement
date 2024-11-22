@@ -19,6 +19,7 @@ export async function askAuthorizationProviderParameterValues(
 		const parameterUIMetadata = <
 			ITokenStoreGrantTypeParameterDefinitionContract
 		>grant[parameter];
+
 		if (
 			parameterUIMetadata.uidefinition.atAuthorizationProviderLevel !==
 			"HIDDEN"
@@ -43,6 +44,7 @@ export async function askAuthorizationParameterValues(
 		const parameterUIMetadata = <
 			ITokenStoreGrantTypeParameterDefinitionContract
 		>grant[parameter];
+
 		if (
 			parameterUIMetadata.uidefinition.atAuthorizationProviderLevel ===
 			"HIDDEN"
@@ -95,6 +97,7 @@ export async function askId(
 	defaultValue: string = "",
 ): Promise<string> {
 	const idPrompt: string = localize("idPrompt", prompt);
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: idPrompt,
@@ -103,6 +106,7 @@ export async function askId(
 				value: string,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				return validateId(value, errorMessage);
 			},
 		})
@@ -111,6 +115,7 @@ export async function askId(
 
 function validateId(id: string, errorMessage: string): string | undefined {
 	const test = "^[w]+$)|(^[w][w-]+[w]$";
+
 	if (id.match(test) === null) {
 		return localize("idInvalid", errorMessage);
 	}

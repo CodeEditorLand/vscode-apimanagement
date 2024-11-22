@@ -16,6 +16,7 @@ export interface IFunctionContract {
 
 export interface IFunctionPropertyContract {
 	name: string;
+
 	function_app_id: string;
 	script_root_path_href: string;
 	script_href: string;
@@ -68,6 +69,7 @@ export interface ISubscriptionContract {
 
 export interface IFunctionKeys {
 	masterKey: string;
+
 	functionKeys: {
 		[name: string]: string;
 	};

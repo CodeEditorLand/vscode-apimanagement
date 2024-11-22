@@ -31,10 +31,13 @@ export async function setCustomHostName(
 	);
 	// tslint:disable-next-line: no-non-null-assertion
 	const hostNameConfigs = service.hostnameConfigurations!;
+
 	const customHostName: string | undefined = ext.context.globalState.get(
 		node.root.serviceName + gatewayHostName,
 	);
+
 	let allHostNames: { label: string; hostName: string }[];
+
 	if (customHostName === undefined) {
 		allHostNames = hostNameConfigs
 			.filter((s) => s.type === "Proxy")
@@ -67,23 +70,27 @@ export async function setCustomHostName(
 			"Select the gateway hostname for testing and debugging APIs.",
 		),
 	);
+
 	const pick = await ext.ui.showQuickPick(
 		allHostNames.map((s) => {
 			return { label: s.label, gateway: s };
 		}),
 		{ canPickMany: false },
 	);
+
 	if (pick.label === selfDefined) {
 		const namespacePrompt: string = localize(
 			"urlPrompt",
 			"Enter Custom Host Name.",
 		);
+
 		const input = await ext.ui.showInputBox({
 			prompt: namespacePrompt,
 			validateInput: async (
 				value: string | undefined,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				return undefined;
 			},
 		});

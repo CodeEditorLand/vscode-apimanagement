@@ -26,8 +26,11 @@ export async function copyAuthorizationPolicy(
 
 	// Select purpose
 	const attachToken = "Attach access token to backend request";
+
 	const tokenBack = "Retrieve access token";
+
 	const purposeOptions = [attachToken, tokenBack];
+
 	const purposeSelected = await ext.ui.showQuickPick(
 		purposeOptions.map((purpose) => {
 			return { label: purpose, description: "", detail: "" };
@@ -37,8 +40,11 @@ export async function copyAuthorizationPolicy(
 			canPickMany: false,
 		},
 	);
+
 	const managed = "managed";
+
 	const jwt = "jwt";
+
 	const identityTypeOptions = [
 		{
 			label: managed,
@@ -49,6 +55,7 @@ export async function copyAuthorizationPolicy(
 			description: "Use the identity of the specified token.",
 		},
 	];
+
 	const identityTypeSelected = await ext.ui.showQuickPick(
 		identityTypeOptions.map((option) => {
 			return {
@@ -65,11 +72,15 @@ export async function copyAuthorizationPolicy(
 	);
 
 	const pid = node.root.authorizationProviderName;
+
 	const aid = node.authorizationContract.name;
 
 	let comment = "";
+
 	let identityPhrase = "";
+
 	let additionalMessage = "";
+
 	if (identityTypeSelected.label === managed) {
 		comment = `<!-- Add to the inbound policy -->`;
 		identityPhrase = `identity-type="${identityTypeSelected.label}"`;
@@ -83,6 +94,7 @@ export async function copyAuthorizationPolicy(
 	}
 
 	let policy = "";
+
 	if (purposeSelected.label === attachToken) {
 		policy = `${comment}
 <get-authorization-context

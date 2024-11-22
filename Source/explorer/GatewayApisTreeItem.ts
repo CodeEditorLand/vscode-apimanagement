@@ -82,10 +82,12 @@ export class GatewayApisTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 					this.root.resourceGroupName,
 					this.root.serviceName,
 				);
+
 				const api = await apimService.createGatewayApi(
 					this.root.gatewayName,
 					apiName,
 				);
+
 				return new GatewayApiTreeItem(this, api);
 			} catch (error) {
 				throw new Error(

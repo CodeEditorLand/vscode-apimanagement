@@ -19,6 +19,7 @@ export class ServicePolicyEditor extends BasePolicyEditor<IServiceTreeRoot> {
 			context.root.serviceName,
 			{ format: policyFormat },
 		);
+
 		return policy._response.bodyAsText;
 	}
 
@@ -31,6 +32,7 @@ export class ServicePolicyEditor extends BasePolicyEditor<IServiceTreeRoot> {
 			context.root.serviceName,
 			policy,
 		);
+
 		return policyResult._response.bodyAsText;
 	}
 

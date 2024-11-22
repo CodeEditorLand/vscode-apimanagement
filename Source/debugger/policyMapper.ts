@@ -55,13 +55,20 @@ export class PolicyMapper {
 		this.captureLocation();
 
 		let nameStart = -1;
+
 		let name: string | null = null;
+
 		let start: [number, number] | null = null;
+
 		let end: [number, number] | null = null;
+
 		let selfClosing = false;
+
 		let closing = false;
+
 		while (this.index < this.xml.length) {
 			const char = this.xml[this.index];
+
 			if (char === "<") {
 				if (!start) {
 					start = [this.line, this.column];
@@ -70,11 +77,13 @@ export class PolicyMapper {
 				if (!name) {
 					if (nameStart > 0 && !name) {
 						name = this.xml.substring(nameStart, this.index);
+
 						const curkey =
 							this.stack.length === 0
 								? `${name}[1]`
 								: this.stack.join("/") + `/${name}[1]`;
 						//const curkey = this.stack.reduce((a, b) => `${a}/${b}`) + `${name}[1]`;
+
 						if (this.count[curkey]) {
 							this.stack.push(
 								name + `[${this.count[curkey] + 1}]`,
@@ -97,10 +106,12 @@ export class PolicyMapper {
 			} else if (char === ">") {
 				if (nameStart > 0 && !name) {
 					name = this.xml.substring(nameStart, this.index);
+
 					const curkey =
 						this.stack.length === 0
 							? `${name}[1]`
 							: this.stack.join("/") + `/${name}[1]`;
+
 					if (this.count[curkey]) {
 						this.stack.push(name + `[${this.count[curkey] + 1}]`);
 						this.count[curkey]++;
@@ -116,8 +127,10 @@ export class PolicyMapper {
 				}
 
 				this.advance();
+
 				if (closing || selfClosing) {
 					this.stack.pop();
+
 					return true;
 				}
 
@@ -133,10 +146,12 @@ export class PolicyMapper {
 			} else if (PolicyMapper.WhiteSpaceCharacters.indexOf(char) >= 0) {
 				if (nameStart >= 0 && !name) {
 					name = this.xml.substring(nameStart, this.index);
+
 					const curkey =
 						this.stack.length === 0
 							? `${name}[1]`
 							: this.stack.join("/") + `/${name}[1]`;
+
 					if (this.count[curkey]) {
 						this.stack.push(name + `[${this.count[curkey] + 1}]`);
 						this.count[curkey]++;
@@ -163,6 +178,7 @@ export class PolicyMapper {
 		}
 
 		this.backtrack();
+
 		return false;
 	}
 
@@ -170,9 +186,12 @@ export class PolicyMapper {
 		this.captureLocation();
 
 		let openCount = 0;
+
 		let closeCount = 0;
+
 		while (this.index < this.xml.length) {
 			const char = this.xml[this.index];
+
 			if (char === "<") {
 				if (openCount === 0) {
 					openCount++;
@@ -198,6 +217,7 @@ export class PolicyMapper {
 			} else if (char === ">") {
 				if (closeCount === 2) {
 					this.advance();
+
 					return true;
 				}
 			} else if (PolicyMapper.WhiteSpaceCharacters.indexOf(char) >= 0) {
@@ -218,11 +238,13 @@ export class PolicyMapper {
 		}
 
 		this.backtrack();
+
 		return false;
 	}
 
 	private attributes() {
 		let flag = false;
+
 		while (this.attribute()) {
 			flag = true;
 		}
@@ -233,10 +255,14 @@ export class PolicyMapper {
 		this.captureLocation();
 
 		let nameStart = -1;
+
 		let name: string | null = null;
+
 		let hasValue = false;
+
 		while (this.index < this.xml.length) {
 			const char = this.xml[this.index];
+
 			if (char === "=") {
 				if (nameStart >= 0 && !name) {
 					name = this.xml.substring(nameStart, this.index);
@@ -252,15 +278,18 @@ export class PolicyMapper {
 
 				if (hasValue) {
 					this.advance();
+
 					return true;
 				}
 
 				this.advance();
+
 				if (this.expression()) {
 					hasValue = true;
 				}
 				if (this.simpleValue('"', true)) {
 					hasValue = true;
+
 					continue;
 				} else {
 					break;
@@ -285,6 +314,7 @@ export class PolicyMapper {
 		}
 
 		this.backtrack();
+
 		return false;
 	}
 
@@ -292,9 +322,13 @@ export class PolicyMapper {
 		this.captureLocation();
 
 		let at = false;
+
 		let openingBracket: string | null = null;
+
 		let closingBracket: string | null = null;
+
 		let bracketDepth = -1;
+
 		while (this.index < this.xml.length) {
 			const char = this.xml[this.index];
 
@@ -323,6 +357,7 @@ export class PolicyMapper {
 
 				if (closingBracket === char && --bracketDepth <= 0) {
 					this.advance();
+
 					return true;
 				}
 			} else if (bracketDepth >= 0) {
@@ -337,6 +372,7 @@ export class PolicyMapper {
 		}
 
 		this.backtrack();
+
 		return false;
 	}
 
@@ -344,6 +380,7 @@ export class PolicyMapper {
 		this.captureLocation();
 
 		let empty = true;
+
 		while (this.index < this.xml.length) {
 			const char = this.xml[this.index];
 
@@ -360,11 +397,13 @@ export class PolicyMapper {
 		}
 
 		this.backtrack();
+
 		return false;
 	}
 
 	private elementValue() {
 		let flag = false;
+
 		while (
 			this.expression() ||
 			this.xmlComment() ||

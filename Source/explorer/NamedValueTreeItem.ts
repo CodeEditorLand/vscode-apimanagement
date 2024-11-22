@@ -45,12 +45,14 @@ export class NamedValueTreeItem extends AzureTreeItem<IServiceTreeRoot> {
 			"confirmNamedValue",
 			`Are you sure you want to delete named value '${this.propertyContract.displayName}'?`,
 		);
+
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
 			DialogResponses.cancel,
 		);
+
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"deletingNamedValue",
@@ -121,6 +123,7 @@ export class NamedValueTreeItem extends AzureTreeItem<IServiceTreeRoot> {
 				this.root.serviceName,
 				nonNullProp(this.propertyContract, "name"),
 			);
+
 			return property.value === undefined ? "" : property.value;
 		} catch (error) {
 			throw new Error(

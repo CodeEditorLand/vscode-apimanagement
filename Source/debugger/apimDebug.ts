@@ -129,6 +129,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		);
 		this.runtime.on("end", (message) => {
 			this.requests = [];
+
 			if (message) {
 				this.sendEvent(new OutputEvent(message, "stderr"));
 			}
@@ -161,7 +162,9 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: ILaunchRequestArguments,
 	): Promise<void> {
 		logger.setup(Logger.LogLevel.Verbose, false);
+
 		let masterKey;
+
 		if (args.managementAuth) {
 			this.policySource = new PolicySource(
 				args.managementAddress,
@@ -214,6 +217,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		}
 
 		const threads: Thread[] = [];
+
 		for (const nRequest of this.requests) {
 			for (const thread of nRequest.threads) {
 				threads.push(
@@ -254,8 +258,10 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.StackTraceArguments,
 	) {
 		let stack: StackFrame[] = [];
+
 		if (this.runtime.isConnected()) {
 			const nRequest = this.findThreadByUiId(args.threadId);
+
 			if (nRequest) {
 				const requestStack = await this.runtime.getStackTrace(
 					nRequest[0].id,
@@ -315,6 +321,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.ContinueArguments,
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
+
 		if (nRequest && this.runtime.isConnected()) {
 			await this.runtime.continue(nRequest[0].id, nRequest[1].id);
 		}
@@ -330,6 +337,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.NextArguments,
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
+
 		if (nRequest && this.runtime.isConnected()) {
 			await this.runtime.stepOver(nRequest[0].id, nRequest[1].id);
 		}
@@ -342,6 +350,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.StepInArguments,
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
+
 		if (nRequest && this.runtime.isConnected()) {
 			await this.runtime.stepIn(nRequest[0].id, nRequest[1].id);
 		}
@@ -354,6 +363,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.StepOutArguments,
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
+
 		if (nRequest && this.runtime.isConnected()) {
 			await this.runtime.stepOut(nRequest[0].id, nRequest[1].id);
 		}
@@ -366,6 +376,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.PauseArguments,
 	) {
 		const nRequest = this.findThreadByUiId(args.threadId);
+
 		if (nRequest && this.runtime.isConnected()) {
 			await this.runtime.pause(nRequest[0].id, nRequest[1].id);
 		}
@@ -380,6 +391,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		let scopes: Scope[] = [];
 
 		const nRequest = this.findThreadByStackFrameId(args.frameId);
+
 		if (nRequest) {
 			scopes = [
 				new Scope(
@@ -408,13 +420,16 @@ export class ApimDebugSession extends LoggingDebugSession {
 			const variableScope = this.variablesHandles.get(
 				args.variablesReference,
 			);
+
 			const scopeParts = variableScope.split("|");
+
 			if (scopeParts.length >= 2) {
 				const vars = await this.runtime.getVariables(
 					scopeParts[0],
 					+scopeParts[1],
 					scopeParts.slice(2).join("."),
 				);
+
 				variables = vars.map((v) => {
 					const variable = new Variable(
 						v.name,
@@ -432,6 +447,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 						kind: "property",
 						visibility: "public",
 					};
+
 					return variable;
 				});
 			}
@@ -448,6 +464,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.SetBreakpointsArguments,
 	) {
 		const breakpoints = await this.setBreakpoints(args);
+
 		const nBreakpoints: Breakpoint[] =
 			breakpoints.length !== 0
 				? breakpoints
@@ -465,8 +482,10 @@ export class ApimDebugSession extends LoggingDebugSession {
 		fileName: string,
 	) {
 		const localFilePath: string = await createTemporaryFile(fileName);
+
 		const document: vscode.TextDocument =
 			await vscode.workspace.openTextDocument(localFilePath);
+
 		const textEditor: vscode.TextEditor =
 			await vscode.window.showTextDocument(document);
 		await writeToEditor(textEditor, operationData);
@@ -477,13 +496,16 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.SetBreakpointsArguments,
 	): Promise<Breakpoint[]> {
 		let breakpoints: Breakpoint[] = [];
+
 		const breakpointsToSet: {
 			path: string;
 			scopeId: string;
 		}[] = [];
+
 		let policy = this.policySource.getPolicyBySourceReference(
 			args.source.sourceReference,
 		);
+
 		if (!policy && args.source.name) {
 			policy =
 				this.policySource.getPolicy(args.source.name) ||
@@ -501,14 +523,18 @@ export class ApimDebugSession extends LoggingDebugSession {
 					};
 
 					let path: string | null = null;
+
 					const breakpointLine = this.convertClientLineToDebugger(
 						b.line,
 					);
+
 					const breakpointColumn =
 						b.column &&
 						this.convertClientColumnToDebugger(b.column);
+
 					for (const key in policy!.map) {
 						const mapEntry = policy!.map[key];
+
 						if (
 							mapEntry.line === breakpointLine &&
 							(!breakpointColumn ||
@@ -529,6 +555,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 						throw new Error("Path is null");
 					}
 					let policyName = path.substring(path.lastIndexOf("/") + 1);
+
 					if (policyName.indexOf("[") !== -1) {
 						policyName = policyName.substring(
 							0,
@@ -544,6 +571,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 						path: path.substr(path.indexOf("/") + 1), //Remove 'policies/' prefix
 						scopeId: policy!.scopeId,
 					});
+
 					const breakpoint = new Breakpoint(
 						true,
 						this.convertDebuggerLineToClient(position.line),
@@ -554,17 +582,20 @@ export class ApimDebugSession extends LoggingDebugSession {
 						this.convertDebuggerLineToClient(position.endLine);
 					(<DebugProtocol.Breakpoint>breakpoint).endColumn =
 						this.convertDebuggerColumnToClient(position.endColumn);
+
 					return breakpoint;
 				});
 			}
 		}
 
 		await this.runtime.setBreakpoints(breakpointsToSet, policy!.scopeId);
+
 		return breakpoints;
 	}
 
 	private onThreadExited(requestId: string, threadId: number) {
 		const nRequest = this.requests.find((r) => r.id === requestId);
+
 		const thread = nRequest && nRequest.findThreadById(threadId);
 
 		if (thread) {
@@ -593,7 +624,9 @@ export class ApimDebugSession extends LoggingDebugSession {
 			],
 			false,
 		);
+
 		const nRequest = this.requests.find((r) => r.id === requestId);
+
 		const thread = nRequest && nRequest.findThreadById(threadId);
 
 		if (thread) {
@@ -607,8 +640,10 @@ export class ApimDebugSession extends LoggingDebugSession {
 		const azureAccountExtension = vscode.extensions.getExtension(
 			"ms-vscode.azure-account",
 		);
+
 		const azureAccount = azureAccountExtension!.exports;
 		await azureAccount.waitForFilters();
+
 		if (azureAccount.status !== "LoggedIn") {
 			throw new Error("ERROR!");
 		}
@@ -618,6 +653,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 					filter.subscription.subscriptionId === subscriptionId,
 			)
 			.map((filter) => filter.session.credentials);
+
 		return creds[0];
 	}
 
@@ -627,9 +663,11 @@ export class ApimDebugSession extends LoggingDebugSession {
 		managementAuth?: string,
 	) {
 		const resourceUrl = `${managementAddress}/subscriptions/master/listSecrets?api-version=${Constants.apimApiVersion}`;
+
 		const authToken = managementAuth
 			? managementAuth
 			: await getBearerToken(resourceUrl, "GET", credential!);
+
 		const subscription: IMasterSubscriptionsSecrets = await request
 			.post(resourceUrl, {
 				headers: {
@@ -665,9 +703,11 @@ export class ApimDebugSession extends LoggingDebugSession {
 		managementAuth?: string,
 	) {
 		const resourceUrl = `${managementAddress}/policyDescriptions?api-version=${Constants.apimApiVersion}`;
+
 		const authToken = managementAuth
 			? managementAuth
 			: await getBearerToken(resourceUrl, "GET", credential!);
+
 		const policyDescriptions: IPaged<IArmResource> = await request
 			.get(resourceUrl, {
 				headers: {
@@ -700,6 +740,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 	private findThreadByUiId(id: number): [UiRequest, UiThread] | null {
 		for (const uiRequest of this.requests) {
 			const uiThread = uiRequest.findThreadByUiId(id);
+
 			if (uiThread) {
 				return [uiRequest, uiThread];
 			}
@@ -711,6 +752,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 	private findThreadByStackFrameId(id: number): [UiRequest, UiThread] | null {
 		for (const uiRequest of this.requests) {
 			const uiThread = uiRequest.findThreadByStackFrameId(id);
+
 			if (uiThread) {
 				return [uiRequest, uiThread];
 			}
@@ -722,28 +764,35 @@ export class ApimDebugSession extends LoggingDebugSession {
 	private updateRequests(gatewayRequests: RequestContract[], clean: boolean) {
 		if (clean) {
 			let requestIndex = 0;
+
 			while (requestIndex < this.requests.length) {
 				const uiRequest = this.requests[requestIndex];
+
 				const gatewayRequest = gatewayRequests.find(
 					(r) => r.id === uiRequest.id,
 				);
+
 				if (!gatewayRequest) {
 					for (const thread of uiRequest.threads) {
 						this.sendEvent(new ThreadEvent("exited", thread.uiId));
 					}
 
 					this.requests.splice(requestIndex, 1);
+
 					continue;
 				}
 
 				let threadIndex = 0;
+
 				while (threadIndex < uiRequest.threads.length) {
 					const uiThread = uiRequest.threads[threadIndex];
+
 					if (gatewayRequest.threads.indexOf(uiThread.id) < 0) {
 						this.sendEvent(
 							new ThreadEvent("exited", uiThread.uiId),
 						);
 						uiRequest.threads.splice(threadIndex, 1);
+
 						continue;
 					}
 
@@ -752,6 +801,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 				if (!uiRequest.threads.length) {
 					this.requests.splice(requestIndex, 1);
+
 					continue;
 				}
 
@@ -763,6 +813,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 			let uiRequest = this.requests.find(
 				(r) => r.id === gatewayRequest.id,
 			);
+
 			if (!uiRequest) {
 				this.requests.push(
 					(uiRequest = new UiRequest(
@@ -778,6 +829,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 				let uiThread = uiRequest.threads.find(
 					(t) => t.id === gatewayThread,
 				);
+
 				if (!uiThread) {
 					uiThread = uiRequest.addNewThread(
 						gatewayThread,

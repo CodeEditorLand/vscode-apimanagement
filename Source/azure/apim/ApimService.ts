@@ -58,6 +58,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/gateways?api-version=${Constants.apimApiVersion}&$top=100`,
@@ -72,6 +73,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/gateways/${gatewayName}/apis?api-version=${Constants.apimApiVersion}&$top=100`,
@@ -87,6 +89,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "PUT",
 			url: `${this.baseUrl}/gateways/${gatewayName}/apis/${apiName}?api-version=${Constants.apimApiVersion}`,
@@ -114,11 +117,15 @@ export class ApimService {
 		keyType: string,
 	): Promise<string> {
 		const now = new Date();
+
 		const timeSpan = now.setDate(now.getDate() + numOfDays);
+
 		const expiryDate = new Date(timeSpan).toISOString();
+
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "POST",
 			url: `https://management.azure.com/subscriptions/${this.subscriptionId}/resourceGroups/${this.resourceGroup}/providers/Microsoft.ApiManagement/service/${this.serviceName}/gateways/${gatewayName}/token?api-version=${Constants.apimApiVersion}`,
@@ -135,6 +142,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "POST",
 			url: `${this.baseUrl}/subscriptions/master/listSecrets?api-version=${Constants.apimApiVersion}`,
@@ -151,6 +159,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/authorizationIdentityProviders?api-version=${this.authorizationProviderApiVersion}`,
@@ -165,6 +174,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/authorizationIdentityProviders/${providerName}?api-version=${this.authorizationProviderApiVersion}`,
@@ -179,6 +189,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/authorizationProviders?api-version=${this.authorizationProviderApiVersion}`,
@@ -193,6 +204,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderId}/authorizations?api-version=${this.authorizationProviderApiVersion}`,
@@ -208,6 +220,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderId}/authorizations/${authorizationName}/accesspolicies?api-version=${this.authorizationProviderApiVersion}`,
@@ -224,6 +237,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderId}/authorizations/${authorizationName}/accesspolicies/${accessPolicyName}?api-version=${this.authorizationProviderApiVersion}`,
@@ -246,6 +260,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "PUT",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderId}/authorizations/${authorizationName}/accesspolicies/${accessPolicyName}?api-version=${this.authorizationProviderApiVersion}`,
@@ -276,6 +291,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "PUT",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderName}?api-version=${this.authorizationProviderApiVersion}`,
@@ -293,6 +309,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "PUT",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderName}/authorizations/${authorizationName}?api-version=${this.authorizationProviderApiVersion}`,
@@ -322,6 +339,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderName}/authorizations/${authorizationName}?api-version=${this.authorizationProviderApiVersion}`,
@@ -353,6 +371,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderName}?api-version=${this.authorizationProviderApiVersion}`,
@@ -374,6 +393,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "POST",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderName}/authorizations/${authorizationName}/getLoginLinks?api-version=${this.authorizationProviderApiVersion}`,
@@ -387,6 +407,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.baseUrl}?api-version=${Constants.apimApiVersion}`,
@@ -399,6 +420,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "PATCH",
 			url: `${this.baseUrl}?api-version=${Constants.apimApiVersion}`,

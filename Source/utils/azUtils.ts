@@ -14,6 +14,7 @@ export namespace azUtils {
 				"az",
 				"--version",
 			);
+
 			return true;
 		} catch (error) {
 			return false;

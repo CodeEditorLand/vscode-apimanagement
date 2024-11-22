@@ -31,6 +31,7 @@ export class ConsoleOperation {
 						new ConsoleParameter(parameterContract),
 				)
 			: [];
+
 		if (
 			this.uriTemplate &&
 			this.uriTemplate.length > 0 &&

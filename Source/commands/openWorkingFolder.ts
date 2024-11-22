@@ -12,6 +12,7 @@ import { workingFolderOpenedInWorkspace } from "../utils/vscodeUtils";
 
 export async function openWorkingFolder(): Promise<void> {
 	const folderPath = getDefaultWorkspacePath();
+
 	if (!workingFolderOpenedInWorkspace()) {
 		vscode.commands.executeCommand(
 			"vscode.openFolder",

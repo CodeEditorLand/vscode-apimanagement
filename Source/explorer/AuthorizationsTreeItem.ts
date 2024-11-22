@@ -89,6 +89,7 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 		context: IAuthorizationTreeItemContext,
 	): Promise<AuthorizationTreeItem> {
 		await this.buildContext(context);
+
 		if (
 			context.authorizationName !== null &&
 			context.authorization !== null
@@ -106,6 +107,7 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 				async () => {
 					const authorizationName = context.authorizationName;
 					context.showCreatingTreeItem(authorizationName);
+
 					try {
 						const apimService = new ApimService(
 							this.root.credentials,
@@ -114,10 +116,12 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 							this.root.resourceGroupName,
 							this.root.serviceName,
 						);
+
 						let authorization = await apimService.getAuthorization(
 							this.root.authorizationProviderName,
 							authorizationName,
 						);
+
 						if (authorization === undefined) {
 							authorization =
 								await apimService.createAuthorization(
@@ -131,6 +135,7 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 									`Created Authorization '${authorizationName}' succesfully.`,
 								),
 							);
+
 							return new AuthorizationTreeItem(
 								this,
 								authorization,
@@ -167,22 +172,28 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 		const authorizationProvider: IAuthorizationProviderContract = (<
 			AuthorizationProviderTreeItem
 		>this.parent).authorizationProviderContract;
+
 		const authorizationName = await askId(
 			"Enter Authorization name ...",
 			"Invalid Authorization name ...",
 		);
 		context.authorizationName = authorizationName;
+
 		let parameterValues: IParameterValues = {};
+
 		let grantType = IGrantTypesContract.authorizationCode;
+
 		if (
 			authorizationProvider.properties.oauth2?.grantTypes
 				.clientCredentials
 		) {
 			grantType = IGrantTypesContract.clientCredentials;
+
 			const identityProvider: ITokenStoreIdentityProviderContract =
 				await this.apimService.getTokenStoreIdentityProvider(
 					authorizationProvider.properties.identityProvider,
 				);
+
 			const grant =
 				identityProvider.properties.oauth2.grantTypes.clientCredentials;
 			parameterValues = await askAuthorizationParameterValues(

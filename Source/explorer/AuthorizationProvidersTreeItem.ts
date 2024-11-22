@@ -89,6 +89,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 	): Promise<AuthorizationProviderTreeItem> {
 		await this.checkManagedIdentityEnabled();
 		await this.buildContext(context);
+
 		if (context.name !== null && context.authorizationProvider !== null) {
 			return window.withProgress(
 				{
@@ -103,17 +104,20 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 				async (): Promise<AuthorizationProviderTreeItem> => {
 					const authorizationProviderName = context.name;
 					context.showCreatingTreeItem(authorizationProviderName);
+
 					try {
 						let authorizationProvider =
 							await this.apimService.getAuthorizationProvider(
 								context.name,
 							);
+
 						if (authorizationProvider === undefined) {
 							authorizationProvider =
 								await this.apimService.createAuthorizationProvider(
 									context.name,
 									context.authorizationProvider,
 								);
+
 							const message = `Please add redirect url '${authorizationProvider.properties.oauth2?.redirectUrl}' to the OAuth application.`;
 							ext.outputChannel.show();
 							ext.outputChannel.appendLine(message);
@@ -126,6 +130,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 									`Created Authorization provider '${context.name}'.`,
 								),
 							);
+
 							return new AuthorizationProviderTreeItem(
 								this,
 								authorizationProvider,
@@ -158,8 +163,10 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 
 	private async checkManagedIdentityEnabled(): Promise<void> {
 		const service = await this.apimService.getService();
+
 		if (service.identity === undefined) {
 			const options = ["Yes", "No"];
+
 			const option = await ext.ui.showQuickPick(
 				options.map((s) => {
 					return { label: s, description: "", detail: "" };
@@ -169,6 +176,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 					canPickMany: false,
 				},
 			);
+
 			if (option.label === options[0]) {
 				await window.withProgress(
 					{
@@ -220,11 +228,13 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 			}),
 			{ placeHolder: "Select identity provider ...", canPickMany: false },
 		);
+
 		const selectedIdentityProvider = supportedIdentityProviders.find(
 			(s) => s.properties.displayName === identityProviderPicked.label,
 		);
 
 		let grantType: string = "";
+
 		if (
 			selectedIdentityProvider &&
 			selectedIdentityProvider.properties.oauth2.grantTypes !== null
@@ -237,6 +247,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 			const grantTypes = Object.keys(
 				selectedIdentityProvider.properties.oauth2.grantTypes,
 			);
+
 			if (grantTypes.length > 1) {
 				const grantTypePicked = await ext.ui.showQuickPick(
 					grantTypes.map((s) => {
@@ -274,6 +285,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 
 			const authorizationProviderGrant: IAuthorizationProviderOAuth2GrantTypesContract =
 				{};
+
 			if (grantTypeValue === IGrantTypesContract.authorizationCode) {
 				authorizationProviderGrant.authorizationCode = parameterValues;
 			} else if (

@@ -24,6 +24,7 @@ export async function addApiToProduct(
 	node?: ProductApisTreeItem,
 ): Promise<void> {
 	let productNode: ProductTreeItem;
+
 	if (!node) {
 		productNode = <ProductTreeItem>(
 			await ext.tree.showTreeItemPicker(

@@ -44,12 +44,14 @@ export class GatewayApiTreeItem extends AzureTreeItem<IGatewayTreeRoot> {
 			"confirmGatewayAPIRemove",
 			`Are you sure you want to remove API '${this.gatewayApiContract.name}' from gateway '${this.root.gatewayName}'?`,
 		);
+
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
 			DialogResponses.cancel,
 		);
+
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"removingGatewayAPI",

@@ -26,6 +26,7 @@ import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export interface IApiTreeItemContext extends ICreateChildImplContext {
 	apiName: string;
+
 	document?: IOpenApiImportObject;
 	apiContract?: ApiContract;
 }
@@ -57,6 +58,7 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 		}
 
 		let apisToLoad: ApiContract[] = this.selectedApis;
+
 		if (this.selectedApis.length === 0) {
 			const apiCollection: ApiManagementModels.ApiCollection =
 				this._nextLink === undefined
@@ -80,6 +82,7 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 			string,
 			ApiVersionSetTreeItem
 		>();
+
 		return await this.createTreeItemsWithErrorHandling(
 			apisToLoad,
 			"invalidApiManagementApi",
@@ -88,6 +91,7 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 					let apiVersionSetTreeItem = versionSetMap.get(
 						api.apiVersionSetId,
 					);
+
 					if (!apiVersionSetTreeItem) {
 						apiVersionSetTreeItem = new ApiVersionSetTreeItem(
 							this,
@@ -98,6 +102,7 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 							api.apiVersionSetId,
 							apiVersionSetTreeItem!,
 						);
+
 						return apiVersionSetTreeItem;
 					} else {
 						if (apiUtil.isNotApiRevision(api)) {
@@ -147,12 +152,14 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	): Promise<ApiTreeItem> {
 		if (document && apiName) {
 			showCreatingTreeItem(apiName);
+
 			try {
 				const api = await apiUtil.createOrUpdateApiWithSwaggerObject(
 					this,
 					apiName,
 					document,
 				);
+
 				return new ApiTreeItem(this, api);
 			} catch (error) {
 				throw new Error(
@@ -179,20 +186,24 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	): Promise<ApiTreeItem> {
 		if (apiContract && apiName) {
 			showCreatingTreeItem(apiName);
+
 			try {
 				await apiUtil.checkApiExist(this, apiName);
+
 				const apiPayload: ApiCreateOrUpdateParameter = {
 					displayName: apiName,
 					path: apiName,
 					description: apiContract.description,
 					protocols: apiContract.protocols,
 				};
+
 				const api = await this.root.client.api.createOrUpdate(
 					this.root.resourceGroupName,
 					this.root.serviceName,
 					apiName,
 					apiPayload,
 				);
+
 				return new ApiTreeItem(this, api);
 			} catch (error) {
 				throw new Error(

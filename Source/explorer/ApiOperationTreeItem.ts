@@ -48,6 +48,7 @@ export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot
 	}
 
 	private _root: IOperationTreeRoot;
+
 	constructor(
 		parent: AzureParentTreeItem,
 		public readonly operationContract: ApiManagementModels.OperationContract,
@@ -76,12 +77,14 @@ export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot
 			"confirmDeleteOperation",
 			`Are you sure you want to delete operation '${this.root.opName}'?`,
 		);
+
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
 			DialogResponses.cancel,
 		);
+
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"",

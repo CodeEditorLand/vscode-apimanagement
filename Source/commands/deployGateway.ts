@@ -38,11 +38,14 @@ export async function copyDockerRunCommand(
 	}
 
 	ext.outputChannel.show();
+
 	const hasConsent = await askConsentToGenerateToken();
+
 	if (!hasConsent) {
 		ext.outputChannel.appendLine(
 			localize("deployGateway", "Generating docker command stopped..."),
 		);
+
 		return;
 	}
 
@@ -60,6 +63,7 @@ export async function copyDockerRunCommand(
 			async () => {
 				// tslint:disable: no-non-null-assertion
 				const confEndpoint = `config.service.endpoint=${getConfigEndpointUrl(node!)}`;
+
 				const apimService = new ApimService(
 					node!.root.credentials,
 					node!.root.environment.resourceManagerEndpointUrl,
@@ -67,11 +71,13 @@ export async function copyDockerRunCommand(
 					node!.root.resourceGroupName,
 					node!.root.serviceName,
 				);
+
 				const token = await apimService.generateNewGatewayToken(
 					node!.root.gatewayName,
 					Constants.maxTokenValidTimeSpan,
 					GatewayKeyType.primary,
 				);
+
 				const initialComd = getDockerRunCommand(
 					token,
 					confEndpoint,
@@ -106,11 +112,14 @@ export async function generateKubernetesDeployment(
 	}
 
 	ext.outputChannel.show();
+
 	const hasConsent = await askConsentToGenerateToken();
+
 	if (!hasConsent) {
 		ext.outputChannel.appendLine(
 			localize("deployGateway", "Generating deployment file stopped..."),
 		);
+
 		return;
 	}
 
@@ -132,6 +141,7 @@ export async function generateKubernetesDeployment(
 					node!.root.resourceGroupName,
 					node!.root.serviceName,
 				);
+
 				const gatewayToken = await apimService.generateNewGatewayToken(
 					node!.root.gatewayName,
 					Constants.maxTokenValidTimeSpan,
@@ -143,13 +153,17 @@ export async function generateKubernetesDeployment(
 						"Generating deployment yaml file...",
 					),
 				);
+
 				const confEndpoint = getConfigEndpointUrl(node!);
+
 				const depYaml = generateDeploymentYaml(
 					node!.root.gatewayName,
 					gatewayToken,
 					confEndpoint,
 				);
+
 				const uris = await askFolder();
+
 				const configFilePath = path.join(
 					uris[0].fsPath,
 					`${node!.root.gatewayName}.yaml`,
@@ -174,12 +188,14 @@ async function askConsentToGenerateToken(): Promise<boolean> {
 		"genToken",
 		"Command requires generating token, do you wish to proceed?",
 	);
+
 	const result: vscode.MessageItem | undefined =
 		await vscode.window.showWarningMessage(
 			message,
 			DialogResponses.yes,
 			DialogResponses.no,
 		);
+
 	return result === DialogResponses.yes ? true : false;
 }
 
@@ -264,6 +280,7 @@ spec:
     targetPort: 8081
   selector:
     app: ${gatewayNameLowercase}`;
+
 	return gatewayContent;
 }
 
@@ -276,6 +293,7 @@ async function askFolder(): Promise<Uri[]> {
 	};
 
 	const rootPath = workspace.rootPath;
+
 	if (rootPath) {
 		openDialogOptions.defaultUri = Uri.file(rootPath);
 	}

@@ -19,6 +19,7 @@ export async function createService(
 	_resourceGroup?: string,
 ): Promise<string> {
 	let node: AzureParentTreeItem;
+
 	if (typeof subscription === "string") {
 		node = await treeUtils.getSubscriptionNode(ext.tree, subscription);
 	} else if (!subscription) {
@@ -33,5 +34,6 @@ export async function createService(
 	}
 
 	const serviceNode: AzureTreeItem = await node.createChild(context);
+
 	return serviceNode.fullId;
 }

@@ -18,6 +18,7 @@ export class ConsoleRequest {
 
 	constructor(requestModel: RequestContract) {
 		this.description = requestModel.description;
+
 		const representations = requestModel.representations
 			? requestModel.representations
 			: [];
@@ -41,6 +42,7 @@ export class ConsoleRequest {
 			}
 
 			const contentType = representations[0].contentType;
+
 			if (
 				contentType &&
 				this.headers.find((h) => h.name === "Content-Type") ===

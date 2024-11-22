@@ -20,6 +20,7 @@ export class ApiPolicyEditor extends BasePolicyEditor<IApiTreeRoot> {
 			context.root.apiName,
 			{ format: policyFormat },
 		);
+
 		return policy._response.bodyAsText;
 	}
 
@@ -33,6 +34,7 @@ export class ApiPolicyEditor extends BasePolicyEditor<IApiTreeRoot> {
 			context.root.apiName,
 			policy,
 		);
+
 		return policyResult._response.bodyAsText;
 	}
 

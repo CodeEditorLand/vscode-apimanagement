@@ -60,13 +60,17 @@ export async function importFunctionAppToApi(
 	ext.outputChannel.appendLine(
 		localize("importFunctionApp", "Getting Function Apps..."),
 	);
+
 	const functionSubscriptionId = await azureClientUtil.selectSubscription();
+
 	const functionApp = await getPickedWebApp(
 		node,
 		webAppKind.functionApp,
 		functionSubscriptionId,
 	);
+
 	const funcName = nonNullOrEmptyValue(functionApp.name);
+
 	const funcAppResourceGroup = nonNullOrEmptyValue(functionApp.resourceGroup);
 
 	const funcAppService = new FunctionAppService(
@@ -76,6 +80,7 @@ export async function importFunctionAppToApi(
 		funcAppResourceGroup,
 		funcName,
 	);
+
 	const pickedFuncs = await pickFunctions(funcAppService);
 	window
 		.withProgress(
@@ -142,13 +147,17 @@ export async function importFunctionApp(
 	ext.outputChannel.appendLine(
 		localize("importFunctionApp", "Getting Function Apps..."),
 	);
+
 	const functionSubscriptionId = await azureClientUtil.selectSubscription();
+
 	const functionApp = await getPickedWebApp(
 		node,
 		webAppKind.functionApp,
 		functionSubscriptionId,
 	);
+
 	const funcName = nonNullOrEmptyValue(functionApp.name);
+
 	const funcAppResourceGroup = nonNullOrEmptyValue(functionApp.resourceGroup);
 
 	// tslint:disable: no-non-null-assertion
@@ -158,10 +167,13 @@ export async function importFunctionApp(
 		funcAppResourceGroup,
 		funcName,
 	);
+
 	const funcConfig: IWebAppContract = (
 		await request(node.root.credentials, webConfigbaseUrl, "GET")
 	).parsedBody;
+
 	const apiName = await apiUtil.askApiName(funcName);
+
 	if (
 		funcConfig.properties.apiDefinition &&
 		funcConfig.properties.apiDefinition.url
@@ -172,6 +184,7 @@ export async function importFunctionApp(
 				"Importing Function App from swagger object...",
 			),
 		);
+
 		const funcAppService = new FunctionAppService(
 			node.root.credentials,
 			node.root.environment.resourceManagerEndpointUrl,
@@ -195,7 +208,9 @@ export async function importFunctionApp(
 			funcAppResourceGroup,
 			funcName,
 		);
+
 		const pickedFuncs = await pickFunctions(funcAppService);
+
 		const apiId = apiUtil.genApiId(apiName);
 
 		window
@@ -213,6 +228,7 @@ export async function importFunctionApp(
 						ext.outputChannel.appendLine(
 							localize("importFunctionApp", `Creating API...`),
 						);
+
 						const nApi = await constructApiFromFunctionApp(
 							apiId,
 							functionApp,
@@ -281,7 +297,9 @@ async function importFromSwagger(
 	const webResource = new WebResource();
 	webResource.url = webAppConfig.properties.apiDefinition!.url!;
 	webResource.method = "GET";
+
 	const docStr: string = await sendRequest(webResource);
+
 	if (docStr !== undefined && docStr.trim() !== "") {
 		const documentJson = JSON.parse(docStr);
 		// tslint:disable-next-line: no-unsafe-any
@@ -300,6 +318,7 @@ async function importFromSwagger(
 				async () => {
 					try {
 						let curApi: ApiContract;
+
 						if (node instanceof ApiTreeItem) {
 							ext.outputChannel.appendLine(
 								localize(
@@ -342,10 +361,12 @@ async function importFromSwagger(
 								"Setting up backend and policies...",
 							),
 						);
+
 						const hostKey =
 							await funcAppService.addFuncHostKeyForApim(
 								node.root.serviceName,
 							);
+
 						const namedValueId = apiUtil.displayNameToIdentifier(
 							`${funcAppName}-key`,
 						);
@@ -380,12 +401,14 @@ async function importFromSwagger(
 							funcAppName,
 							backendCredentials,
 						);
+
 						const allOperations =
 							await node!.root.client.apiOperation.listByApi(
 								node!.root.resourceGroupName,
 								node!.root.serviceName,
 								apiName,
 							);
+
 						for (const operation of allOperations) {
 							ext.outputChannel.appendLine(
 								localize(
@@ -490,8 +513,11 @@ async function addOperationsToExistingApi(
 	ext.outputChannel.appendLine(
 		localize("importFunctionApp", "Creating operations..."),
 	);
+
 	let allOperations: OperationContract[] = [];
+
 	let functionAppBase: string = "";
+
 	for (const func of funcs) {
 		ext.outputChannel.appendLine(
 			localize(
@@ -499,16 +525,20 @@ async function addOperationsToExistingApi(
 				`Creating operation for Function ${func.name}...`,
 			),
 		);
+
 		const bindings = func.properties.config.bindings.find(
 			(b) =>
 				!b.direction ||
 				b.direction === Constants.HttpTriggerDirectionContract.in,
 		);
+
 		const trigger = func.properties.name;
+
 		const route =
 			bindings && bindings.route
 				? nonNullOrEmptyValue(bindings.route)
 				: trigger;
+
 		if (functionAppBase === "") {
 			functionAppBase =
 				bindings && bindings.route
@@ -550,6 +580,7 @@ async function addOperationsToExistingApi(
 				),
 			);
 			node = <ApiTreeItem>node;
+
 			const existingOperations = await getAllOperations(node);
 			allOperations = filteredExistingOperations(
 				apiId,
@@ -560,6 +591,7 @@ async function addOperationsToExistingApi(
 		ext.outputChannel.appendLine(
 			localize("importFunctionApp", `Creating new operations...`),
 		);
+
 		for (const operation of allOperations) {
 			await node.root.client.apiOperation.createOrUpdate(
 				node.root.resourceGroupName,
@@ -575,9 +607,11 @@ async function addOperationsToExistingApi(
 				`Getting host key from Function App ${funcAppName}...`,
 			),
 		);
+
 		const hostKey = await funcAppService.addFuncHostKeyForApim(
 			node.root.serviceName,
 		);
+
 		const namedValueId = apiUtil.displayNameToIdentifier(
 			`${funcAppName}-key`,
 		);
@@ -609,6 +643,7 @@ async function addOperationsToExistingApi(
 			funcAppName,
 			backendCredentials,
 		);
+
 		for (const operation of allOperations) {
 			ext.outputChannel.appendLine(
 				localize(
@@ -638,8 +673,10 @@ function filteredExistingOperations(
 	allOperations: OperationContract[],
 ): OperationContract[] {
 	const resOperations: OperationContract[] = [];
+
 	for (const operation of allOperations) {
 		const opName = nonNullOrEmptyValue(operation.name);
+
 		if (existingOperations.includes(opName)) {
 			ext.outputChannel.appendLine(
 				localize(
@@ -647,7 +684,9 @@ function filteredExistingOperations(
 					`Resolving conflict operations... ${opName}`,
 				),
 			);
+
 			const appdNum = genUniqueOperationName(opName, existingOperations);
+
 			const nOperation: OperationContract = {
 				id: `${apiId}/operations/${opName}-${appdNum}`,
 				name: `${opName}-${appdNum}`,
@@ -670,7 +709,9 @@ function genUniqueOperationName(
 	existingOperations: string[],
 ): number {
 	let cnt = 0;
+
 	let curName = opName;
+
 	while (existingOperations.includes(curName)) {
 		cnt++;
 		curName = opName.concat("-", cnt.toString());
@@ -685,16 +726,19 @@ async function getAllOperations(node: ApiTreeItem): Promise<string[]> {
 			`Getting all operations from API ${node.root.apiName}...`,
 		),
 	);
+
 	const operations: OperationCollection =
 		await node.root.client.apiOperation.listByApi(
 			node.root.resourceGroupName,
 			node.root.serviceName,
 			node.root.apiName,
 		);
+
 	const operationsNames: string[] = [];
 	operations.forEach((ele) => {
 		operationsNames.push(nonNullOrEmptyValue(ele.name));
 	});
+
 	return operationsNames;
 }
 
@@ -702,18 +746,21 @@ async function pickFunctions(
 	funcAppService: FunctionAppService,
 ): Promise<IFunctionContract[]> {
 	const allFunctions = await funcAppService.listAllFunctions();
+
 	const importableFuncs = await filterFunctions(allFunctions);
 
 	// Pick functions to import
 	ext.outputChannel.appendLine(
 		localize("importFunctionApp", "Getting Functions to import...."),
 	);
+
 	const pickedFuncs = await ext.ui.showQuickPick(
 		importableFuncs.map((s) => {
 			return { label: String(s.properties.name), func: s };
 		}),
 		{ canPickMany: true },
 	);
+
 	return pickedFuncs.map((s) => {
 		return s.func;
 	});
@@ -748,7 +795,9 @@ function getNewOperation(
 	displayName: string,
 ): OperationContract {
 	const operationId = apiUtil.displayNameToIdentifier(name);
+
 	const cleanUrl = parseUrlTemplate(route);
+
 	return {
 		id: `${apiId}/operations/${operationId}`,
 		name: operationId,
@@ -765,6 +814,7 @@ function getFunctionAppBase(invokeUrlTemplate: string, route: string): string {
 		0,
 		invokeUrlTemplate.length - route.length,
 	);
+
 	return uri.endsWith("/") ? uri.substr(0, uri.length - 1) : uri;
 }
 

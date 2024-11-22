@@ -86,12 +86,14 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 			"confirmDeleteApi",
 			`Are you sure you want to delete API '${this.root.apiName}' and its contents?`,
 		);
+
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
 			DialogResponses.cancel,
 		);
+
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"deletingApi",
@@ -131,6 +133,7 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 				case OperationPolicyTreeItem.contextValue:
 				case ApiOperationTreeItem.contextValue:
 					return this._operationsTreeItem;
+
 				default:
 			}
 		}
@@ -151,6 +154,7 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 			return api.displayName!;
 		} else {
 			const revNumber = api.name!.split(";rev=")[1];
+
 			return api.displayName!.concat(";rev=", revNumber);
 		}
 	}

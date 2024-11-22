@@ -41,30 +41,40 @@ export async function importOpenApi(
 	}
 
 	let documentString: string | undefined;
+
 	if (!importUsingLink) {
 		const uris = await askDocument();
+
 		const uri = uris[0];
+
 		const fileContent = await fse.readFile(uri.fsPath);
+
 		documentString = fileContent.toString();
 	} else {
 		const openApiLink = await askLink();
+
 		const webResource = new WebResource();
 		webResource.url = openApiLink;
 		webResource.method = "GET";
+
 		documentString = await sendRequest(webResource);
 
 		/*
         const client: ServiceClient = await createGenericClient(node.root.credentials);
+
         const result =  await client.sendRequest({
             method: "GET",
             url: openApiLink
         });
+
         documentString = <string>result.parsedBody;*/
 	}
 
 	if (documentString !== undefined && documentString.trim() !== "") {
 		const documentJson = JSON.parse(documentString);
+
 		const document = await parseDocument(documentJson);
+
 		const apiName = await apiUtil.askApiName();
 		context.apiName = apiName;
 		context.document = document;
@@ -107,7 +117,9 @@ async function askDocument(): Promise<Uri[]> {
 			JSON: ["json"],
 		},
 	};
+
 	const rootPath = workspace.rootPath;
+
 	if (rootPath) {
 		openDialogOptions.defaultUri = Uri.file(rootPath);
 	}
@@ -119,6 +131,7 @@ async function askLink(): Promise<string> {
 		"apiLinkPrompt",
 		"Specify a OpenAPI 2.0 or 3.0 link.",
 	);
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: promptStr,
@@ -127,9 +140,12 @@ async function askLink(): Promise<string> {
 				value: string,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				const regexp =
 					/http(s?):\/\/[\d\w][\d\w]*(\.[\d\w][\d\w-]*)*(:\d+)?(\/[\d\w-\.\?,'/\\\+&amp;=:%\$#_]*)?/;
+
 				const isUrlValid = regexp.test(value);
+
 				if (!isUrlValid) {
 					return localize(
 						"invalidOpenApiLink",

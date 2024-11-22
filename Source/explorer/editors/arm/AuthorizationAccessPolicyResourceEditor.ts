@@ -13,6 +13,7 @@ import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 // tslint:disable-next-line:no-any
 export class AuthorizationAccessPolicyResourceEditor extends BaseArmResourceEditor<IAuthorizationAccessPolicyTreeRoot> {
 	public entityType: string = "AuthorizationAccessPolicy";
+
 	constructor() {
 		super();
 	}
@@ -33,6 +34,7 @@ export class AuthorizationAccessPolicyResourceEditor extends BaseArmResourceEdit
 			context.root.authorizationName,
 			context.root.accessPolicyName,
 		);
+
 		return nonNullValue(response);
 	}
 
@@ -54,6 +56,7 @@ export class AuthorizationAccessPolicyResourceEditor extends BaseArmResourceEdit
 			context.root.accessPolicyName,
 			payload.properties,
 		);
+
 		return nonNullValue(response);
 	}
 }

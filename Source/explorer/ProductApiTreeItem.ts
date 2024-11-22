@@ -45,12 +45,14 @@ export class ProductApiTreeItem extends AzureTreeItem<IProductTreeRoot> {
 			"confirmProductAPIRemove",
 			`Are you sure you want to remove API '${this.productApiContract.displayName}' from product '${this.root.productName}'?`,
 		);
+
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
 			DialogResponses.cancel,
 		);
+
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"removingProductAPI",

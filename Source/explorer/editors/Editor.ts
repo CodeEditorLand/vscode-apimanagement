@@ -38,27 +38,34 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 		sizeLimit?: number /* in Megabytes */,
 	): Promise<void> {
 		const fileName: string = await this.getFilename(context);
+
 		const originFileName: string = await this.getDiffFilename(context);
 		this.appendLineToOutput(
 			localize("opening", 'Opening "{0}"...', fileName),
 		);
+
 		if (sizeLimit !== undefined) {
 			const size: number = await this.getSize(context);
+
 			if (size > sizeLimit) {
 				const message: string = localize(
 					"tooLargeError",
 					'"{0}" is too large to download.',
 					fileName,
 				);
+
 				throw new Error(message);
 			}
 		}
 
 		const localFilePath: string = await createTemporaryFile(fileName);
+
 		const localOriginPath: string =
 			await createTemporaryFile(originFileName);
+
 		const document: vscode.TextDocument =
 			await vscode.workspace.openTextDocument(localFilePath);
+
 		if (document.isDirty) {
 			const overwriteFlag = await vscode.window.showWarningMessage(
 				localize(
@@ -69,12 +76,14 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 				DialogResponses.yes,
 				DialogResponses.cancel,
 			);
+
 			if (overwriteFlag !== DialogResponses.yes) {
 				throw new UserCancelledError();
 			}
 		}
 
 		this.fileMap[localFilePath] = [document, context];
+
 		const data: string = await this.getData(context);
 
 		// store an original copy of the data
@@ -89,6 +98,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 		const filePath: string | undefined = Object.keys(this.fileMap).find(
 			(fsPath: string) => path.relative(doc.fsPath, fsPath) === "",
 		);
+
 		if (filePath) {
 			const [textDocument, context]: [vscode.TextDocument, ContextT] =
 				this.fileMap[filePath];
@@ -108,12 +118,16 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 		doc: vscode.TextDocument,
 	): Promise<void> {
 		actionContext.telemetry.suppressIfSuccessful = true;
+
 		const filePath: string | undefined = Object.keys(this.fileMap).find(
 			(fsPath: string) => path.relative(doc.uri.fsPath, fsPath) === "",
 		);
+
 		if (!this.ignoreSave && filePath) {
 			actionContext.telemetry.suppressIfSuccessful = false;
+
 			const context: ContextT = this.fileMap[filePath][1];
+
 			const showSaveWarning: boolean | undefined = vscode.workspace
 				.getConfiguration()
 				.get(this.showSavePromptKey);
@@ -121,6 +135,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 			if (showSaveWarning) {
 				const message: string =
 					await this.getSaveConfirmationText(context);
+
 				const result: vscode.MessageItem | undefined =
 					await vscode.window.showWarningMessage(
 						message,
@@ -128,6 +143,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 						DialogResponses.alwaysUpload,
 						DialogResponses.dontUpload,
 					);
+
 				if (result === DialogResponses.alwaysUpload) {
 					await vscode.workspace
 						.getConfiguration()
@@ -160,6 +176,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 		this.appendLineToOutput(
 			localize("updating", 'Updating "{0}" ...', filename),
 		);
+
 		const updatedData: string = await this.updateData(
 			context,
 			doc.getText(),
@@ -175,6 +192,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 		if (!!textEditor) {
 			await writeToEditor(textEditor, data);
 			this.ignoreSave = true;
+
 			try {
 				await textEditor.document.save();
 			} finally {

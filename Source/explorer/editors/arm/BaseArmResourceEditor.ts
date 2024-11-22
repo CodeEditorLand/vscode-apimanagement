@@ -33,6 +33,7 @@ export abstract class BaseArmResourceEditor<
 	public async getData(context: AzureTreeItem<TRoot>): Promise<string> {
 		try {
 			const response = await this.getDataInternal(context);
+
 			return JSON.stringify(response, null, "\t");
 		} catch (error) {
 			throw new Error(`${parseError(error).message}`);
@@ -46,6 +47,7 @@ export abstract class BaseArmResourceEditor<
 	): Promise<string> {
 		try {
 			const payload = JSON.parse(data);
+
 			const response = await this.updateDataInternal(context, payload);
 			//await context.refresh();
 			window.showInformationMessage(
@@ -54,6 +56,7 @@ export abstract class BaseArmResourceEditor<
 					`Changes to ${this.entityType} were succefully uploaded to cloud.`,
 				),
 			);
+
 			return JSON.stringify(response, null, "\t");
 		} catch (error) {
 			throw new Error(

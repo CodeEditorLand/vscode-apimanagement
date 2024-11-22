@@ -18,6 +18,7 @@ export interface IOpenApiImportObject {
 	securityDefinitions?: ISecurityDefinitions;
 	// tslint:disable-next-line:no-any
 	sourceDocument: any;
+
 	importFormat: "swagger-json" | "openapi" | "openapi+json";
 }
 
@@ -59,6 +60,7 @@ export interface ISwaggerParameter {
 	description: string;
 	type?: string;
 	schema?: Object;
+
 	default?: string;
 	enum: string[];
 }

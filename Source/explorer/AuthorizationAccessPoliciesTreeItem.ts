@@ -96,12 +96,14 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 					this.root.resourceGroupName,
 					this.root.serviceName,
 				);
+
 				let authorizationAccessPolicy =
 					await apimService.getAuthorizationAccessPolicy(
 						this.root.authorizationProviderName,
 						this.root.authorizationName,
 						authorizationAccessPolicyName,
 					);
+
 				if (authorizationAccessPolicy === undefined) {
 					authorizationAccessPolicy =
 						await apimService.createAuthorizationAccessPolicy(
@@ -110,6 +112,7 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 							authorizationAccessPolicyName,
 							context.authorizationAccessPolicy,
 						);
+
 					return new AuthorizationAccessPolicyTreeItem(
 						this,
 						authorizationAccessPolicy,

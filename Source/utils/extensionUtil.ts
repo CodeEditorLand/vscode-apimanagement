@@ -15,6 +15,7 @@ export function checkCsharpExtensionInstalled(
 	const csharpExtension =
 		vscode.extensions.getExtension("ms-dotnettools.csharp") ||
 		vscode.extensions.getExtension("ms-vscode.csharp");
+
 	if (!csharpExtension) {
 		const message: string = localize(
 			"csharpExtensionNotInstalled",

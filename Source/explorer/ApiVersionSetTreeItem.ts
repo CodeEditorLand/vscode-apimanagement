@@ -59,6 +59,7 @@ export class ApiVersionSetTreeItem extends AzureParentTreeItem<IServiceTreeRoot>
 					api.apiVersion ? api.apiVersion : "Original",
 				),
 		);
+
 		return Promise.all(apis);
 	}
 

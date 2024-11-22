@@ -40,6 +40,7 @@ export abstract class BasePolicyEditor<
 		} catch (error) {
 			// tslint:disable: no-unsafe-any
 			const err: IParsedError = parseError(error);
+
 			if (
 				err.errorType.toLocaleLowerCase() === "notfound" ||
 				err.errorType.toLowerCase() === "resourcenotfound"
@@ -47,12 +48,15 @@ export abstract class BasePolicyEditor<
 				return this.getDefaultPolicy();
 			} else {
 				ext.outputChannel.appendLine(error);
+
 				let errorMessage = err.message;
+
 				if (err.errorType.toLowerCase() === "validationerror") {
 					errorMessage = errorUtil(error.response.body);
 				}
 				ext.outputChannel.appendLine(errorMessage);
 				ext.outputChannel.show();
+
 				throw new Error(errorMessage);
 			}
 		}
@@ -82,6 +86,7 @@ export abstract class BasePolicyEditor<
 					`Changes to policy were uploaded to cloud.`,
 				),
 			);
+
 			return await this.getPolicy(context);
 		} catch (error) {
 			throw new Error(

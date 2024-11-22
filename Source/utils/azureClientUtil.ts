@@ -23,6 +23,7 @@ export namespace azureClientUtil {
 			subscriptionId: subscriptionId,
 			environment: environment,
 		};
+
 		return createAzureClient(clientInfo, WebSiteManagementClient);
 	}
 
@@ -34,6 +35,7 @@ export namespace azureClientUtil {
 		// tslint:disable-next-line: no-non-null-assertion
 		const azureAccount = azureAccountExtension!.exports;
 		await azureAccount.waitForFilters();
+
 		if (azureAccount.status !== "LoggedIn") {
 			throw new Error(localize("", "Please Log in at first!"));
 		}
@@ -44,9 +46,11 @@ export namespace azureClientUtil {
 					name: filter.subscription.displayName,
 				};
 			});
+
 		const subscriptionId = await ext.ui.showQuickPick(
 			subscriptions.map((s) => {
 				const option = s.id.concat(" (", s.name, ")");
+
 				return { label: option, subscriptionId: s.id };
 			}),
 			{
@@ -57,6 +61,7 @@ export namespace azureClientUtil {
 				),
 			},
 		);
+
 		return subscriptionId.subscriptionId;
 	}
 }

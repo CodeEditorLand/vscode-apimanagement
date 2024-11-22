@@ -12,6 +12,7 @@ import { BaseArmResourceEditor } from "./BaseArmResourceEditor";
 // tslint:disable-next-line:no-any
 export class ApiResourceEditor extends BaseArmResourceEditor<IApiTreeRoot> {
 	public entityType: string = "API";
+
 	constructor() {
 		super();
 	}

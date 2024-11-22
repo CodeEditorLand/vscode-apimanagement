@@ -93,6 +93,7 @@ export class NamedValuesTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 						context.key,
 						propertyContract,
 					);
+
 				return new NamedValueTreeItem(this, property);
 			} catch (error) {
 				throw new Error(

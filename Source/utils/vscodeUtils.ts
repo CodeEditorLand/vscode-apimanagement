@@ -43,10 +43,12 @@ export async function promptOpenWorkingFolder(): Promise<void> {
 	const showPrompt: boolean | undefined = vscode.workspace
 		.getConfiguration()
 		.get(advancedPolicyAuthoringExperienceConfigKey);
+
 	if (showPrompt) {
 		const dontAskAgain: vscode.MessageItem = {
 			title: localize("dontAskAgain", "Don't Ask Again"),
 		};
+
 		if (!workingFolderOpenedInWorkspace()) {
 			if (!(await workingFolderInitialized())) {
 				const message: string = localize(
@@ -54,6 +56,7 @@ export async function promptOpenWorkingFolder(): Promise<void> {
 					'For advanced policy authoring experience, initialize and open extension workspace folder "{0}".',
 					getDefaultWorkspacePath(),
 				);
+
 				const btn: vscode.MessageItem = {
 					title: localize(
 						"initializeAndOpenFolder",
@@ -91,6 +94,7 @@ export async function promptOpenWorkingFolder(): Promise<void> {
 					'For advanved policy authoring experience, open extension workspace folder "{0}".',
 					getDefaultWorkspacePath(),
 				);
+
 				const btn: vscode.MessageItem = {
 					title: localize("openFolder", "Open Folder"),
 				};
@@ -120,6 +124,7 @@ export async function promptOpenWorkingFolder(): Promise<void> {
 					'For advanved policy authoring experience, initialize extension workspace folder "{0}".',
 					getDefaultWorkspacePath(),
 				);
+
 				const btn: vscode.MessageItem = {
 					title: localize("initialize", "Initialize"),
 				};
@@ -148,6 +153,7 @@ export async function promptOpenWorkingFolder(): Promise<void> {
 
 export function workingFolderOpenedInWorkspace(): boolean {
 	let folderInWorkspace: boolean = true;
+
 	if (
 		vscode.workspace.workspaceFolders !== undefined &&
 		vscode.workspace.workspaceFolders.length > 0
@@ -155,6 +161,7 @@ export function workingFolderOpenedInWorkspace(): boolean {
 		const folder = vscode.workspace.workspaceFolders.find(
 			(w) => w.uri.fsPath === getDefaultWorkspacePath(),
 		);
+
 		if (!folder) {
 			folderInWorkspace = false;
 		}
@@ -166,6 +173,7 @@ export function workingFolderOpenedInWorkspace(): boolean {
 
 async function workingFolderInitialized(): Promise<boolean> {
 	const workingFolderPath = getDefaultWorkspacePath();
+
 	return await fse.pathExists(
 		path.join(workingFolderPath, `${extensionName}.csproj`),
 	);

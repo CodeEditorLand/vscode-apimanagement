@@ -62,12 +62,14 @@ export class AuthorizationAccessPolicyTreeItem extends AzureTreeItem<IAuthorizat
 			"confirmAccessPolicyRemove",
 			`Are you sure you want to remove Access Policy '${this.authorizationAccessPolicyContract.name}' from Authorization '${this.root.authorizationName}'?`,
 		);
+
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
 			DialogResponses.cancel,
 		);
+
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"removingAuthorizationAccessPolicy",

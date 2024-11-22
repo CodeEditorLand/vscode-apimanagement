@@ -73,6 +73,7 @@ export class AuthorizationProviderTreeItem extends AzureParentTreeItem<IAuthoriz
 			switch (expectedContextValue) {
 				case AuthorizationTreeItem.contextValue:
 					return this.authorizationsTreeItem;
+
 				default:
 			}
 		}
@@ -84,12 +85,14 @@ export class AuthorizationProviderTreeItem extends AzureParentTreeItem<IAuthoriz
 			"confirmDeleteAuthorizationProvider",
 			`Are you sure you want to remove Authorization provider '${this.authorizationProviderContract.name}'?`,
 		);
+
 		const result = await window.showWarningMessage(
 			message,
 			{ modal: true },
 			DialogResponses.deleteResponse,
 			DialogResponses.cancel,
 		);
+
 		if (result === DialogResponses.deleteResponse) {
 			const deletingMessage: string = localize(
 				"removingAuthorizationProvider",

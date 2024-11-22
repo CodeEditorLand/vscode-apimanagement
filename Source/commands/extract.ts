@@ -60,18 +60,24 @@ async function extract(
 	apiName?: string,
 ): Promise<void> {
 	const uris = await askFolder();
+
 	const templatesFolder = await createTemplatesFolder(uris);
+
 	const sourceApimName = node.root.serviceName;
+
 	const resourceGroup = node.root.resourceGroupName;
+
 	const extractConfig = generateExtractConfig(
 		sourceApimName,
 		resourceGroup,
 		templatesFolder,
 		apiName,
 	);
+
 	const subscriptionId = node.root.subscriptionId;
 
 	let configFile = "";
+
 	let noticeContent = "";
 
 	if (apiName) {
@@ -112,7 +118,9 @@ async function extract(
 
 async function createTemplatesFolder(uris: Uri[]): Promise<string> {
 	const uri = uris[0];
+
 	const templatesFolder = path.join(uri.fsPath, Constants.templatesFolder);
+
 	if (!fse.existsSync(templatesFolder)) {
 		await fse.mkdir(templatesFolder);
 	} else {
@@ -168,6 +176,7 @@ async function askFolder(): Promise<Uri[]> {
 	};
 
 	const rootPath = workspace.rootPath;
+
 	if (rootPath) {
 		openDialogOptions.defaultUri = Uri.file(rootPath);
 	}

@@ -19,6 +19,7 @@ export namespace dotnetUtils {
 				"dotnet",
 				"--version",
 			);
+
 			return true;
 		} catch (error) {
 			return false;
@@ -51,6 +52,7 @@ export namespace dotnetUtils {
 							await openUrl("https://aka.ms/AA4ac70");
 						}
 					});
+
 				if (actionContext) {
 					actionContext.errorHandling.suppressDisplay = true;
 				}
@@ -62,7 +64,9 @@ export namespace dotnetUtils {
 
 	function compareVersion(version1: string, version2: string): number {
 		const v1 = version1.split(".").map(parseInt);
+
 		const v2 = version2.split(".").map(parseInt);
+
 		for (let i = 0; i < Math.min(v1.length, v2.length); i++) {
 			if (v1[i] > v2[i]) {
 				return 1;
@@ -84,9 +88,12 @@ export namespace dotnetUtils {
 				"dotnet",
 				"--list-runtimes",
 			);
+
 			const versions = response.split(/\r?\n/);
+
 			for (const version of versions) {
 				const versionNumber = version.split(" ")[1];
+
 				if (compareVersion(versionNumber, minVersion) >= 0) {
 					return false;
 				}

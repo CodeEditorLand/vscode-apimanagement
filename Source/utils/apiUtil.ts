@@ -30,6 +30,7 @@ export namespace apiUtil {
 			"apiNamePrompt",
 			"Enter API Name.",
 		);
+
 		return (
 			await ext.ui.showInputBox({
 				prompt: apiNamePrompt,
@@ -38,6 +39,7 @@ export namespace apiUtil {
 					value: string | undefined,
 				): Promise<string | undefined> => {
 					value = value ? value.trim() : "";
+
 					return validateApiName(value);
 				},
 			})
@@ -46,6 +48,7 @@ export namespace apiUtil {
 
 	export function genApiId(apiName: string): string {
 		const identifier = displayNameToIdentifier(apiName);
+
 		return `/apis/${identifier}`;
 	}
 
@@ -66,12 +69,15 @@ export namespace apiUtil {
 	function removeAccents(str: string): string {
 		const accents =
 			"ÀÁÂÃÄÅàáâãäåßÒÓÔÕÕÖØòóôõöøĎďDŽdžÈÉÊËèéêëðÇçČčÐÌÍÎÏìíîïÙÚÛÜùúûüĽĹľĺÑŇňñŔŕŠšŤťŸÝÿýŽž";
+
 		const accentsOut =
 			"AAAAAAaaaaaasOOOOOOOooooooDdDZdzEEEEeeeeeCcCcDIIIIiiiiUUUUuuuuLLllNNnnRrSsTtYYyyZz";
+
 		const chars = str.split("");
 
 		chars.forEach((letter, index) => {
 			const i = accents.indexOf(letter);
+
 			if (i !== -1) {
 				chars[index] = accentsOut[i];
 			}
@@ -85,6 +91,7 @@ export namespace apiUtil {
 			Constants.invalidIdCharRegEx,
 			"ig",
 		);
+
 		let identifier =
 			value &&
 			value
@@ -95,6 +102,7 @@ export namespace apiUtil {
 				.replace(/(^-)|(-$)/g, "")
 				.toLowerCase();
 		identifier = removeAccents(identifier);
+
 		return identifier;
 	}
 
@@ -115,10 +123,12 @@ export namespace apiUtil {
 				format: undefined,
 				value: "",
 			};
+
 		if (document.schemes === undefined) {
 			openApiImportPayload.protocols = ["https"];
 		} else {
 			const protocols: Protocol[] = [];
+
 			if (document.schemes.indexOf("http") !== -1) {
 				protocols.push("http");
 			}
@@ -131,6 +141,7 @@ export namespace apiUtil {
 		openApiImportPayload.value = JSON.stringify(document.sourceDocument);
 
 		const options = { ifMatch: "*" };
+
 		return await node.root.client.api.createOrUpdate(
 			node.root.resourceGroupName,
 			node.root.serviceName,
@@ -145,6 +156,7 @@ export namespace apiUtil {
 		apiName: string,
 	): Promise<void> {
 		let apiExists: boolean = true;
+
 		try {
 			await node.root.client.api.get(
 				node.root.resourceGroupName,
@@ -153,6 +165,7 @@ export namespace apiUtil {
 			);
 		} catch (error) {
 			const err: IParsedError = parseError(error);
+
 			if (
 				err.errorType.toLocaleLowerCase() === "notfound" ||
 				err.errorType.toLowerCase() === "resourcenotfound"
@@ -170,6 +183,7 @@ export namespace apiUtil {
 				DialogResponses.yes,
 				DialogResponses.cancel,
 			);
+
 			if (overwriteFlag !== DialogResponses.yes) {
 				throw new UserCancelledError();
 			}
@@ -186,7 +200,9 @@ export namespace apiUtil {
 				root.serviceName,
 				apiId,
 			);
+
 		let nextLink = operations.nextLink;
+
 		while (nextLink) {
 			const nOperations: OperationCollection =
 				await root.client.apiOperation.listByApiNext(nextLink);

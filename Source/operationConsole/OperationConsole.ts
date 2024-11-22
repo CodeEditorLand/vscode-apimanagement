@@ -41,11 +41,15 @@ export class OperationConsole {
 		]);
 
 		const service = results[0];
+
 		const api = results[1];
+
 		const operation = results[2];
 
 		const hostName = nonNullProp(service, "gatewayUrl").split("/")[2];
+
 		const consoleOperation = new ConsoleOperation(hostName, operation);
+
 		let revision: ApiRevisionContract | undefined;
 
 		if (api.apiRevision) {
@@ -54,6 +58,7 @@ export class OperationConsole {
 		}
 
 		const url = `${this.getRequestUrl(consoleOperation, api, revision, root.serviceName)}`;
+
 		const method = consoleOperation.method;
 
 		let requestSummary = `${method} ${url} HTTP/1.1\n`;
@@ -102,11 +107,15 @@ export class OperationConsole {
 		]);
 
 		const service = results[0];
+
 		const api = results[1];
+
 		const operation = results[2];
 
 		const hostName = nonNullProp(service, "gatewayUrl").split("/")[2];
+
 		const consoleOperation = new ConsoleOperation(hostName, operation);
+
 		let revision: ApiRevisionContract | undefined;
 
 		if (api.apiRevision) {
@@ -115,12 +124,15 @@ export class OperationConsole {
 		}
 
 		const url = `${this.getRequestUrl(consoleOperation, api, revision, root.serviceName)}`;
+
 		const method = consoleOperation.method;
 
 		let requestSummary = `${method} ${url} HTTP/1.1\n`;
 
 		const subscriptionHeader = api.subscriptionKeyParameterNames?.header;
+
 		const headers = this.getDebugHeaders(subscriptionHeader);
+
 		const apimService = new ApimService(
 			root.credentials,
 			root.environment.resourceManagerEndpointUrl,
@@ -128,11 +140,13 @@ export class OperationConsole {
 			root.resourceGroupName,
 			root.serviceName,
 		);
+
 		const masterSubscription = await apimService.getSubscriptionMasterkey();
 		headers.forEach((header) => {
 			requestSummary += `${header}: ${masterSubscription.primaryKey}\n`;
 		});
 		requestSummary += "Ocp-Apim-Trace: true\n";
+
 		if (consoleOperation.request.body) {
 			requestSummary += `\n\n${consoleOperation.request.body}`;
 		}
@@ -157,7 +171,9 @@ export class OperationConsole {
 			nonNullProp(api, "protocols").indexOf("https") !== -1
 				? "https"
 				: "http";
+
 		let urlTemplate = this.requestUrl(consoleOperation, api, revision);
+
 		if (
 			urlTemplate &&
 			urlTemplate.length > 0 &&
@@ -169,6 +185,7 @@ export class OperationConsole {
 		const hostName: string | undefined = ext.context.globalState.get(
 			serviceName + gatewayHostName,
 		);
+
 		if (hostName === undefined) {
 			return `${protocol}://${consoleOperation.hostName}${this.ensureLeadingSlash(urlTemplate)}`;
 		} else {
@@ -182,6 +199,7 @@ export class OperationConsole {
 		apiRevision: ApiRevisionContract | undefined,
 	): string {
 		let versionPath = "";
+
 		let revision = "";
 
 		/*
@@ -194,6 +212,7 @@ export class OperationConsole {
 		}
 
 		let requestUrl = consoleOperation.uriTemplate;
+
 		const parameters = consoleOperation.templateParameters.concat(
 			consoleOperation.request.queryParameters,
 		);
@@ -238,7 +257,9 @@ export class OperationConsole {
 
 	private addParam(uri: string, name: string, value: string): string {
 		const separator = uri.indexOf("?") >= 0 ? "&" : "?";
+
 		const paramString = !value || value === "" ? name : `${name}=${value}`;
+
 		return uri + separator + paramString;
 	}
 

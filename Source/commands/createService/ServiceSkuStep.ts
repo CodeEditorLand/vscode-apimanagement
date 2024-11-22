@@ -17,6 +17,7 @@ export class ServiceSkuStep extends AzureWizardPromptStep<IServiceWizardContext>
 			"Basic",
 			"Premium",
 		];
+
 		const sku = await ext.ui.showQuickPick(
 			skus.map((s) => {
 				return { label: s, description: "", detail: "" };

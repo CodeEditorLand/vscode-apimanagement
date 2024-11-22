@@ -57,7 +57,9 @@ export class FunctionAppService {
 	// check if the imported function app already has the hostkey, otherwise created
 	public async addFuncHostKeyForApim(keyName: string): Promise<string> {
 		const hostKeys = await this.getFuncHostKeys();
+
 		const funcAppKeyName = `apim-${keyName}`;
+
 		if (
 			hostKeys !== undefined &&
 			hostKeys.functionKeys !== undefined &&
@@ -75,7 +77,9 @@ export class FunctionAppService {
 		apiName: string,
 	): Promise<void> {
 		const webAppConfig: IWebAppContract = await this.getFuncAppConfig();
+
 		const apiConfigId = `/subscriptions/${this.subscriptionId}/resourceGroups/${resourceGroup}/providers/Microsoft.ApiManagement/service/${serviceName}/apis/${apiName}`;
+
 		if (webAppConfig.properties.apiManagementConfig === null) {
 			webAppConfig.properties.apiManagementConfig = {
 				id: apiConfigId,
@@ -94,14 +98,18 @@ export class FunctionAppService {
 	// Get function app config
 	private async getFuncAppConfig(): Promise<IWebAppContract> {
 		const webConfigUrl = `${this.baseUrl}/config/web?api-version=${Constants.functionAppApiVersion}`;
+
 		const result = await this.request(webConfigUrl, "GET");
+
 		return <IWebAppContract>result.parsedBody;
 	}
 
 	// Get function hostkey
 	private async getFuncHostKeys(): Promise<IFunctionKeys> {
 		const url = `${this.baseUrl}/host/default/listkeys?api-version=${Constants.functionAppApiVersion}`;
+
 		const result = await this.request(url, "POST");
+
 		return <IFunctionKeys>result.parsedBody;
 	}
 
@@ -118,6 +126,7 @@ export class FunctionAppService {
 	// Create function hostkey for our apim service
 	private async createFuncHostKey(funcKeyName: string): Promise<string> {
 		const funcKeyUrl = `${this.baseUrl}/host/default/functionkeys/${funcKeyName}?api-version=${Constants.functionAppCreateKeyApiVersion}`;
+
 		const result = await this.request(funcKeyUrl, "PUT", undefined, {
 			properties: {},
 		});
@@ -135,6 +144,7 @@ export class FunctionAppService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		return await client.sendRequest({
 			method: method,
 			url: url,

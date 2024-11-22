@@ -13,6 +13,7 @@ import { nonNullValue } from "../../utils/nonNull";
 
 export class GraphService {
 	private accessToken: string;
+
 	constructor(
 		private credentials: TokenCredentialsBase,
 		private graphEndpoint: string,
@@ -40,6 +41,7 @@ export class GraphService {
 		emailId: string,
 	): Promise<{ userPrincipalName: string; objectId: string } | undefined> {
 		const client: ServiceClient = await createGenericClient();
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.graphEndpoint}/${this.tenantId}/users/${emailId}`,
@@ -52,6 +54,7 @@ export class GraphService {
 		if (result.status >= 400) {
 			// tslint:disable-next-line: no-any no-unsafe-any
 			ext.outputChannel.append(JSON.stringify(result.parsedBody));
+
 			return undefined;
 		}
 		// tslint:disable-next-line:no-any
@@ -65,6 +68,7 @@ export class GraphService {
 		displayNameOrEmail: string,
 	): Promise<{ displayName: string; objectId: string } | undefined> {
 		const client: ServiceClient = await createGenericClient();
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.graphEndpoint}/${this.tenantId}/groups?$filter=securityEnabled eq true and (startswith(displayName,'${displayNameOrEmail}') or startswith(mail,'${displayNameOrEmail}'))&$top=1`,
@@ -77,6 +81,7 @@ export class GraphService {
 		if (result.status >= 400) {
 			// tslint:disable-next-line: no-any no-unsafe-any
 			ext.outputChannel.append(JSON.stringify(result.parsedBody));
+
 			return undefined;
 		}
 
@@ -91,6 +96,7 @@ export class GraphService {
 		displayName: string,
 	): Promise<{ displayName: string; objectId: string } | undefined> {
 		const client: ServiceClient = await createGenericClient();
+
 		const result: HttpOperationResponse = await client.sendRequest({
 			method: "GET",
 			url: `${this.graphEndpoint}/${this.tenantId}/servicePrincipals?$filter=startswith(displayName,'${displayName}')&$top=1`,
@@ -103,6 +109,7 @@ export class GraphService {
 		if (result.status >= 400) {
 			// tslint:disable-next-line: no-any no-unsafe-any
 			ext.outputChannel.append(JSON.stringify(result.parsedBody));
+
 			return undefined;
 		}
 

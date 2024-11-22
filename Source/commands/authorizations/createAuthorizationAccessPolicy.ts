@@ -21,13 +21,18 @@ import { nonNullValue } from "../../utils/nonNull";
 
 const systemAssignedManagedIdentitiesOptionLabel =
 	"System assigned managed identity";
+
 const userAssignedManagedIdentitiesOptionLabel =
 	"User assigned managed identity";
+
 const userEmailIdLabel = "User";
+
 const groupDisplayNameorEmailIdLabel = "Group";
+
 const servicePrincipalDisplayNameLabel = "Service principal";
 
 let resourceGraphService: ResourceGraphService;
+
 let graphService: GraphService;
 
 // tslint:disable-next-line: no-any no-unsafe-any
@@ -81,6 +86,7 @@ export async function createAuthorizationAccessPolicy(
 	});
 
 	let permissionName = "";
+
 	let oid = "";
 
 	if (identitySelected.label === systemAssignedManagedIdentitiesOptionLabel) {
@@ -106,6 +112,7 @@ export async function createAuthorizationAccessPolicy(
 	) {
 		const response =
 			await resourceGraphService.listUserAssignedIdentities();
+
 		const otherManagedIdentityOptions =
 			await populateManageIdentityOptions(response);
 
@@ -125,6 +132,7 @@ export async function createAuthorizationAccessPolicy(
 			"Enter user emailId ...",
 			"mary@contoso.net",
 		);
+
 		const user = await graphService.getUser(userId);
 
 		if (user !== undefined && user.objectId !== null) {
@@ -143,6 +151,7 @@ export async function createAuthorizationAccessPolicy(
 			"Enter group displayname (or) emailId ...",
 			"myfullgroupname (or) mygroup@contoso.net",
 		);
+
 		const group = await graphService.getGroup(groupDisplayNameOrEmailId);
 
 		if (group !== undefined && group.objectId !== null) {
@@ -233,6 +242,7 @@ async function populateIdentityOptionsAsync(
 
 	// 1. Self
 	const token = await credential.getToken();
+
 	const meOption: QuickPickItem = {
 		label: nonNullValue(token.userId),
 		description: token.oid,
@@ -242,6 +252,7 @@ async function populateIdentityOptionsAsync(
 
 	// 2. APIM Service
 	const service = await apimService.getService();
+
 	if (!!service.identity?.principalId) {
 		const apimOption: QuickPickItem = {
 			label: service.name,
@@ -272,6 +283,7 @@ async function populateIdentityOptionsAsync(
 	options.push({ label: userEmailIdLabel });
 	options.push({ label: groupDisplayNameorEmailIdLabel });
 	options.push({ label: servicePrincipalDisplayNameLabel });
+
 	return options;
 }
 
@@ -280,6 +292,7 @@ async function populateManageIdentityOptions(
 	data: { name: string; id: string; principalId: string }[],
 ): Promise<QuickPickItem[]> {
 	const options: QuickPickItem[] = [];
+
 	const managedIdentityOptions: QuickPickItem[] = data.map((d) => {
 		return {
 			label: d.name,
@@ -297,6 +310,7 @@ async function askInput(
 	placeholder: string = "",
 ): Promise<string> {
 	const idPrompt: string = localize("value", message);
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: idPrompt,
@@ -305,6 +319,7 @@ async function askInput(
 				value: string,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				if (value === "") {
 					return localize("valueInvalid", "Value cannot be empty.");
 				}

@@ -74,8 +74,11 @@ export async function updateNamedValue(
 	}
 
 	const displayName = node.propertyContract.displayName;
+
 	const initialValue = await node.getValue();
+
 	const value = await askValue(initialValue);
+
 	const secret = await isSecret();
 
 	window
@@ -107,12 +110,14 @@ export async function updateNamedValue(
 
 async function isSecret(): Promise<boolean | undefined> {
 	const options = ["Yes", "No"];
+
 	const option = await ext.ui.showQuickPick(
 		options.map((s) => {
 			return { label: s, description: "", detail: "" };
 		}),
 		{ placeHolder: "Is this a secret?", canPickMany: false },
 	);
+
 	if (option.label === options[0]) {
 		return true;
 	}
@@ -121,6 +126,7 @@ async function isSecret(): Promise<boolean | undefined> {
 
 async function askId(): Promise<string> {
 	const idPrompt: string = localize("idPrompt", "Enter id");
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: idPrompt,
@@ -128,6 +134,7 @@ async function askId(): Promise<string> {
 				value: string,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				return validateId(value);
 			},
 		})
@@ -136,11 +143,13 @@ async function askId(): Promise<string> {
 
 async function askValue(initialValue?: string): Promise<string> {
 	const valuePrompt: string = localize("valuePrompt", "Enter value");
+
 	return await ext.ui.showInputBox({
 		prompt: valuePrompt,
 		value: initialValue,
 		validateInput: async (value: string): Promise<string | undefined> => {
 			value = value ? value.trim() : "";
+
 			if (value === "") {
 				return localize("valueInvalid", "value cannot be empty.");
 			}
@@ -151,6 +160,7 @@ async function askValue(initialValue?: string): Promise<string> {
 
 function validateId(id: string): string | undefined {
 	const test = "^[w]+$)|(^[w][w-]+[w]$";
+
 	if (id.match(test) === null) {
 		return localize("idInvalid", "Invalid API Name.");
 	}

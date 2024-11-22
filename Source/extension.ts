@@ -791,6 +791,7 @@ class UriEventHandler
 				);
 				// tslint:disable-next-line:no-string-literal
 				const errorValue = queryParams["error"];
+
 				const errorDecoded = new Buffer(errorValue, "base64");
 				ext.outputChannel.appendLine(
 					localize(
@@ -811,7 +812,9 @@ class UriEventHandler
 						`Authorization success. ${uri.path}`,
 					),
 				);
+
 				const authProvider = uri.path.split("/")[2];
+
 				const authorization = uri.path.split("/")[3];
 				vscode.window.showInformationMessage(
 					localize(

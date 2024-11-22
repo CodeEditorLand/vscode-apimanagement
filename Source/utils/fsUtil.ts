@@ -21,12 +21,14 @@ export async function createTemporaryFile(fileName: string): Promise<string> {
 	// Every vscode sessions will get a unique folder to works with the files
 	// This folder will be deleted post vscode session.
 	const sessionFolder = getSessionWorkingFolderName();
+
 	const filePath: string = path.join(
 		defaultWorkspacePath,
 		sessionFolder,
 		fileName,
 	);
 	await fse.ensureFile(filePath);
+
 	return filePath;
 }
 
@@ -46,6 +48,7 @@ export function getSessionWorkingFolderName(): string {
 
 export function getRandomHexString(length: number = 10): string {
 	const buffer: Buffer = crypto.randomBytes(Math.ceil(length / 2));
+
 	return buffer.toString("hex").slice(0, length);
 }
 

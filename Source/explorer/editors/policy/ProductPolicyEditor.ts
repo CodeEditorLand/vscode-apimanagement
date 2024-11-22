@@ -20,6 +20,7 @@ export class ProductPolicyEditor extends BasePolicyEditor<IProductTreeRoot> {
 			context.root.productName,
 			{ format: policyFormat },
 		);
+
 		return policy._response.bodyAsText;
 	}
 
@@ -34,6 +35,7 @@ export class ProductPolicyEditor extends BasePolicyEditor<IProductTreeRoot> {
 				context.root.productName,
 				policy,
 			);
+
 		return policyResult._response.bodyAsText;
 	}
 

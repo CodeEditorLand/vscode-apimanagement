@@ -62,7 +62,9 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 			this.root,
 			ApiManagementClient,
 		);
+
 		let apiManagementServiceListResponse: ApiManagementServiceListResponse;
+
 		try {
 			apiManagementServiceListResponse =
 				this._nextLink === undefined
@@ -100,6 +102,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 		context: ICreateChildImplContext,
 	): Promise<AzureParentTreeItem> {
 		//const actionContext: ICreateChildImplContext = context;
+
 		const client: ApiManagementClient = createAzureClient(
 			this.root,
 			ApiManagementClient,
@@ -124,6 +127,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 		};
 
 		const promptSteps: AzureWizardPromptStep<IServiceWizardContext>[] = [];
+
 		const executeSteps: AzureWizardExecuteStep<IServiceWizardContext>[] =
 			[];
 
@@ -135,6 +139,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 		const advancedCreation: boolean =
 			!!getWorkspaceSetting(advancedCreationKey);
 		//actionContext.advancedCreation = advancedCreation;
+
 		if (!advancedCreation) {
 			wizardContext.sku = "Consumption";
 			await LocationListStep.setLocation(wizardContext, "westus");
@@ -152,6 +157,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 			"serviceCreatingTitle",
 			"Create new API Management instance in Azure",
 		);
+
 		const wizard: AzureWizard<IServiceWizardContext> = new AzureWizard(
 			wizardContext,
 			{ promptSteps, executeSteps, title },
@@ -163,6 +169,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 		if (!advancedCreation) {
 			const newName: string | undefined =
 				await wizardContext.relatedNameTask;
+
 			if (!newName) {
 				throw new Error(
 					localize(
@@ -184,6 +191,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 					extensionPrefix,
 					advancedCreationKey,
 				);
+
 				const btn: MessageItem = {
 					title: localize("turnOn", "Turn on advanced creation"),
 				};
@@ -200,6 +208,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 
 		const service: ApiManagementModels.ApiManagementServiceResource =
 			nonNullProp(wizardContext, "service");
+
 		return new ServiceTreeItem(this, client, service);
 	}
 }

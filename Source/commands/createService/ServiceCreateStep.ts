@@ -55,6 +55,7 @@ export class ServiceCreateStep extends AzureWizardExecuteStep<IServiceWizardCont
 
 		ext.outputChannel.appendLine(createdNewService);
 		ext.outputChannel.appendLine("");
+
 		const viewOutput: MessageItem = {
 			title: localize("viewOutput", "View Output"),
 		};

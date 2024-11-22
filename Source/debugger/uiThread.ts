@@ -59,6 +59,7 @@ export class UiThread {
 		let pendingSource = pendingSources.find(
 			(s) => s.scopeId === frame.scopeId,
 		);
+
 		if (!pendingSource) {
 			pendingSources.push(
 				(pendingSource = {
@@ -96,10 +97,15 @@ export class UiThread {
 			isVirtual?: boolean;
 			stackFrame: StackFrame;
 		}[] = [];
+
 		const allFrames = this.addVirtualStack(frames);
+
 		const pendingSources: PendingSource[] = [];
+
 		let prevFrame: StackFrameContract | null = null;
+
 		let path: string[] = [];
+
 		for (const frame of allFrames.reverse()) {
 			if (
 				!path.length ||
@@ -109,6 +115,7 @@ export class UiThread {
 				path = ["policies[1]", frame.section + "[1]"];
 			}
 			prevFrame = frame;
+
 			if (!frame.name.endsWith("]")) {
 				path.push(`${frame.name}[${frame.index || 1}]`);
 			} else {
@@ -138,6 +145,7 @@ export class UiThread {
 		// Assign source line numbers as per scope, name, and index
 		for (const item of stack) {
 			const frame = item.frame;
+
 			const stackFrame = <DebugProtocol.StackFrame>item.stackFrame;
 
 			if (!stackFrame.source) {
@@ -149,6 +157,7 @@ export class UiThread {
 				frame.scopeId,
 				item.key,
 			);
+
 			if (location) {
 				stackFrame.line = location.line;
 				stackFrame.column = location.column;
@@ -182,6 +191,7 @@ export class UiThread {
 		];
 
 		let lastFrame = allFrames[frames.length - 1];
+
 		if (
 			lastFrame.scopeId === StackFrameScopeContract.tenant &&
 			this.productId
@@ -241,14 +251,18 @@ export class UiThread {
 		pendingSources: PendingSource[],
 	): StackFrame {
 		const frameKey = `${frame.scopeId}/${path}`;
+
 		let stackFrame = this.stackFrames[frameKey];
+
 		if (!stackFrame) {
 			this.stackFrames[frameKey] = stackFrame = new StackFrame(
 				UiThread.NextStackFrameId++,
 				frame.name,
 			);
+
 			const policy = this.policySource.getPolicy(frame.scopeId);
 			stackFrame.source = policy && policy.source;
+
 			if (!stackFrame.source) {
 				UiThread.addPendingSource(pendingSources, frame, stackFrame);
 			}

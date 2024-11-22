@@ -35,6 +35,7 @@ export async function revisions(
 		localize("", "Create Revision"),
 		localize("", "Delete Revision"),
 	];
+
 	const commands = await ext.ui.showQuickPick(
 		options.map((s) => {
 			return { label: s };
@@ -60,16 +61,20 @@ export async function revisions(
 			);
 		} else {
 			const yes: MessageItem = { title: localize("Yes", "Yes") };
+
 			const no: MessageItem = { title: localize("No", "No") };
+
 			const message: string = localize(
 				"shouldRelease",
 				`You are currently on ${node!.apiContract.name!}. This revision will become the public implementation of your API. Are you sure you want to continue?`,
 			);
+
 			const result = await window.showInformationMessage(
 				message,
 				yes,
 				no,
 			);
+
 			if (result === yes) {
 				await window
 					.withProgress(
@@ -83,13 +88,17 @@ export async function revisions(
 						},
 						async () => {
 							const apiRevName = node!.apiContract.name!;
+
 							const notes = await askReleaseNotes();
+
 							const apiRelease: ApiReleaseContract = {
 								apiId: "/apis/".concat(apiRevName),
 								notes: notes,
 							};
+
 							const pickedApiName =
 								node!.root.apiName.split(";rev=")[0];
+
 							const releaseId = Guid.create().toString();
 							await node!.root.client.apiRelease.createOrUpdate(
 								node!.root.resourceGroupName,
@@ -98,6 +107,7 @@ export async function revisions(
 								releaseId,
 								apiRelease,
 							);
+
 							const api = await node!.root.client.api.get(
 								node!.root.resourceGroupName,
 								node!.root.serviceName,
@@ -129,7 +139,9 @@ async function askReleaseNotes(): Promise<string> {
 		"namespacePrompt",
 		"Enter release notes.",
 	);
+
 	const defaultName = localize("releaseName", "New release");
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: releaseNotesPrompt,
@@ -138,6 +150,7 @@ async function askReleaseNotes(): Promise<string> {
 				value: string | undefined,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				return undefined;
 			},
 		})
@@ -146,26 +159,31 @@ async function askReleaseNotes(): Promise<string> {
 
 async function listRevisions(node: ApiTreeItem): Promise<ApiContract> {
 	const nodeApiName = node.root.apiName.split(";rev=")[0];
+
 	const apiRevisions: ApiRevisionCollection =
 		await node.root.client.apiRevision.listByService(
 			node.root.resourceGroupName,
 			node.root.serviceName,
 			nodeApiName,
 		);
+
 	const apiIds = apiRevisions.map((s) => {
 		return s.isCurrent !== undefined && s.isCurrent === true
 			? s.apiId!.concat("(Current)")
 			: s.apiId!;
 	});
+
 	const pickedApiRevision = await ext.ui.showQuickPick(
 		apiIds.map((s) => {
 			return { label: s };
 		}),
 		{ canPickMany: false },
 	);
+
 	const apiName = pickedApiRevision.label
 		.replace("/apis/", "")
 		.replace("(Current)", "");
+
 	return await node.root.client.api.get(
 		node.root.resourceGroupName,
 		node.root.serviceName,
@@ -190,16 +208,21 @@ async function createRevision(
 					node.root.serviceName,
 					node.root.apiName,
 				);
+
 				const curApi = result._response.parsedBody;
+
 				const revs = await node.root.client.apiRevision.listByService(
 					node.root.resourceGroupName,
 					node.root.serviceName,
 					node.root.apiName,
 				);
+
 				const apiRevisions = revs.map((s) => {
 					return s;
 				});
+
 				let revNumber = 0;
+
 				for (const apiRev of apiRevisions) {
 					if (
 						apiRev.apiRevision !== undefined &&
@@ -209,6 +232,7 @@ async function createRevision(
 					}
 				}
 				const revDescription = await askRevisionDescription();
+
 				const newApiRev: ApiCreateOrUpdateParameter = {
 					sourceApiId: "/apis/".concat(curApi.id!),
 					apiRevisionDescription: revDescription,
@@ -219,10 +243,12 @@ async function createRevision(
 				curApi.apiRevisionDescription = revDescription;
 				curApi.isCurrent = false;
 				curApi.sourceApiId = "/apis/".concat(curApi.id!);
+
 				const apiRevId = node.root.apiName.concat(
 					";rev=",
 					(revNumber + 1).toString(),
 				);
+
 				const resApi = await node.root.client.api.createOrUpdate(
 					node.root.resourceGroupName,
 					node.root.serviceName,
@@ -276,10 +302,12 @@ async function askRevisionDescription(): Promise<string> {
 		"revisionPrompt",
 		"Enter revision description.",
 	);
+
 	const defaultDescription: string = localize(
 		"revisionPrompt",
 		"New API revision",
 	);
+
 	return (
 		await ext.ui.showInputBox({
 			prompt: releaseNotesPrompt,
@@ -288,6 +316,7 @@ async function askRevisionDescription(): Promise<string> {
 				value: string | undefined,
 			): Promise<string | undefined> => {
 				value = value ? value.trim() : "";
+
 				return undefined;
 			},
 		})
