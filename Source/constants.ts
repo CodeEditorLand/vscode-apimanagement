@@ -6,33 +6,49 @@
 export const isWindows: boolean = /^win/.test(process.platform);
 
 export const extensionName = "vscode-azureapim";
+
 export const extensionPrefix: string = "azureApiManagement";
+
 export const doubleClickDebounceDelay = 500; //milliseconds
 export const topItemCount: number = 20;
 
 export const swaggerSchema =
 	"application/vnd.ms-azure-apim.swagger.definitions+json";
+
 export const openApiSchema = "application/vnd.oai.openapi.components+json";
+
 export const swaggerExport = "swagger";
+
 export const openApiExport = "openapi%2Bjson";
+
 export const openApiAcceptHeader = "application/vnd.oai.openapi+json";
+
 export const swaggerAcceptHeader = "application/vnd.swagger.doc+json";
 
 export const functionAppApiVersion = "2019-08-01";
 // this api version for function app support creating function key
 export const functionAppCreateKeyApiVersion = "2018-11-01";
+
 export const invalidIdCharRegEx = "[^A-Za-z0-9]";
+
 export const maxApiNameLength = 80;
+
 export const HttpTriggerType = "httpTrigger";
+
 export enum HttpTriggerDirectionContract {
 	in = "in",
 	out = "out",
 }
 export const HttpTriggerAuthLevelAdmin = "admin";
+
 export const FunctionAppKeyLength = 40;
+
 export const webAppApiVersion20190801 = "2019-08-01";
+
 export const apimApiVersion = "2019-12-01";
+
 export const maxTokenValidTimeSpan = 29;
+
 export const gatewayHostName = "CustomerHostName";
 
 export enum GatewayKeyType {
