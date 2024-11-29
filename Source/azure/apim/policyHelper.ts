@@ -43,6 +43,7 @@ export function getSetHeaderPolicy(
 			value: headerValue,
 		});
 	}
+
 	return {
 		"set-header": setHeaderChildren,
 	};

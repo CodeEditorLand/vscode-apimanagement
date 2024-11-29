@@ -25,8 +25,11 @@ export class ServiceCreateStep extends AzureWizardExecuteStep<IServiceWizardCont
 			'Creating new API Management service "{0}"...',
 			wizardContext.serviceName,
 		);
+
 		ext.outputChannel.appendLine(creatingNewService);
+
 		progress.report({ message: creatingNewService });
+
 		wizardContext.service =
 			await wizardContext.client.apiManagementService.createOrUpdate(
 				nonNullValueAndProp(wizardContext.resourceGroup, "name"),
@@ -54,6 +57,7 @@ export class ServiceCreateStep extends AzureWizardExecuteStep<IServiceWizardCont
 		);
 
 		ext.outputChannel.appendLine(createdNewService);
+
 		ext.outputChannel.appendLine("");
 
 		const viewOutput: MessageItem = {
@@ -69,6 +73,7 @@ export class ServiceCreateStep extends AzureWizardExecuteStep<IServiceWizardCont
 				}
 			});
 	}
+
 	public shouldExecute(wizardContext: IServiceWizardContext): boolean {
 		return !wizardContext.service;
 	}

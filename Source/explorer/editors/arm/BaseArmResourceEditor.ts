@@ -22,9 +22,11 @@ export abstract class BaseArmResourceEditor<
 	}
 
 	public abstract get entityType(): string;
+
 	public abstract getDataInternal(
 		context: AzureTreeItem<TRoot>,
 	): Promise<any>;
+
 	public abstract updateDataInternal(
 		context: AzureTreeItem<TRoot>,
 		payload: any,
@@ -50,6 +52,7 @@ export abstract class BaseArmResourceEditor<
 
 			const response = await this.updateDataInternal(context, payload);
 			//await context.refresh();
+
 			window.showInformationMessage(
 				localize(
 					"updateSucceded",

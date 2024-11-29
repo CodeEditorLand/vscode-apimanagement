@@ -118,6 +118,7 @@ export async function importWebApp(
 				context,
 			)
 		);
+
 		node = serviceNode.apisTreeItem;
 	}
 
@@ -158,6 +159,7 @@ export async function importWebApp(
 				"Importing Web App from swagger object...",
 			),
 		);
+
 		await importFromSwagger(
 			context,
 			webAppConfig,
@@ -187,6 +189,7 @@ export async function getPickedWebApp(
 
 	const appType =
 		webAppType === webAppKind.webApp ? "Web Apps" : "Function Apps";
+
 	await window
 		.withProgress(
 			{
@@ -200,6 +203,7 @@ export async function getPickedWebApp(
 					subscriptionId,
 					node.root.environment,
 				);
+
 				allWebApps = await listWebApps(client, webAppType);
 			},
 		)
@@ -223,6 +227,7 @@ export async function listWebApps(
 			(ele) => !!ele.kind && !ele.kind.includes(webAppKind.functionApp),
 		);
 	}
+
 	return allWebApps.filter(
 		(ele) => !!ele.kind && ele.kind.includes(webAppKind.functionApp),
 	);
@@ -383,6 +388,7 @@ async function createApiWithWildCardOperations(
 				);
 
 				const apiId = apiUtil.genApiId(apiName);
+
 				ext.outputChannel.appendLine(
 					localize("importWebApp", "Creating new API..."),
 				);
@@ -394,6 +400,7 @@ async function createApiWithWildCardOperations(
 				);
 
 				context.apiName = apiName;
+
 				context.apiContract = nApi;
 
 				await node!.createChild(context);
@@ -403,6 +410,7 @@ async function createApiWithWildCardOperations(
 				);
 
 				const backendId = `WebApp_${apiUtil.displayNameToIdentifier(webAppName)}`;
+
 				await setAppBackendEntity(
 					node!,
 					backendId,
@@ -411,6 +419,7 @@ async function createApiWithWildCardOperations(
 					webAppResourceGroup,
 					webAppName,
 				);
+
 				await node!.root.client.apiPolicy.createOrUpdate(
 					node!.root.resourceGroupName,
 					node!.root.serviceName,
@@ -422,6 +431,7 @@ async function createApiWithWildCardOperations(
 						]),
 					},
 				);
+
 				ext.outputChannel.appendLine(
 					localize("importWebApp", "Creating operations..."),
 				);
@@ -437,6 +447,7 @@ async function createApiWithWildCardOperations(
 						operation,
 					);
 				}
+
 				ext.outputChannel.appendLine(
 					localize(
 						"importWebApp",
@@ -448,6 +459,7 @@ async function createApiWithWildCardOperations(
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
 			await node!.refresh(context);
+
 			window.showInformationMessage(
 				localize(
 					"importWebApp",
@@ -486,7 +498,9 @@ async function importFromSwagger(
 	pickedWebApp: Site,
 ): Promise<void> {
 	const webResource = new WebResource();
+
 	webResource.url = webAppConfig.properties.apiDefinition!.url!;
+
 	webResource.method = "GET";
 
 	const docStr: string = await sendRequest(webResource);
@@ -495,6 +509,7 @@ async function importFromSwagger(
 		const documentJson = JSON.parse(docStr);
 
 		const document = await parseDocument(documentJson);
+
 		await window
 			.withProgress(
 				{
@@ -514,11 +529,13 @@ async function importFromSwagger(
 							ext.outputChannel.appendLine(
 								localize("importWebApp", "Updating API..."),
 							);
+
 							await apiUtil.createOrUpdateApiWithSwaggerObject(
 								node,
 								apiName,
 								document,
 							);
+
 							curApi = await node!.root.client.api.get(
 								node!.root.resourceGroupName,
 								node!.root.serviceName,
@@ -528,21 +545,28 @@ async function importFromSwagger(
 							ext.outputChannel.appendLine(
 								localize("importWebApp", "Creating new API..."),
 							);
+
 							context.apiName = apiName;
+
 							context.document = document;
+
 							await node.createChild(context);
+
 							ext.outputChannel.appendLine(
 								localize(
 									"importWebApp",
 									"Updating API service url...",
 								),
 							);
+
 							curApi = await node!.root.client.api.get(
 								node!.root.resourceGroupName,
 								node!.root.serviceName,
 								apiName,
 							);
+
 							curApi.serviceUrl = "";
+
 							await node!.root.client.api.createOrUpdate(
 								node!.root.resourceGroupName,
 								node!.root.serviceName,
@@ -550,6 +574,7 @@ async function importFromSwagger(
 								curApi,
 							);
 						}
+
 						ext.outputChannel.appendLine(
 							localize(
 								"importWebApp",
@@ -564,6 +589,7 @@ async function importFromSwagger(
 						);
 
 						const backendId = `WebApp_${apiUtil.displayNameToIdentifier(webAppName)}`;
+
 						await setAppBackendEntity(
 							node!,
 							backendId,
@@ -574,6 +600,7 @@ async function importFromSwagger(
 						);
 
 						const backendPolicy = [getSetBackendPolicy(backendId)];
+
 						await node!.root.client.apiPolicy.createOrUpdate(
 							node!.root.resourceGroupName,
 							node!.root.serviceName,
@@ -617,6 +644,7 @@ async function importFromSwagger(
 									const secretPropertyType = Object.keys(
 										operationSecurity[0],
 									)[0];
+
 									secretProperty =
 										securityKeys[secretPropertyType] &&
 										securityKeys[secretPropertyType][
@@ -633,6 +661,7 @@ async function importFromSwagger(
 									propertyNamesToUpdate.push(
 										nonNullValue(secretProperty.name),
 									);
+
 									await node.root.client.namedValue.createOrUpdate(
 										node.root.resourceGroupName,
 										node.root.serviceName,
@@ -641,6 +670,7 @@ async function importFromSwagger(
 									);
 								}
 							}
+
 							await assignAppDataToOperation(
 								operation,
 								curApi,
@@ -648,6 +678,7 @@ async function importFromSwagger(
 								node!.root,
 							);
 						}
+
 						ext.outputChannel.appendLine(
 							localize(
 								"importWebApp",
@@ -667,6 +698,7 @@ async function importFromSwagger(
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
 				await node!.refresh(context);
+
 				window.showInformationMessage(
 					localize(
 						"importWebApp",
@@ -686,6 +718,7 @@ async function assignAppDataToOperation(
 	let triggerUrl;
 
 	const inboundPolicies: Object[] = [];
+
 	inboundPolicies.push(getSetMethodPolicy(operation.method));
 
 	if (secret) {
@@ -693,9 +726,11 @@ async function assignAppDataToOperation(
 
 		if (secret.name!.indexOf("_query_") !== -1) {
 			triggerUrl = `${operation.urlTemplate}?${secretParamName}={{${secret.name}}}`;
+
 			inboundPolicies.push(getRewriteUrlPolicy(triggerUrl));
 		} else {
 			inboundPolicies.push(getRewriteUrlPolicy(operation.urlTemplate));
+
 			inboundPolicies.push(
 				getSetHeaderPolicy(secretParamName, "append", [
 					`{{${secret.name}}}`,
@@ -704,6 +739,7 @@ async function assignAppDataToOperation(
 		}
 	} else {
 		triggerUrl = operation.urlTemplate;
+
 		inboundPolicies.push(getRewriteUrlPolicy(triggerUrl));
 	}
 
@@ -719,6 +755,7 @@ async function assignAppDataToOperation(
 	inboundPolicies.push(
 		getSetHeaderPolicy(subscriptionKeyHeaderName, "delete", []),
 	);
+
 	await root.client.apiOperationPolicy.createOrUpdate(
 		root.resourceGroupName,
 		root.serviceName,
@@ -762,6 +799,7 @@ async function getWildcardOperationsForApi(
 		const existingOperationDisplayNames = Object.values(
 			existingOperationNames,
 		);
+
 		HttpMethods.forEach((method) => {
 			let operationId = getBsonObjectId();
 
@@ -784,15 +822,19 @@ async function getWildcardOperationsForApi(
 					existingOperationNames,
 					existingOperationDisplayNames,
 				);
+
 				operationId = `${operationId}-${subfix}`;
+
 				operationDisName = `${operationDisName}-${subfix}`;
 			}
+
 			const operation = getNewOperation(
 				apiId,
 				method,
 				operationId,
 				operationDisName,
 			);
+
 			operations.push(operation);
 		});
 	} else {
@@ -805,9 +847,11 @@ async function getWildcardOperationsForApi(
 				operationId,
 				`${method}`,
 			);
+
 			operations.push(operation);
 		});
 	}
+
 	return operations;
 }
 
@@ -876,13 +920,16 @@ function generateUniqueOperationNameSubfix(
 		existingOperationDisplayNames.includes(operationDisplayName)
 	) {
 		cnt++;
+
 		currentName = operationName.concat("-", cnt.toString());
 	}
+
 	return cnt;
 }
 
 function getAllOperationNames(operations: OperationCollection): {} {
 	const operationNamesPair: { [dispayName: string]: string } = {};
+
 	operations.forEach((ele) => {
 		operationNamesPair[nonNullValue(ele.displayName)] = nonNullValue(
 			ele.name,
@@ -907,9 +954,11 @@ function getSecurityKeys(
 			if (appPath.indexOf("{") !== -1) {
 				appPath = appPath.replace(/{|}/g, "");
 			}
+
 			const securityDefinitions = nonNullValue(
 				swaggerObject.securityDefinitions,
 			);
+
 			Object.keys(securityDefinitions).forEach((definition) => {
 				let property: NamedValueCreateContract;
 
@@ -926,13 +975,17 @@ function getSecurityKeys(
 						tags: [],
 						secret: true,
 					};
+
 					securityKeys = securityKeys ? securityKeys : {};
+
 					securityKeys[definition] = securityKeys[definition]
 						? securityKeys[definition]
 						: {};
+
 					securityKeys[definition][swaggerPath] = property;
 					//"apikeyQuery": { "/api/GetUsers" : property }
 				}
+
 				if (def.in === "header") {
 					property = {
 						id: `/properties/${id}`,
@@ -942,16 +995,20 @@ function getSecurityKeys(
 						tags: [],
 						secret: true,
 					};
+
 					securityKeys = securityKeys ? securityKeys : {};
+
 					securityKeys[definition] = securityKeys[definition]
 						? securityKeys[definition]
 						: {};
+
 					securityKeys[definition][swaggerPath] = property;
 					// "apikeyHeader": { "/api/GetUsers" : property }
 				}
 			});
 		});
 	}
+
 	return securityKeys;
 }
 

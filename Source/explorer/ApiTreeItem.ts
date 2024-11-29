@@ -27,13 +27,19 @@ import { OperationPolicyTreeItem } from "./OperationPolicyTreeItem";
 // tslint:disable: no-non-null-assertion
 export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	public static contextValue: string = "azureApiManagementApi";
+
 	public contextValue: string = ApiTreeItem.contextValue;
+
 	public readonly commandId: string = "azureApiManagement.showArmApi";
+
 	public policyTreeItem: ApiPolicyTreeItem;
 
 	private _name: string;
+
 	private _label: string;
+
 	private _root: IApiTreeRoot;
+
 	private _operationsTreeItem: ApiOperationsTreeItem;
 
 	constructor(
@@ -50,8 +56,11 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 		}
 
 		this._name = nonNullProp(this.apiContract, "name");
+
 		this._root = this.createRoot(parent.root, this._name);
+
 		this._operationsTreeItem = new ApiOperationsTreeItem(this);
+
 		this.policyTreeItem = new ApiPolicyTreeItem(this);
 	}
 
@@ -99,6 +108,7 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 				"deletingApi",
 				`Deleting API "${this.root.apiName}"...`,
 			);
+
 			await window.withProgress(
 				{
 					location: ProgressLocation.Notification,
@@ -137,15 +147,21 @@ export class ApiTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 				default:
 			}
 		}
+
 		return undefined;
 	}
 
 	public async reloadApi(api: ApiContract): Promise<void> {
 		this.apiContract = api;
+
 		this._name = nonNullProp(api, "name");
+
 		this._label = this.getRevisionDisplayName(api);
+
 		this._root = this.createRoot(this.root, this._name);
+
 		this._operationsTreeItem = new ApiOperationsTreeItem(this);
+
 		this.policyTreeItem = new ApiPolicyTreeItem(this);
 	}
 

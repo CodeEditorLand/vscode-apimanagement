@@ -22,12 +22,15 @@ import { IAuthorizationAccessPolicyTreeRoot } from "./IAuthorizationAccessPolicy
 export class AuthorizationAccessPolicyTreeItem extends AzureTreeItem<IAuthorizationAccessPolicyTreeRoot> {
 	public static contextValue: string =
 		"azureApiManagementAuthorizationAccessPolicy";
+
 	public contextValue: string =
 		AuthorizationAccessPolicyTreeItem.contextValue;
+
 	public readonly commandId: string =
 		"azureApiManagement.showArmAuthorizationAccessPolicy";
 
 	private _label: string;
+
 	private _root: IAuthorizationAccessPolicyTreeRoot;
 
 	constructor(
@@ -75,6 +78,7 @@ export class AuthorizationAccessPolicyTreeItem extends AzureTreeItem<IAuthorizat
 				"removingAuthorizationAccessPolicy",
 				`Removing Access Policy "${this.authorizationAccessPolicyContract.name}" from Authorization '${this.root.authorizationName}.'`,
 			);
+
 			await window.withProgress(
 				{
 					location: ProgressLocation.Notification,
@@ -88,6 +92,7 @@ export class AuthorizationAccessPolicyTreeItem extends AzureTreeItem<IAuthorizat
 						this.root.resourceGroupName,
 						this.root.serviceName,
 					);
+
 					await apimService.deleteAuthorizationAccessPolicy(
 						this.root.authorizationProviderName,
 						this.root.authorizationName,

@@ -37,6 +37,7 @@ export async function importOpenApi(
 				context,
 			)
 		);
+
 		node = serviceNode.apisTreeItem;
 	}
 
@@ -54,7 +55,9 @@ export async function importOpenApi(
 		const openApiLink = await askLink();
 
 		const webResource = new WebResource();
+
 		webResource.url = openApiLink;
+
 		webResource.method = "GET";
 
 		documentString = await sendRequest(webResource);
@@ -76,7 +79,9 @@ export async function importOpenApi(
 		const document = await parseDocument(documentJson);
 
 		const apiName = await apiUtil.askApiName();
+
 		context.apiName = apiName;
+
 		context.document = document;
 
 		window
@@ -97,6 +102,7 @@ export async function importOpenApi(
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
 				await node!.refresh(context);
+
 				window.showInformationMessage(
 					localize(
 						"importedApi",
@@ -123,6 +129,7 @@ async function askDocument(): Promise<Uri[]> {
 	if (rootPath) {
 		openDialogOptions.defaultUri = Uri.file(rootPath);
 	}
+
 	return await ext.ui.showOpenDialog(openDialogOptions);
 }
 

@@ -9,8 +9,12 @@ import { IResourceGroupWizardContext } from "vscode-azureextensionui";
 
 export interface IServiceWizardContext extends IResourceGroupWizardContext {
 	client: ApiManagementClient;
+
 	sku?: string;
+
 	email?: string;
+
 	serviceName?: string;
+
 	service?: ApiManagementServiceResource;
 }

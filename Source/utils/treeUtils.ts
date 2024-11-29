@@ -17,6 +17,7 @@ import { localize } from "../localize";
 export namespace treeUtils {
 	export interface IThemedIconPath {
 		light: string;
+
 		dark: string;
 	}
 

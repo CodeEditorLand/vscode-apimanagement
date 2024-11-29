@@ -20,7 +20,9 @@ import { IGatewayTreeRoot } from "./IGatewayTreeRoot";
 
 export class GatewayApiTreeItem extends AzureTreeItem<IGatewayTreeRoot> {
 	public static contextValue: string = "azureApiManagementGatewayApi";
+
 	public contextValue: string = GatewayApiTreeItem.contextValue;
+
 	private _label: string;
 
 	constructor(
@@ -28,6 +30,7 @@ export class GatewayApiTreeItem extends AzureTreeItem<IGatewayTreeRoot> {
 		public readonly gatewayApiContract: IGatewayApiContract,
 	) {
 		super(parent);
+
 		this._label = nonNullProp(gatewayApiContract, "name");
 	}
 
@@ -57,6 +60,7 @@ export class GatewayApiTreeItem extends AzureTreeItem<IGatewayTreeRoot> {
 				"removingGatewayAPI",
 				`Removing API "${this.gatewayApiContract.name}" from gateway '${this.root.gatewayName}.'`,
 			);
+
 			await window.withProgress(
 				{
 					location: ProgressLocation.Notification,
@@ -70,6 +74,7 @@ export class GatewayApiTreeItem extends AzureTreeItem<IGatewayTreeRoot> {
 						this.root.resourceGroupName,
 						this.root.serviceName,
 					);
+
 					await apimService.deleteGatewayApi(
 						this.root.gatewayName,
 						nonNullProp(this.gatewayApiContract, "name"),

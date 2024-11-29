@@ -19,12 +19,15 @@ import { localize } from "../localize";
 
 export interface MockBreakpoint {
 	id: number;
+
 	line: number;
+
 	verified: boolean;
 }
 
 export class DebuggerConnection extends EventEmitter {
 	private connection: WebSocket | null;
+
 	private responseAwaiters: {
 		[key: string]: ((value: any) => void)[];
 	} = {};
@@ -50,6 +53,7 @@ export class DebuggerConnection extends EventEmitter {
 						this.connection === connection
 					) {
 						this.connection = null;
+
 						this.sendEvent(
 							"end",
 							localize(
@@ -58,13 +62,16 @@ export class DebuggerConnection extends EventEmitter {
 							),
 						);
 					}
+
 					reject();
 				})
 				.on("open", () => {
 					this.connection = connection;
+
 					this.sendCommand("attach", {
 						break: stopOnEntry,
 					});
+
 					resolve();
 				})
 				.on("message", (e) => {
@@ -261,6 +268,7 @@ export class DebuggerConnection extends EventEmitter {
 				this.responseAwaiters[name] ||
 				(this.responseAwaiters[name] = [])
 			).push(resolve);
+
 			sendCommand();
 		});
 	}
@@ -274,16 +282,23 @@ export class DebuggerConnection extends EventEmitter {
 
 export interface RequestContract {
 	id: string;
+
 	threads: number[];
+
 	operationId: string;
+
 	apiId: string;
+
 	productId: string;
 }
 
 export interface StackFrameContract {
 	scopeId: string;
+
 	index: number;
+
 	name: string;
+
 	section: string;
 }
 
@@ -296,7 +311,10 @@ export enum StackFrameScopeContract {
 
 export interface VariableContract {
 	name: string;
+
 	type: string;
+
 	value: any;
+
 	nestedCount: any;
 }

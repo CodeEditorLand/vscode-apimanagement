@@ -33,6 +33,7 @@ export function checkCsharpExtensionInstalled(
 						);
 					}
 				});
+
 			actionContext.errorHandling.suppressDisplay = true;
 		}
 

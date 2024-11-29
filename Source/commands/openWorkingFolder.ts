@@ -26,6 +26,7 @@ export async function openWorkingFolder(): Promise<void> {
 				folderPath,
 			),
 		);
+
 		ext.outputChannel.show();
 	}
 }

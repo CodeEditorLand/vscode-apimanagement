@@ -51,26 +51,38 @@ const { Subject } = require("await-notify");
 
 interface ILaunchRequestArguments extends DebugProtocol.LaunchRequestArguments {
 	gatewayAddress: string;
+
 	managementAddress: string;
+
 	managementAuth: string;
+
 	subscriptionId: string;
+
 	operationData: string;
+
 	fileName: string;
+
 	stopOnEntry?: boolean;
 }
 
 export class ApimDebugSession extends LoggingDebugSession {
 	private availablePolicies: string[];
+
 	private runtime: DebuggerConnection;
+
 	private configurationDone = new Subject();
+
 	private requests: UiRequest[] = [];
+
 	private policySource: PolicySource;
+
 	private variablesHandles = new Handles<string>();
 
 	public constructor() {
 		super();
 
 		this.setDebuggerLinesStartAt1(false);
+
 		this.setDebuggerColumnsStartAt1(false);
 
 		this.runtime = new DebuggerConnection();
@@ -87,6 +99,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 					productId,
 				),
 		);
+
 		this.runtime.on(
 			"stopOnStep",
 			(requestId, threadId, operationId, apiId, productId) =>
@@ -99,6 +112,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 					productId,
 				),
 		);
+
 		this.runtime.on(
 			"stopOnBreakpoint",
 			(requestId, threadId, operationId, apiId, productId) =>
@@ -111,6 +125,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 					productId,
 				),
 		);
+
 		this.runtime.on(
 			"stopOnException",
 			(requestId, threadId, operationId, apiId, productId, message) =>
@@ -124,15 +139,18 @@ export class ApimDebugSession extends LoggingDebugSession {
 					message,
 				),
 		);
+
 		this.runtime.on("threadExited", (requestId, threadId) =>
 			this.onThreadExited(requestId, threadId),
 		);
+
 		this.runtime.on("end", (message) => {
 			this.requests = [];
 
 			if (message) {
 				this.sendEvent(new OutputEvent(message, "stderr"));
 			}
+
 			this.sendEvent(new TerminatedEvent());
 		});
 	}
@@ -142,10 +160,13 @@ export class ApimDebugSession extends LoggingDebugSession {
 		_args: DebugProtocol.InitializeRequestArguments,
 	): void {
 		response.body = response.body || {};
+
 		response.body.supportsConfigurationDoneRequest = true;
 
 		response.body.supportsRestartRequest = false;
+
 		response.body.supportsRestartFrame = false;
+
 		this.sendResponse(response);
 	}
 
@@ -154,6 +175,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		args: DebugProtocol.ConfigurationDoneArguments,
 	): void {
 		super.configurationDoneRequest(response, args);
+
 		this.configurationDone.notify();
 	}
 
@@ -171,11 +193,13 @@ export class ApimDebugSession extends LoggingDebugSession {
 				undefined,
 				args.managementAuth,
 			);
+
 			masterKey = await this.getMasterSubscriptionKey(
 				args.managementAddress,
 				undefined,
 				args.managementAuth,
 			);
+
 			this.availablePolicies = await this.getAvailablePolicies(
 				args.managementAddress,
 				undefined,
@@ -185,14 +209,17 @@ export class ApimDebugSession extends LoggingDebugSession {
 			const credential = await this.getAccountCredentials(
 				args.subscriptionId,
 			);
+
 			this.policySource = new PolicySource(
 				args.managementAddress,
 				credential,
 			);
+
 			masterKey = await this.getMasterSubscriptionKey(
 				args.managementAddress,
 				credential,
 			);
+
 			this.availablePolicies = await this.getAvailablePolicies(
 				args.managementAddress,
 				credential,
@@ -204,10 +231,15 @@ export class ApimDebugSession extends LoggingDebugSession {
 			masterKey,
 			!!args.stopOnEntry,
 		);
+
 		this.sendEvent(new InitializedEvent());
+
 		await this.configurationDone.wait(1000);
+
 		this.sendResponse(response);
+
 		this.updateRequests(await this.runtime.getRequests(), true);
+
 		await this.createTestOperationFile(args.operationData, args.fileName);
 	}
 
@@ -267,22 +299,26 @@ export class ApimDebugSession extends LoggingDebugSession {
 					nRequest[0].id,
 					nRequest[1].id,
 				);
+
 				stack = await nRequest[1].getStackFrames(requestStack);
 
 				for (const item of <DebugProtocol.StackFrame[]>stack) {
 					if (item.line) {
 						item.line = this.convertDebuggerLineToClient(item.line);
 					}
+
 					if (item.column) {
 						item.column = this.convertDebuggerColumnToClient(
 							item.column,
 						);
 					}
+
 					if (item.endLine) {
 						item.endLine = this.convertDebuggerLineToClient(
 							item.endLine,
 						);
 					}
+
 					if (item.endColumn) {
 						item.endColumn =
 							this.convertDebuggerColumnToClient(item.endColumn) +
@@ -296,6 +332,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 			stackFrames: stack,
 			totalFrames: stack.length,
 		};
+
 		this.sendResponse(response);
 	}
 
@@ -312,6 +349,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 				content: policy && policy.xml,
 				mimeType: "application/vnd.ms-azure-apim.policy.raw+xml",
 			};
+
 			this.sendResponse(response);
 		}
 	}
@@ -329,6 +367,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		response.body = {
 			allThreadsContinued: false,
 		};
+
 		this.sendResponse(response);
 	}
 
@@ -407,6 +446,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		response.body = {
 			scopes: scopes || [],
 		};
+
 		this.sendResponse(response);
 	}
 
@@ -456,6 +496,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 		response.body = {
 			variables: variables || [],
 		};
+
 		this.sendResponse(response);
 	}
 
@@ -471,9 +512,11 @@ export class ApimDebugSession extends LoggingDebugSession {
 				: args.breakpoints
 					? args.breakpoints.map((_b) => new Breakpoint(false))
 					: [];
+
 		response.body = {
 			breakpoints: nBreakpoints,
 		};
+
 		this.sendResponse(response);
 	}
 
@@ -488,7 +531,9 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 		const textEditor: vscode.TextEditor =
 			await vscode.window.showTextDocument(document);
+
 		await writeToEditor(textEditor, operationData);
+
 		await textEditor.document.save();
 	}
 
@@ -499,6 +544,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 
 		const breakpointsToSet: {
 			path: string;
+
 			scopeId: string;
 		}[] = [];
 
@@ -511,6 +557,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 				this.policySource.getPolicy(args.source.name) ||
 				(await this.policySource.fetchPolicy(args.source.name));
 		}
+
 		if (args.breakpoints && args.breakpoints.length) {
 			// set breakpoints if has policy otherwise check if it's initialization
 			if (policy && policy !== null) {
@@ -544,9 +591,11 @@ export class ApimDebugSession extends LoggingDebugSession {
 								mapEntry.column < position.column)
 						) {
 							path = key;
+
 							position = mapEntry;
 						}
 					}
+
 					if (position.line === -1) {
 						return new Breakpoint(false);
 					}
@@ -554,6 +603,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 					if (path === null) {
 						throw new Error("Path is null");
 					}
+
 					let policyName = path.substring(path.lastIndexOf("/") + 1);
 
 					if (policyName.indexOf("[") !== -1) {
@@ -642,11 +692,13 @@ export class ApimDebugSession extends LoggingDebugSession {
 		);
 
 		const azureAccount = azureAccountExtension!.exports;
+
 		await azureAccount.waitForFilters();
 
 		if (azureAccount.status !== "LoggedIn") {
 			throw new Error("ERROR!");
 		}
+
 		const creds = azureAccount.filters
 			.filter(
 				(filter) =>
@@ -690,6 +742,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 							),
 						),
 					);
+
 					this.sendEvent(new TerminatedEvent());
 				}
 			});
@@ -730,6 +783,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 							),
 						),
 					);
+
 					this.sendEvent(new TerminatedEvent());
 				}
 			});
@@ -791,6 +845,7 @@ export class ApimDebugSession extends LoggingDebugSession {
 						this.sendEvent(
 							new ThreadEvent("exited", uiThread.uiId),
 						);
+
 						uiRequest.threads.splice(threadIndex, 1);
 
 						continue;

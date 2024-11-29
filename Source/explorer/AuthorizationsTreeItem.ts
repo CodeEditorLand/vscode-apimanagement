@@ -33,6 +33,7 @@ import { IAuthorizationProviderTreeRoot } from "./IAuthorizationProviderTreeRoot
 
 export interface IAuthorizationTreeItemContext extends ICreateChildImplContext {
 	authorizationName: string;
+
 	authorization: IAuthorizationPropertiesContract;
 }
 
@@ -40,14 +41,20 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string = "azureApiManagementAuthorizations";
+
 	public label: string = "Authorizations";
+
 	public contextValue: string = AuthorizationsTreeItem.contextValue;
+
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.Authorization",
 		"Authorization",
 	);
+
 	private _nextLink: string | undefined;
+
 	private apimService: ApimService;
 
 	public hasMoreChildrenImpl(): boolean {
@@ -106,6 +113,7 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 				// tslint:disable-next-line:no-non-null-assertion
 				async () => {
 					const authorizationName = context.authorizationName;
+
 					context.showCreatingTreeItem(authorizationName);
 
 					try {
@@ -129,6 +137,7 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 									authorizationName,
 									context.authorization,
 								);
+
 							window.showInformationMessage(
 								localize(
 									"createdAuthorization",
@@ -177,6 +186,7 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 			"Enter Authorization name ...",
 			"Invalid Authorization name ...",
 		);
+
 		context.authorizationName = authorizationName;
 
 		let parameterValues: IParameterValues = {};
@@ -196,10 +206,12 @@ export class AuthorizationsTreeItem extends AzureParentTreeItem<IAuthorizationPr
 
 			const grant =
 				identityProvider.properties.oauth2.grantTypes.clientCredentials;
+
 			parameterValues = await askAuthorizationParameterValues(
 				nonNullValue(grant),
 			);
 		}
+
 		context.authorization = {
 			authorizationType: "oauth2",
 			oauth2grantType: grantType,

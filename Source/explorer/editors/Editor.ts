@@ -20,19 +20,26 @@ import { writeToEditor } from "../../utils/vscodeUtils";
 // tslint:disable-next-line:no-unsafe-any
 export abstract class Editor<ContextT> implements vscode.Disposable {
 	private fileMap: { [key: string]: [vscode.TextDocument, ContextT] } = {};
+
 	private ignoreSave: boolean = false;
 
 	constructor(private readonly showSavePromptKey: string) {}
 
 	public abstract getData(context: ContextT): Promise<string>;
+
 	public abstract updateData(
 		context: ContextT,
 		data: string,
 	): Promise<string>;
+
 	public abstract getFilename(context: ContextT): Promise<string>;
+
 	public abstract getDiffFilename(context: ContextT): Promise<string>;
+
 	public abstract getSaveConfirmationText(context: ContextT): Promise<string>;
+
 	public abstract getSize(context: ContextT): Promise<number>;
+
 	public async showEditor(
 		context: ContextT,
 		sizeLimit?: number /* in Megabytes */,
@@ -40,6 +47,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 		const fileName: string = await this.getFilename(context);
 
 		const originFileName: string = await this.getDiffFilename(context);
+
 		this.appendLineToOutput(
 			localize("opening", 'Opening "{0}"...', fileName),
 		);
@@ -91,6 +99,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 
 		const textEditor: vscode.TextEditor =
 			await vscode.window.showTextDocument(document);
+
 		await this.updateEditor(data, textEditor);
 	}
 
@@ -102,6 +111,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 		if (filePath) {
 			const [textDocument, context]: [vscode.TextDocument, ContextT] =
 				this.fileMap[filePath];
+
 			await this.updateRemote(context, textDocument);
 		}
 	}
@@ -152,6 +162,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 							false,
 							vscode.ConfigurationTarget.Global,
 						);
+
 					await globalState.update(this.showSavePromptKey, true);
 				} else if (result === DialogResponses.dontUpload) {
 					throw new UserCancelledError();
@@ -159,12 +170,14 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 					throw new UserCancelledError();
 				}
 			}
+
 			await this.updateRemote(context, doc);
 		}
 	}
 
 	protected appendLineToOutput(value: string): void {
 		ext.outputChannel.appendLine(value);
+
 		ext.outputChannel.show(true);
 	}
 
@@ -173,6 +186,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 		doc: vscode.TextDocument,
 	): Promise<void> {
 		const filename: string = await this.getFilename(context);
+
 		this.appendLineToOutput(
 			localize("updating", 'Updating "{0}" ...', filename),
 		);
@@ -181,7 +195,9 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 			context,
 			doc.getText(),
 		);
+
 		this.appendLineToOutput(localize("done", 'Updated "{0}".', filename));
+
 		await this.updateEditor(updatedData, vscode.window.activeTextEditor);
 	}
 
@@ -191,6 +207,7 @@ export abstract class Editor<ContextT> implements vscode.Disposable {
 	): Promise<void> {
 		if (!!textEditor) {
 			await writeToEditor(textEditor, data);
+
 			this.ignoreSave = true;
 
 			try {

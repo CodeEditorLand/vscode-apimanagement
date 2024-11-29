@@ -25,6 +25,7 @@ export async function writeToEditor(
 			const lastLine: vscode.TextLine = editor.document.lineAt(
 				editor.document.lineCount - 1,
 			);
+
 			editBuilder.delete(
 				new vscode.Range(
 					new vscode.Position(0, 0),
@@ -35,6 +36,7 @@ export async function writeToEditor(
 				),
 			);
 		}
+
 		editBuilder.insert(new vscode.Position(0, 0), data);
 	});
 }
@@ -168,6 +170,7 @@ export function workingFolderOpenedInWorkspace(): boolean {
 	} else {
 		folderInWorkspace = false;
 	}
+
 	return folderInWorkspace;
 }
 

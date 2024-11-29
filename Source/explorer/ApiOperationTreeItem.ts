@@ -23,12 +23,16 @@ import { OperationPolicyTreeItem } from "./OperationPolicyTreeItem";
 
 export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot> {
 	public static contextValue: string = "azureApiManagementApiOperation";
+
 	public contextValue: string = ApiOperationTreeItem.contextValue;
+
 	public readonly commandId: string =
 		"azureApiManagement.showArmApiOperation";
+
 	public readonly policyTreeItem: OperationPolicyTreeItem;
 
 	private _name: string;
+
 	private _label: string;
 
 	public get root(): IOperationTreeRoot {
@@ -56,9 +60,11 @@ export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot
 		super(parent);
 
 		this._root = this.createRoot(parent.root);
+
 		this.policyTreeItem = new OperationPolicyTreeItem(this);
 
 		this._label = `[${nonNullProp(this.operationContract, "method")}] ${nonNullProp(this.operationContract, "displayName")}`;
+
 		this._name = nonNullProp(this.operationContract, "name");
 	}
 
@@ -90,6 +96,7 @@ export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot
 				"",
 				`Deleting operation "${this.root.opName}"...`,
 			);
+
 			await window.withProgress(
 				{
 					location: ProgressLocation.Notification,

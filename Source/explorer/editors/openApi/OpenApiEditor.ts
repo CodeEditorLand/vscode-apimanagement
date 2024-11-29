@@ -112,6 +112,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 			const documentJson = JSON.parse(data);
 
 			const openApiparser = new OpenApiParser();
+
 			openApiDocument = await openApiparser.parse(documentJson);
 
 			if (
@@ -208,6 +209,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 			method: "GET",
 			url: this.buildAPIExportUrl(context, exportFormat),
 		};
+
 		options.headers = {
 			Accept: exportAcceptHeader,
 			"User-Agent": appendExtensionUserAgent(),
@@ -223,6 +225,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 		exportFormat: string,
 	): string {
 		let url = `${context.root.environment.resourceManagerEndpointUrl}/subscriptions/${context.root.subscriptionId}/resourceGroups/${context.root.resourceGroupName}/providers/Microsoft.ApiManagement/service/${context.root.serviceName}/apis/${context.root.apiName}`;
+
 		url = `${url}?export=true&format=${exportFormat}&api-version=${Constants.apimApiVersion}`;
 
 		return url;
@@ -258,6 +261,7 @@ export class OpenApiEditor extends Editor<ApiTreeItem> {
 				basePath = sourceDocument.basePath.replace(versionSegment, "");
 			}
 		}
+
 		const service = await context.root.client.apiManagementService.get(
 			context.root.resourceGroupName,
 			context.root.serviceName,

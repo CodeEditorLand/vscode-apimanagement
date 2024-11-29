@@ -14,31 +14,47 @@
 
 export class PolicyMapper {
 	public static WhiteSpaceCharacters = " \r\n\t";
+
 	public static NameCharacters =
 		"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-:";
 
 	private index: number;
+
 	private xml: string;
+
 	private map: PolicyMap;
+
 	private count: {
 		[key: string]: number;
 	};
+
 	private stack: string[];
+
 	private line: number;
+
 	private column: number;
+
 	private capturedLocation: {
 		line: number;
+
 		column: number;
+
 		index: number;
 	};
 
 	public mapPolicy(xml: string) {
 		this.index = 0;
+
 		this.xml = xml;
+
 		this.count = {};
+
 		this.map = {};
+
 		this.stack = [];
+
 		this.line = 0;
+
 		this.column = 0;
 
 		while (
@@ -88,9 +104,11 @@ export class PolicyMapper {
 							this.stack.push(
 								name + `[${this.count[curkey] + 1}]`,
 							);
+
 							this.count[curkey]++;
 						} else {
 							this.stack.push(name + `[1]`);
+
 							this.count[curkey] = 1;
 						}
 					} else {
@@ -114,15 +132,18 @@ export class PolicyMapper {
 
 					if (this.count[curkey]) {
 						this.stack.push(name + `[${this.count[curkey] + 1}]`);
+
 						this.count[curkey]++;
 					} else {
 						this.stack.push(name + `[1]`);
+
 						this.count[curkey] = 1;
 					}
 				}
 
 				if (!end && start !== null) {
 					end = [this.line, this.column];
+
 					this.addElementToMap(start, end);
 				}
 
@@ -154,9 +175,11 @@ export class PolicyMapper {
 
 					if (this.count[curkey]) {
 						this.stack.push(name + `[${this.count[curkey] + 1}]`);
+
 						this.count[curkey]++;
 					} else {
 						this.stack.push(name + `[1]`);
+
 						this.count[curkey] = 1;
 					}
 				}
@@ -248,6 +271,7 @@ export class PolicyMapper {
 		while (this.attribute()) {
 			flag = true;
 		}
+
 		return flag;
 	}
 
@@ -287,6 +311,7 @@ export class PolicyMapper {
 				if (this.expression()) {
 					hasValue = true;
 				}
+
 				if (this.simpleValue('"', true)) {
 					hasValue = true;
 
@@ -345,7 +370,9 @@ export class PolicyMapper {
 
 				if (!openingBracket) {
 					openingBracket = char;
+
 					closingBracket = char === "{" ? "}" : ")";
+
 					bracketDepth = 0;
 				} else if (openingBracket === char) {
 					bracketDepth++;
@@ -388,6 +415,7 @@ export class PolicyMapper {
 				if (empty && !allowEmpty) {
 					break;
 				}
+
 				return true;
 			} else if (PolicyMapper.WhiteSpaceCharacters.indexOf(char) < 0) {
 				empty = false;
@@ -412,16 +440,19 @@ export class PolicyMapper {
 		) {
 			flag = true;
 		}
+
 		return flag;
 	}
 
 	private advance() {
 		if (this.xml[this.index] === "\n") {
 			this.line++;
+
 			this.column = 0;
 		} else {
 			this.column++;
 		}
+
 		this.index++;
 	}
 
@@ -446,7 +477,9 @@ export class PolicyMapper {
 
 	private backtrack() {
 		this.line = this.capturedLocation.line;
+
 		this.column = this.capturedLocation.column;
+
 		this.index = this.capturedLocation.index;
 	}
 }
@@ -457,7 +490,10 @@ export interface PolicyMap {
 
 export interface PolicyLocation {
 	line: number;
+
 	endLine: number;
+
 	column: number;
+
 	endColumn: number;
 }

@@ -218,9 +218,11 @@ export async function generateFunctions(
 			},
 			async () => {
 				const args: string[] = [];
+
 				args.push(
 					`--input-file:${cpUtils.wrapArgInQuotes(openAPIFilePath)}`,
 				);
+
 				args.push(
 					`--output-folder:${cpUtils.wrapArgInQuotes(uris[0].fsPath)}`,
 				);
@@ -228,25 +230,30 @@ export async function generateFunctions(
 				switch (language.label) {
 					case languageTypes.TypeScript:
 						args.push("--azure-functions-typescript");
+
 						args.push("--no-namespace-folders:True");
 
 						break;
 
 					case languageTypes.CSharp:
 						args.push(`--namespace:${namespace}`);
+
 						args.push("--azure-functions-csharp");
 
 						break;
 
 					case languageTypes.Java:
 						args.push(`--namespace:${namespace}`);
+
 						args.push("--azure-functions-java");
 
 						break;
 
 					case languageTypes.Python:
 						args.push("--azure-functions-python");
+
 						args.push("--no-namespace-folders:True");
+
 						args.push("--no-async");
 
 						break;
@@ -281,13 +288,16 @@ export async function generateFunctions(
 
 				try {
 					ext.outputChannel.show();
+
 					await cpUtils.executeCommand(
 						ext.outputChannel,
 						undefined,
 						"autorest",
 						...args,
 					);
+
 					await promptOpenFileFolder(uris[0].fsPath);
+
 					isSucceeded = true;
 				} catch (error) {
 					if (language.label === languageTypes.CSharp) {
@@ -340,6 +350,7 @@ async function askFolder(): Promise<Uri[]> {
 	if (rootPath) {
 		openDialogOptions.defaultUri = Uri.file(rootPath);
 	}
+
 	return await ext.ui.showOpenDialog(openDialogOptions);
 }
 
@@ -435,6 +446,7 @@ async function validateAutorestInstalled(): Promise<boolean> {
 			"autorestNotFound",
 			'Failed to find "autorest" | Extension needs AutoRest to generate a function app from an OpenAPI specification. Click "Learn more" for more details on installation steps.',
 		);
+
 		window
 			.showErrorMessage(message, DialogResponses.learnMore)
 			.then(async (result) => {
@@ -458,6 +470,7 @@ async function promptOpenFileFolder(filePath: string): Promise<void> {
 		"openFolder",
 		"Do you want to open the folder for the generated files?",
 	);
+
 	window.showInformationMessage(message, yes, no).then(async (result) => {
 		if (result === yes) {
 			vscode.commands.executeCommand(
@@ -478,21 +491,25 @@ async function checkEnvironmentInstalled(language: string): Promise<boolean> {
 
 			break;
 		}
+
 		case languageTypes.Java: {
 			command = "java -version";
 
 			break;
 		}
+
 		case languageTypes.Python: {
 			command = "python --version";
 
 			break;
 		}
+
 		case languageTypes.TypeScript: {
 			command = "tsc --version";
 
 			break;
 		}
+
 		default: {
 			throw new Error("Invalid Language Type.");
 		}

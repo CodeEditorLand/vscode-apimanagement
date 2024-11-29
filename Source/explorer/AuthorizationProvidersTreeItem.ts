@@ -33,6 +33,7 @@ import { IServiceTreeRoot } from "./IServiceTreeRoot";
 export interface IAuthorizationProviderTreeItemContext
 	extends ICreateChildImplContext {
 	name: string;
+
 	authorizationProvider: IAuthorizationProviderPropertiesContract;
 }
 
@@ -40,15 +41,21 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string =
 		"azureApiManagementAuthorizationProviders";
+
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.AuthorizationProvider",
 		"AuthorizationProvider",
 	);
+
 	public label: string = "Authorizations (preview)";
+
 	public contextValue: string = AuthorizationProvidersTreeItem.contextValue;
+
 	private _nextLink: string | undefined;
+
 	private apimService: ApimService;
 
 	public hasMoreChildrenImpl(): boolean {
@@ -88,6 +95,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 		context: IAuthorizationProviderTreeItemContext,
 	): Promise<AuthorizationProviderTreeItem> {
 		await this.checkManagedIdentityEnabled();
+
 		await this.buildContext(context);
 
 		if (context.name !== null && context.authorizationProvider !== null) {
@@ -103,6 +111,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 				// tslint:disable-next-line:no-non-null-assertion
 				async (): Promise<AuthorizationProviderTreeItem> => {
 					const authorizationProviderName = context.name;
+
 					context.showCreatingTreeItem(authorizationProviderName);
 
 					try {
@@ -119,11 +128,15 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 								);
 
 							const message = `Please add redirect url '${authorizationProvider.properties.oauth2?.redirectUrl}' to the OAuth application.`;
+
 							ext.outputChannel.show();
+
 							ext.outputChannel.appendLine(message);
+
 							window.showWarningMessage(
 								localize("redirectUrlMessage", message),
 							);
+
 							window.showInformationMessage(
 								localize(
 									"createdAuthorizationProvider",
@@ -189,6 +202,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 					},
 					async () => {
 						await this.apimService.turnOnManagedIdentity();
+
 						window.showInformationMessage(
 							localize(
 								"enabledManagedIdentity",
@@ -262,6 +276,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 						canPickMany: false,
 					},
 				);
+
 				grantType =
 					grantTypePicked.label[0].toLocaleLowerCase() +
 					grantTypePicked.label.slice(1);
@@ -303,6 +318,7 @@ export class AuthorizationProvidersTreeItem extends AzureParentTreeItem<IService
 				};
 
 			context.name = authorizationProviderName;
+
 			context.authorizationProvider = authorizationProviderPayload;
 		}
 	}

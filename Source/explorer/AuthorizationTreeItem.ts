@@ -24,11 +24,16 @@ import { IAuthorizationTreeRoot } from "./IAuthorizationTreeRoot";
 
 export class AuthorizationTreeItem extends AzureParentTreeItem<IAuthorizationTreeRoot> {
 	public static contextValue: string = "azureApiManagementAuthorization";
+
 	public readonly authorizationAccessPoliciesTreeItem: AuthorizationAccessPoliciesTreeItem;
+
 	public contextValue: string = AuthorizationTreeItem.contextValue;
+
 	public readonly commandId: string =
 		"azureApiManagement.showArmAuthorization";
+
 	private _label: string;
+
 	private _root: IAuthorizationTreeRoot;
 
 	constructor(
@@ -36,6 +41,7 @@ export class AuthorizationTreeItem extends AzureParentTreeItem<IAuthorizationTre
 		public authorizationContract: IAuthorizationContract,
 	) {
 		super(parent);
+
 		this._label = nonNullProp(authorizationContract, "name");
 
 		this._root = this.createRoot(parent.root);
@@ -81,6 +87,7 @@ export class AuthorizationTreeItem extends AzureParentTreeItem<IAuthorizationTre
 				default:
 			}
 		}
+
 		return undefined;
 	}
 
@@ -102,6 +109,7 @@ export class AuthorizationTreeItem extends AzureParentTreeItem<IAuthorizationTre
 				"removingAuthorization",
 				`Removing Authorization "${this.authorizationContract.name}" from Authorization provider '${this.root.authorizationProviderName}.'`,
 			);
+
 			await window.withProgress(
 				{
 					location: ProgressLocation.Notification,
@@ -115,6 +123,7 @@ export class AuthorizationTreeItem extends AzureParentTreeItem<IAuthorizationTre
 						this.root.resourceGroupName,
 						this.root.serviceName,
 					);
+
 					await apimService.deleteAuthorization(
 						this.root.authorizationProviderName,
 						nonNullProp(this.authorizationContract, "name"),

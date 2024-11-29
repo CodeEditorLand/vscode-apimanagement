@@ -19,6 +19,7 @@ import { IProductTreeRoot } from "./IProductTreeRoot";
 
 export class ProductApiTreeItem extends AzureTreeItem<IProductTreeRoot> {
 	public static contextValue: string = "azureApiManagementProductApi";
+
 	public contextValue: string = ProductApiTreeItem.contextValue;
 
 	private _label: string;
@@ -28,6 +29,7 @@ export class ProductApiTreeItem extends AzureTreeItem<IProductTreeRoot> {
 		public readonly productApiContract: ApiManagementModels.ApiContract,
 	) {
 		super(parent);
+
 		this._label = nonNullProp(productApiContract, "displayName");
 	}
 
@@ -58,6 +60,7 @@ export class ProductApiTreeItem extends AzureTreeItem<IProductTreeRoot> {
 				"removingProductAPI",
 				`Removing API "${this.productApiContract.displayName}" from product '${this.root.productName}.'`,
 			);
+
 			await window.withProgress(
 				{
 					location: ProgressLocation.Notification,

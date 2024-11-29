@@ -28,7 +28,9 @@ export abstract class BasePolicyEditor<
 	}
 
 	public abstract getDefaultPolicy(): string;
+
 	public abstract getPolicy(context: AzureTreeItem<TRoot>): Promise<string>;
+
 	public abstract updatePolicy(
 		context: AzureTreeItem<TRoot>,
 		policy: ApiManagementModels.PolicyContract,
@@ -54,7 +56,9 @@ export abstract class BasePolicyEditor<
 				if (err.errorType.toLowerCase() === "validationerror") {
 					errorMessage = errorUtil(error.response.body);
 				}
+
 				ext.outputChannel.appendLine(errorMessage);
+
 				ext.outputChannel.show();
 
 				throw new Error(errorMessage);
@@ -80,6 +84,7 @@ export abstract class BasePolicyEditor<
 			await this.updatePolicy(context, <
 				ApiManagementModels.PolicyContract
 			>{ format: policyFormat, value: data });
+
 			window.showInformationMessage(
 				localize(
 					"updatePolicySucceded",
@@ -104,6 +109,7 @@ export abstract class BasePolicyEditor<
 	public async getSize(): Promise<number> {
 		throw new Error(localize("", "Method not implemented."));
 	}
+
 	public async getSaveConfirmationText(): Promise<string> {
 		return localize(
 			"saveConfirmation",
@@ -116,6 +122,7 @@ export abstract class BasePolicyEditor<
 		sizeLimit?: number /* in Megabytes */,
 	): Promise<void> {
 		await super.showEditor(context, sizeLimit);
+
 		await promptOpenWorkingFolder();
 	}
 }

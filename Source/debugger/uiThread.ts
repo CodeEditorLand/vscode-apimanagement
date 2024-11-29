@@ -17,22 +17,29 @@ import { PolicySource } from "./policySource";
 
 interface PendingSource {
 	scopeId: string;
+
 	stackFrames: StackFrame[];
 }
 
 export class UiThread {
 	private static NextThreadId: number = 1;
+
 	private static NextStackFrameId: number = 1;
 
 	public id: number;
+
 	public uiId: number;
 
 	private operationId: string;
+
 	private apiId: string;
+
 	private productId: string;
+
 	private stackFrames: {
 		[key: string]: StackFrame;
 	} = {};
+
 	private policySource: PolicySource;
 
 	constructor(
@@ -43,11 +50,15 @@ export class UiThread {
 		policySource: PolicySource,
 	) {
 		this.id = id;
+
 		this.uiId = UiThread.NextThreadId++;
 
 		this.operationId = operationId;
+
 		this.apiId = apiId;
+
 		this.productId = productId;
+
 		this.policySource = policySource;
 	}
 
@@ -93,8 +104,11 @@ export class UiThread {
 		// Create UI stack frames
 		const stack: {
 			key: string;
+
 			frame: StackFrameContract;
+
 			isVirtual?: boolean;
+
 			stackFrame: StackFrame;
 		}[] = [];
 
@@ -114,6 +128,7 @@ export class UiThread {
 				// tslint:disable-next-line: prefer-template
 				path = ["policies[1]", frame.section + "[1]"];
 			}
+
 			prevFrame = frame;
 
 			if (!frame.name.endsWith("]")) {
@@ -121,6 +136,7 @@ export class UiThread {
 			} else {
 				path.push(`${frame.name}`);
 			}
+
 			const stackFrameKey = path.join("/");
 
 			stack.push({
@@ -150,6 +166,7 @@ export class UiThread {
 
 			if (!stackFrame.source) {
 				const policy = this.policySource.getPolicy(frame.scopeId);
+
 				stackFrame.source = policy && policy.source;
 			}
 
@@ -160,8 +177,11 @@ export class UiThread {
 
 			if (location) {
 				stackFrame.line = location.line;
+
 				stackFrame.column = location.column;
+
 				stackFrame.endLine = location.endLine;
+
 				stackFrame.endColumn = location.endColumn;
 			}
 		}
@@ -261,6 +281,7 @@ export class UiThread {
 			);
 
 			const policy = this.policySource.getPolicy(frame.scopeId);
+
 			stackFrame.source = policy && policy.source;
 
 			if (!stackFrame.source) {

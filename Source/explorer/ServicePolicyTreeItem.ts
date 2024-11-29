@@ -12,8 +12,12 @@ export class ServicePolicyTreeItem extends AzureTreeItem<IServiceTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("policy");
 	}
+
 	public static contextValue: string = "azureApiManagementServicePolicy";
+
 	public label: string = "Global Policy";
+
 	public contextValue: string = ServicePolicyTreeItem.contextValue;
+
 	public readonly commandId: string = "azureApiManagement.showServicePolicy";
 }

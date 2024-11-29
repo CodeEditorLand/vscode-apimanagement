@@ -11,20 +11,30 @@ import { ConsoleRequest } from "./ConsoleRequest";
 
 export class ConsoleOperation {
 	public name: string;
+
 	public method: string;
+
 	public hostName: string;
+
 	public uriTemplate: string;
+
 	public templateParameters: ConsoleParameter[];
+
 	public request: ConsoleRequest;
 
 	constructor(hostName: string, operationContract: OperationContract) {
 		this.hostName = hostName;
+
 		this.name = operationContract.displayName;
+
 		this.method = operationContract.method.toUpperCase();
+
 		this.uriTemplate = operationContract.urlTemplate;
+
 		this.request = new ConsoleRequest(
 			nonNullProp(operationContract, "request"),
 		);
+
 		this.templateParameters = operationContract.templateParameters
 			? operationContract.templateParameters.map(
 					(parameterContract) =>

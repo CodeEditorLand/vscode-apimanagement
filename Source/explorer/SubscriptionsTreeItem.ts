@@ -15,9 +15,13 @@ export class SubscriptionsTreeItem extends AzureParentTreeItem<IServiceTreeRoot>
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string = "azureApiManagementSubscriptions";
+
 	public label: string = "Subscriptions";
+
 	public contextValue: string = SubscriptionsTreeItem.contextValue;
+
 	private _nextLink: string | undefined;
 
 	public hasMoreChildrenImpl(): boolean {

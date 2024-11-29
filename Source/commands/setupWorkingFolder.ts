@@ -18,6 +18,7 @@ export async function setupWorkingFolder(this: IActionContext): Promise<void> {
 	ext.outputChannel.appendLine(
 		localize("folderInitialized", "Initialization started..."),
 	);
+
 	ext.outputChannel.show();
 	// make sure dotnet tools are installed.
 	await dotnetUtils.validateDotnetInstalled(this);
@@ -66,11 +67,13 @@ export async function setupWorkingFolder(this: IActionContext): Promise<void> {
 	ext.outputChannel.appendLine(
 		localize("folderInitialized", "Initialization completed!"),
 	);
+
 	ext.outputChannel.appendLine(
 		localize(
 			"closePolicyFiles",
 			"Please close and reopen any open policy files.",
 		),
 	);
+
 	ext.outputChannel.show();
 }

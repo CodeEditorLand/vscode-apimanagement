@@ -44,12 +44,15 @@ export async function createOperationTestFile(
 	} else {
 		data = await node.getOperationTestInfo();
 	}
+
 	const document: vscode.TextDocument =
 		await vscode.workspace.openTextDocument(localFilePath);
 
 	const textEditor: vscode.TextEditor =
 		await vscode.window.showTextDocument(document);
+
 	await writeToEditor(textEditor, data);
+
 	await textEditor.document.save();
 
 	return textEditor;

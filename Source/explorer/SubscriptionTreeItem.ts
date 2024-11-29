@@ -21,9 +21,11 @@ import { SubscriptionsTreeItem } from "./SubscriptionsTreeItem";
 export class SubscriptionTreeItem extends AzureTreeItem<ISubscriptionTreeRoot> {
 	public static contextValue: string =
 		"azureApiManagementSubscriptionTreeItem";
+
 	public contextValue: string = SubscriptionTreeItem.contextValue;
 
 	private _label: string;
+
 	private _root: ISubscriptionTreeRoot;
 
 	constructor(
@@ -78,6 +80,7 @@ export class SubscriptionTreeItem extends AzureTreeItem<ISubscriptionTreeRoot> {
 				"",
 				`Deleting subscription "${this.root.subscriptionSid}"...`,
 			);
+
 			await window.withProgress(
 				{
 					location: ProgressLocation.Notification,
@@ -92,6 +95,7 @@ export class SubscriptionTreeItem extends AzureTreeItem<ISubscriptionTreeRoot> {
 					);
 				},
 			);
+
 			window.showInformationMessage(
 				localize(
 					"deletedSubscription",

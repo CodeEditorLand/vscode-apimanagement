@@ -25,13 +25,18 @@ export class GatewayApisTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string = "azureApiManagementGatewayApis";
+
 	public label: string = "Apis";
+
 	public contextValue: string = GatewayApisTreeItem.contextValue;
+
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.GatewayApi",
 		"Gateway API",
 	);
+
 	private _nextLink: string | undefined;
 
 	public hasMoreChildrenImpl(): boolean {
@@ -72,6 +77,7 @@ export class GatewayApisTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
 	): Promise<GatewayApiTreeItem> {
 		if (context.apiName) {
 			const apiName = context.apiName;
+
 			context.showCreatingTreeItem(apiName);
 
 			try {

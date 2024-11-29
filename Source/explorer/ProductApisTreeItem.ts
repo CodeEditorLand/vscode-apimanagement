@@ -25,13 +25,18 @@ export class ProductApisTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string = "azureApiManagementProductApis";
+
 	public label: string = "Apis";
+
 	public contextValue: string = ProductApisTreeItem.contextValue;
+
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.ProductApi",
 		"Product API",
 	);
+
 	private _nextLink: string | undefined;
 
 	public hasMoreChildrenImpl(): boolean {

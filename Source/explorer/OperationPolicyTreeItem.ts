@@ -12,9 +12,13 @@ export class OperationPolicyTreeItem extends AzureTreeItem<IOperationTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("policy");
 	}
+
 	public static contextValue: string = "azureApiManagementOperationPolicy";
+
 	public label: string = "Policy";
+
 	public contextValue: string = OperationPolicyTreeItem.contextValue;
+
 	public readonly commandId: string =
 		"azureApiManagement.showOperationPolicy";
 }

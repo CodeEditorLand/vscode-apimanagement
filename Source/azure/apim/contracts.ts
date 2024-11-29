@@ -7,6 +7,7 @@ export interface IArmResource {
 	id: string;
 	// tslint:disable-next-line: no-reserved-keywords
 	type: string;
+
 	name: string;
 	// tslint:disable-next-line:no-any
 	properties: any;
@@ -14,43 +15,56 @@ export interface IArmResource {
 
 export interface IPaged<T> {
 	value: T[];
+
 	count: number;
+
 	nextLink?: string;
 }
 
 export interface IApimServiceContract {
 	id: string;
+
 	name: string;
 	// tslint:disable-next-line: no-reserved-keywords
 	type: string;
+
 	location?: string;
+
 	properties: object;
+
 	identity: IApimServiceIdentityContract;
 }
 
 export interface IApimServiceIdentityContract {
 	// tslint:disable-next-line:no-reserved-keywords
 	type: string;
+
 	principalId: string;
+
 	tenantId: string;
 }
 
 export interface IGatewayContract {
 	id: string;
+
 	name: string;
 	// tslint:disable-next-line: no-reserved-keywords
 	type: string;
+
 	location?: string;
+
 	properties: IGatewayPropertyContract;
 }
 
 export interface IGatewayPropertyContract {
 	region: string;
+
 	heartbeat: string;
 }
 
 export interface IGatewayApiContract {
 	id: string;
+
 	name: string;
 }
 
@@ -60,23 +74,29 @@ export interface IGatewayToken {
 
 export interface IGatewayTokenList {
 	primary: string;
+
 	secondary: string;
 }
 
 export interface IMasterSubscription {
 	id: string;
+
 	name: string;
+
 	properties: ISubscriptionProperty;
 }
 
 export interface IMasterSubscriptionsSecrets {
 	primaryKey: string;
+
 	secondaryKey: string;
 }
 
 export interface ISubscriptionProperty {
 	displayName: string;
+
 	primaryKey: string;
+
 	secondaryKey: string;
 }
 
@@ -88,21 +108,27 @@ export enum IGrantTypesContract {
 
 export interface IAuthorizationProviderContract {
 	id: string;
+
 	name: string;
 	// tslint:disable-next-line: no-reserved-keywords
 	type: string;
+
 	location?: string;
+
 	properties: IAuthorizationProviderPropertiesContract;
 }
 
 export interface IAuthorizationProviderPropertiesContract {
 	displayName?: string;
+
 	identityProvider: string;
+
 	oauth2?: IAuthorizationProviderOAuth2SettingsContract;
 }
 
 export interface IAuthorizationProviderOAuth2SettingsContract {
 	redirectUrl?: string;
+
 	grantTypes: IAuthorizationProviderOAuth2GrantTypesContract;
 }
 
@@ -114,20 +140,27 @@ export type IAuthorizationProviderOAuth2GrantTypesContract = {
 
 export interface IAuthorizationContract {
 	id: string;
+
 	name: string;
 	// tslint:disable-next-line: no-reserved-keywords
 	type: string;
+
 	location?: string;
+
 	properties: IAuthorizationPropertiesContract;
 }
 
 export interface IAuthorizationPropertiesContract {
 	authorizationType: string;
+
 	oauth2grantType: string;
+
 	parameters?: {
 		[key: string]: string | boolean;
 	};
+
 	status?: ITokenStoreAuthorizationState;
+
 	error?: IAuthorizationErrorContract;
 }
 
@@ -138,6 +171,7 @@ export enum ITokenStoreAuthorizationState {
 
 export interface IAuthorizationErrorContract {
 	code: string;
+
 	message: string;
 	// tslint:disable-next-line:no-any
 	refreshResponseBodyFromIdentityProvider?: any;
@@ -145,15 +179,19 @@ export interface IAuthorizationErrorContract {
 
 export interface ITokenStoreIdentityProviderContract {
 	id: string;
+
 	name: string;
 	// tslint:disable-next-line: no-reserved-keywords
 	type: string;
+
 	location?: string;
+
 	properties: ITokenStoreIdentityProviderPropertiesContract;
 }
 
 export interface ITokenStoreIdentityProviderPropertiesContract {
 	displayName: string;
+
 	oauth2: {
 		grantTypes: ITokenStoreIdentityProviderGrantTypeContract;
 	};
@@ -170,10 +208,13 @@ export interface ITokenStoreGrantTypeParameterContract {
 export interface ITokenStoreGrantTypeParameterDefinitionContract {
 	// tslint:disable-next-line:no-reserved-keywords
 	type: "string" | "securestring" | "bool";
+
 	displayName: string;
+
 	description?: string;
 	// tslint:disable-next-line:no-reserved-keywords
 	default?: string;
+
 	uidefinition: {
 		atAuthorizationProviderLevel: "REQUIRED" | "OPTIONAL" | "HIDDEN";
 	};
@@ -189,15 +230,19 @@ export interface IAuthorizationLoginLinkResponse {
 
 export interface IAuthorizationAccessPolicyContract {
 	id: string;
+
 	name: string;
 	// tslint:disable-next-line: no-reserved-keywords
 	type: string;
+
 	location?: string;
+
 	properties: IAuthorizationAccessPolicyPropertiesContract;
 }
 
 export interface IAuthorizationAccessPolicyPropertiesContract {
 	objectId: string;
+
 	tenantId: string;
 }
 

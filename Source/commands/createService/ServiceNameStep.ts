@@ -22,6 +22,7 @@ export class ServiceNameStep extends AzureNameStep<IServiceWizardContext> {
 			"serviceNamePrompt",
 			"Enter a globally unique name for the new API Management instance.",
 		);
+
 		wizardContext.serviceName = (
 			await ext.ui.showInputBox({
 				prompt,

@@ -16,13 +16,18 @@ export class ApiOperationsTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string = "azureApiManagementOperations";
+
 	public label: string = "Operations";
+
 	public contextValue: string = ApiOperationsTreeItem.contextValue;
+
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.Operation",
 		"Operation",
 	);
+
 	private _nextLink: string | undefined;
 
 	public hasMoreChildrenImpl(): boolean {

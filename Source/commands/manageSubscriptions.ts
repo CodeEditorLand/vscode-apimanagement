@@ -31,6 +31,7 @@ export async function createSubscription(
 				context,
 			)
 		);
+
 		node = serviceNode.subscriptionsTreeItem;
 	}
 
@@ -48,11 +49,14 @@ export async function createSubscription(
 		scope = "/apis";
 	} else if (scope === "API") {
 		const api = await askAPI(node);
+
 		scope = "/apis/".concat(api.value.id!);
 	} else if (scope === "Product") {
 		const product = await askProduct(node);
+
 		scope = "/apis/".concat(product.value.id!);
 	}
+
 	const subContract: ISubscriptionContract = {
 		scope: scope,
 		displayName: displayName,
@@ -76,6 +80,7 @@ export async function createSubscription(
 					name,
 					subContract,
 				);
+
 				await node!.refresh(context);
 			},
 		)
@@ -126,9 +131,11 @@ function validateSubscriptionName(
 			`API name cannot be more than ${Constants.maxApiNameLength} characters long.`,
 		);
 	}
+
 	if (subName.match(/^[^*#&+:<>?]+$/) === null) {
 		return localize("subNameInvalid", "Invalid API Name.");
 	}
+
 	if (subNames.indexOf(subName) !== -1) {
 		return localize("subNameInvalid", "Subscription already exist.");
 	}

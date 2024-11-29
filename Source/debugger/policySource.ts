@@ -26,8 +26,11 @@ export class PolicySource {
 	private static NextSourceReference: number = 1;
 
 	private managementAddress: string;
+
 	private credential: TokenCredentialsBase | undefined;
+
 	private auth: string | undefined;
+
 	private policies: { [key: string]: Policy } = {};
 
 	constructor(
@@ -36,7 +39,9 @@ export class PolicySource {
 		auth?: string,
 	) {
 		this.managementAddress = managementAddress;
+
 		this.credential = credential;
+
 		this.auth = auth;
 
 		if (!credential && !auth) {
@@ -74,10 +79,12 @@ export class PolicySource {
 					isEqual = false;
 				}
 			}
+
 			if (isEqual === true) {
 				return policy.map[curKey.join("/")];
 			}
 		}
+
 		return null;
 	}
 
@@ -136,6 +143,7 @@ export class PolicySource {
 				this.credential!,
 			);
 		}
+
 		const policyContract: PolicyContract = await request
 			.get(policyUrl, {
 				headers: {
@@ -163,6 +171,7 @@ export class PolicySource {
 				),
 				map: {},
 			});
+
 		policy.xml = policyContract.properties.value;
 
 		this.mapPolicy(policy);
@@ -194,13 +203,17 @@ export class PolicySource {
 interface PolicyContract {
 	properties: {
 		format: string;
+
 		value: string;
 	};
 }
 
 interface Policy {
 	scopeId: string;
+
 	xml: string | null;
+
 	source: Source;
+
 	map: PolicyMap;
 }

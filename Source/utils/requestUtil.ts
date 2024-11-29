@@ -48,8 +48,11 @@ export async function getBearerToken(
 	credentials: TokenCredentialsBase,
 ): Promise<string> {
 	const requestOptions: WebResource = new WebResource();
+
 	requestOptions.headers.set("User-Agent", appendExtensionUserAgent());
+
 	requestOptions.url = url;
+
 	requestOptions.method = method;
 
 	try {
@@ -57,6 +60,7 @@ export async function getBearerToken(
 	} catch (err) {
 		throw err;
 	}
+
 	const headers = requestOptions.headers;
 	// tslint:disable-next-line: no-string-literal
 	const authToken: string = headers["authorization"];

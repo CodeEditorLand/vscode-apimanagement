@@ -16,7 +16,9 @@ export class ResourceGraphService {
 		public subscriptionId: string,
 	) {
 		this.credentials = credentials;
+
 		this.endPointUrl = endPointUrl;
+
 		this.subscriptionId = subscriptionId;
 
 		this.resourceGraphUrl = `${this.endPointUrl}/providers/Microsoft.ResourceGraph/resources?api-version=2019-04-01`;

@@ -15,9 +15,13 @@ export class GatewaysTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string = "azureApiManagementGateways";
+
 	public label: string = "Gateways";
+
 	public contextValue: string = GatewaysTreeItem.contextValue;
+
 	private _nextLink: string | undefined;
 
 	public hasMoreChildrenImpl(): boolean {

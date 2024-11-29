@@ -23,6 +23,7 @@ export async function createAuthorization(
 				context,
 			)
 		);
+
 		node = authorizationProviderNode.authorizationsTreeItem;
 	}
 

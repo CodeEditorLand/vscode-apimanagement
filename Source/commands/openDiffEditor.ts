@@ -13,7 +13,9 @@ export async function openDiffEditor(
 	uri: vscode.Uri,
 ): Promise<void> {
 	const localPath = uri.fsPath.replace("-tempFile", "");
+
 	ext.outputChannel.show();
+
 	vscode.commands.executeCommand(
 		"vscode.diff",
 		vscode.Uri.file(localPath),

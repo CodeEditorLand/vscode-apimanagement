@@ -63,6 +63,7 @@ export namespace cpUtils {
 				);
 			}
 		}
+
 		return result.cmdOutput;
 	}
 
@@ -109,7 +110,9 @@ export namespace cpUtils {
 
 				childProc.stdout.on("data", (data: string | Buffer) => {
 					data = data.toString();
+
 					cmdOutput = cmdOutput.concat(data);
+
 					cmdOutputIncludingStderr =
 						cmdOutputIncludingStderr.concat(data);
 
@@ -120,6 +123,7 @@ export namespace cpUtils {
 
 				childProc.stderr.on("data", (data: string | Buffer) => {
 					data = data.toString();
+
 					cmdOutputIncludingStderr =
 						cmdOutputIncludingStderr.concat(data);
 
@@ -129,6 +133,7 @@ export namespace cpUtils {
 				});
 
 				childProc.on("error", reject);
+
 				childProc.on("close", (code: number) => {
 					resolve({
 						code,
@@ -143,7 +148,9 @@ export namespace cpUtils {
 
 	export interface ICommandResult {
 		code: number;
+
 		cmdOutput: string;
+
 		cmdOutputIncludingStderr: string;
 
 		formattedArgs: string;

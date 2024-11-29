@@ -12,6 +12,7 @@ export function errorUtil(responseBody: string): string {
 	let msg: string = "";
 
 	const errors = JSON.parse(responseBody);
+
 	errors.error.details.forEach((element) => {
 		msg = msg.concat(`Error: "${element.code}" - "${element.message}" \n`);
 	});
@@ -25,6 +26,7 @@ export function processError(error: any, message: string): string {
 
 	try {
 		const err: IParsedError = parseError(error);
+
 		message = err.message;
 
 		if (err.errorType.toLowerCase() === "validationerror") {
@@ -36,6 +38,7 @@ export function processError(error: any, message: string): string {
 	}
 
 	ext.outputChannel.appendLine(message);
+
 	ext.outputChannel.show();
 
 	return message;

@@ -21,7 +21,9 @@ import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export class NamedValueTreeItem extends AzureTreeItem<IServiceTreeRoot> {
 	public static contextValue: string = "azureApiManagementNamedValue";
+
 	public contextValue: string = NamedValueTreeItem.contextValue;
+
 	private _label: string;
 
 	constructor(
@@ -29,6 +31,7 @@ export class NamedValueTreeItem extends AzureTreeItem<IServiceTreeRoot> {
 		public readonly propertyContract: ApiManagementModels.NamedValueContract,
 	) {
 		super(parent);
+
 		this._label = nonNullProp(this.propertyContract, "displayName");
 	}
 
@@ -58,6 +61,7 @@ export class NamedValueTreeItem extends AzureTreeItem<IServiceTreeRoot> {
 				"deletingNamedValue",
 				`Deleting named value "${this.propertyContract.displayName}"...`,
 			);
+
 			await window.withProgress(
 				{
 					location: ProgressLocation.Notification,
@@ -102,6 +106,7 @@ export class NamedValueTreeItem extends AzureTreeItem<IServiceTreeRoot> {
 				nonNullProp(this.propertyContract, "name"),
 				propertyContract,
 			);
+
 			await this.refresh(context);
 		} catch (error) {
 			throw new Error(

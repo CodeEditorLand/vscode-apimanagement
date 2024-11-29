@@ -22,6 +22,7 @@ import { ApimDebugSession } from "./apimDebug";
 
 export function activate(context: vscode.ExtensionContext) {
 	const provider = new ApimPolicyConfigurationProvider();
+
 	context.subscriptions.push(
 		vscode.debug.registerDebugConfigurationProvider(
 			"apim-policy",
@@ -30,12 +31,14 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	const factory = new ApimPolicyDebugAdapterDescriptorFactory();
+
 	context.subscriptions.push(
 		vscode.debug.registerDebugAdapterDescriptorFactory(
 			"apim-policy",
 			factory,
 		),
 	);
+
 	context.subscriptions.push(factory);
 }
 
@@ -54,11 +57,15 @@ class ApimPolicyConfigurationProvider
 
 			if (editor && editor.document.languageId === "apim-policy") {
 				config.type = "apim-policy";
+
 				config.name = "Debug open APIM policy";
+
 				config.request = "launch";
+
 				config.stopOnEntry = true;
 			}
 		}
+
 		return config;
 	}
 }
@@ -76,7 +83,9 @@ class ApimPolicyDebugAdapterDescriptorFactory
 			// start listening on a random port
 			this.server = Net.createServer((socket) => {
 				const session = new ApimDebugSession();
+
 				session.setRunAsServer(true);
+
 				session.start(<NodeJS.ReadableStream>socket, socket);
 			}).listen(0);
 		}

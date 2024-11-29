@@ -16,9 +16,11 @@ import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
 export class ApiVersionSetTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public static contextValue: string = "azureApiManagementApiVersionSet";
+
 	public contextValue: string = ApiVersionSetTreeItem.contextValue;
 
 	private _apis: ApiContract[] = [];
+
 	private _apiVersionSet: ApiVersionSetContractDetails;
 
 	constructor(
@@ -26,9 +28,11 @@ export class ApiVersionSetTreeItem extends AzureParentTreeItem<IServiceTreeRoot>
 		public readonly initialApi: ApiContract,
 	) {
 		super(parent);
+
 		this._apis.push(initialApi);
 
 		this._apiVersionSet = nonNullValue(initialApi, "apiVersionSet");
+
 		this.id = `${this._apiVersionSet.id}-vs`;
 	}
 

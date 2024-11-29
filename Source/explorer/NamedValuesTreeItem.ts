@@ -19,7 +19,9 @@ import { NamedValueTreeItem } from "./NamedValueTreeItem";
 
 export interface INamedValuesTreeItemContext extends ICreateChildImplContext {
 	key: string;
+
 	value: string;
+
 	secret?: boolean;
 }
 
@@ -27,13 +29,18 @@ export class NamedValuesTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string = "azureApiManagementNamedValues";
+
 	public label: string = "Named values";
+
 	public contextValue: string = NamedValuesTreeItem.contextValue;
+
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.NamedValue",
 		"Named value",
 	);
+
 	private _nextLink: string | undefined;
 
 	public hasMoreChildrenImpl(): boolean {

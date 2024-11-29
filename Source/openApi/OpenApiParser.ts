@@ -23,10 +23,13 @@ export class OpenApiParser {
 				"openApiParseError",
 				"Could not parse the OpenAPI document.",
 			);
+
 			ext.outputChannel.appendLine(message);
+
 			ext.outputChannel.show();
 
 			const err = parseError(e);
+
 			ext.outputChannel.appendLine(`${err.message}`);
 
 			throw new Error(message);
@@ -98,6 +101,7 @@ export class OpenApiParser {
 				if (proxyHostName.split("://").length > 0) {
 					return { url: `${proxyHostName}${basePath}` };
 				}
+
 				return {
 					url: `${item.url.split("://")[0]}://${proxyHostName}${basePath}`,
 				};
@@ -122,6 +126,7 @@ export class OpenApiParser {
 			}
 		} else if (version.startsWith("3.")) {
 			const oai30 = <IOpenApi30>source;
+
 			oai30.servers = [{ url: url }];
 		}
 	}
@@ -133,12 +138,16 @@ export class OpenApiParser {
 
 interface IOpenApi20 {
 	swagger: string;
+
 	host: string;
+
 	basePath: string;
+
 	schemes: string[];
 }
 
 interface IOpenApi30 {
 	openapi: string;
+
 	servers: { url: string }[];
 }

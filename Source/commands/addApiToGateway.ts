@@ -32,6 +32,7 @@ export async function addApiToGateway(
 				context,
 			)
 		);
+
 		node = gatewayNode.gatewayApisTreeItem;
 	} else {
 		gatewayNode = <GatewayTreeItem>node.parent;
@@ -50,7 +51,9 @@ export async function addApiToGateway(
 	);
 
 	const apiName = nonNullProp(apiTreeItem.apiContract, "name");
+
 	context.apiName = apiName;
+
 	window
 		.withProgress(
 			{
@@ -69,6 +72,7 @@ export async function addApiToGateway(
 		.then(async () => {
 			// tslint:disable:no-non-null-assertion
 			await node!.refresh(context);
+
 			window.showInformationMessage(
 				localize(
 					"addedApiToGateway",

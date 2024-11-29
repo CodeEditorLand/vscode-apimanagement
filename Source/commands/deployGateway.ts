@@ -83,12 +83,14 @@ export async function copyDockerRunCommand(
 					confEndpoint,
 					node!.root.gatewayName,
 				);
+
 				env.clipboard.writeText(initialComd);
 			},
 		)
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
 			await node!.refresh(context);
+
 			window.showInformationMessage(
 				localize(
 					"deployGateway",
@@ -147,6 +149,7 @@ export async function generateKubernetesDeployment(
 					Constants.maxTokenValidTimeSpan,
 					GatewayKeyType.primary,
 				);
+
 				ext.outputChannel.appendLine(
 					localize(
 						"deployGateway",
@@ -168,12 +171,15 @@ export async function generateKubernetesDeployment(
 					uris[0].fsPath,
 					`${node!.root.gatewayName}.yaml`,
 				);
+
 				await fse.writeFile(configFilePath, depYaml);
+
 				env.clipboard.writeText(`kubectl apply -f ${configFilePath}`);
 			},
 		)
 		.then(async () => {
 			await node!.refresh(context);
+
 			window.showInformationMessage(
 				localize(
 					"deployGateway",
@@ -246,9 +252,11 @@ spec:
     metadata:
       labels:
         app: ${gatewayNameLowercase}
+
     spec:
       containers:
       - name: ${gatewayNameLowercase}
+
         image: mcr.microsoft.com/azure-api-management/gateway:beta
         ports:
         - name: http
@@ -297,5 +305,6 @@ async function askFolder(): Promise<Uri[]> {
 	if (rootPath) {
 		openDialogOptions.defaultUri = Uri.file(rootPath);
 	}
+
 	return await ext.ui.showOpenDialog(openDialogOptions);
 }

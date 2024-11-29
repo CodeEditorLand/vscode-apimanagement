@@ -59,11 +59,14 @@ export async function setCustomHostName(
 				}
 			});
 	}
+
 	const selfDefined = localize(
 		"",
 		"Input a hostname (for self-hosted gateway)",
 	);
+
 	allHostNames.push({ label: selfDefined, hostName: "" });
+
 	window.showInformationMessage(
 		localize(
 			"",
@@ -94,6 +97,7 @@ export async function setCustomHostName(
 				return undefined;
 			},
 		});
+
 		ext.context.globalState.update(
 			node.root.serviceName + gatewayHostName,
 			input,
@@ -104,6 +108,7 @@ export async function setCustomHostName(
 			pick.gateway.hostName,
 		);
 	}
+
 	window.showInformationMessage(
 		localize(
 			"",

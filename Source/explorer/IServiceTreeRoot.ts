@@ -7,6 +7,8 @@ import { ISubscriptionContext } from "vscode-azureextensionui";
 
 export interface IServiceTreeRoot extends ISubscriptionContext {
 	client: ApiManagementClient;
+
 	resourceGroupName: string;
+
 	serviceName: string;
 }

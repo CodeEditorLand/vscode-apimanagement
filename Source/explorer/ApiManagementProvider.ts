@@ -132,6 +132,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 			[];
 
 		promptSteps.push(new ServiceNameStep());
+
 		wizardContext.email = this.root.userId;
 
 		const advancedCreationKey: string = "advancedCreation";
@@ -142,12 +143,16 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 
 		if (!advancedCreation) {
 			wizardContext.sku = "Consumption";
+
 			await LocationListStep.setLocation(wizardContext, "westus");
+
 			executeSteps.push(new ResourceGroupCreateStep());
 		} else {
 			promptSteps.push(new ServiceSkuStep());
 			//promptSteps.push(new LocationListStep());
+
 			promptSteps.push(new ResourceGroupListStep());
+
 			LocationListStep.addStep(wizardContext, promptSteps);
 		}
 
@@ -164,6 +169,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 		);
 
 		await wizard.prompt();
+
 		context.showCreatingTreeItem(nonNullProp(wizardContext, "serviceName"));
 
 		if (!advancedCreation) {
@@ -178,6 +184,7 @@ export class ApiManagementProvider extends SubscriptionTreeItemBase {
 					),
 				);
 			}
+
 			wizardContext.newResourceGroupName = newName;
 		}
 

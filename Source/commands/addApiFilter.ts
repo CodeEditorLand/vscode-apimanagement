@@ -23,6 +23,7 @@ export async function addApiFilter(
 				context,
 			)
 		);
+
 		node = serviceNode.apisTreeItem;
 	}
 
@@ -40,7 +41,9 @@ export async function addApiFilter(
 	while (nextLink !== undefined) {
 		const curApiCollection: ApiCollection =
 			await node.root.client.api.listByServiceNext(nextLink);
+
 		nextLink = curApiCollection.nextLink;
+
 		apiCollection.concat(curApiCollection);
 	}
 
@@ -62,6 +65,7 @@ export async function addApiFilter(
 					apiName = apiName.concat(" (VersionSet) - Original");
 				}
 			}
+
 			let picked = false;
 
 			for (const api of node!.selectedApis) {
@@ -69,6 +73,7 @@ export async function addApiFilter(
 					picked = true;
 				}
 			}
+
 			return { label: apiName, api: s, picked: picked };
 		}),
 		{ canPickMany: true, placeHolder: "Select APIs" },

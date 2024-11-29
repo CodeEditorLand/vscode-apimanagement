@@ -82,12 +82,14 @@ async function extract(
 
 	if (apiName) {
 		configFile = path.join(uris[0].fsPath, `${apiName}.json`);
+
 		noticeContent = localize(
 			"Extract",
 			`Extracting API ARM template '${apiName}' to '${templatesFolder}'`,
 		);
 	} else {
 		configFile = path.join(uris[0].fsPath, `${sourceApimName}.json`);
+
 		noticeContent = localize(
 			"Extract",
 			`Extracting service '${sourceApimName}' to '${templatesFolder}'`,
@@ -105,7 +107,9 @@ async function extract(
 			},
 			async () => {
 				await azUtils.checkAzInstalled();
+
 				await dotnetUtils.validateDotnetInstalled();
+
 				await runExtractor(configFile, subscriptionId);
 			},
 		)
@@ -126,6 +130,7 @@ async function createTemplatesFolder(uris: Uri[]): Promise<string> {
 	} else {
 		await fse.emptyDir(templatesFolder);
 	}
+
 	return templatesFolder;
 }
 
@@ -136,6 +141,7 @@ async function runExtractor(
 	const workingFolderPath = ext.context.asAbsolutePath(
 		path.join("resources", "devops"),
 	);
+
 	ext.outputChannel.show();
 
 	await cpUtils.executeCommand(
@@ -156,6 +162,7 @@ async function runExtractor(
 	);
 
 	await dotnetUtils.validateDotnetInstalled();
+
 	await cpUtils.executeCommand(
 		ext.outputChannel,
 		workingFolderPath,
@@ -180,6 +187,7 @@ async function askFolder(): Promise<Uri[]> {
 	if (rootPath) {
 		openDialogOptions.defaultUri = Uri.file(rootPath);
 	}
+
 	return await ext.ui.showOpenDialog(openDialogOptions);
 }
 

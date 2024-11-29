@@ -7,6 +7,7 @@ import { ParameterContract } from "@azure/arm-apimanagement/src/models";
 
 export function parseUrlTemplate(uriTemplate: string): {
 	parameters: ParameterContract[];
+
 	urlTemplate: string;
 } {
 	let cleanTemplate = "";
@@ -24,17 +25,23 @@ export function parseUrlTemplate(uriTemplate: string): {
 			if (parameterDepth === 0) {
 				parameterStart = i + 1;
 			}
+
 			parameterDepth++;
+
 			cleanTemplate += uriTemplate.substring(templateStart, i);
+
 			templateStart = i;
 		} else if (uriTemplate[i] === "}" && --parameterDepth === 0) {
 			if (parameterStart < i) {
 				const parameter = parseParameter(
 					uriTemplate.substring(parameterStart, i),
 				);
+
 				cleanTemplate += `{${parameter.name}}`;
+
 				parameters.push(parameter);
 			}
+
 			templateStart = i + 1;
 		}
 	}
@@ -100,6 +107,7 @@ function mapParameterType(type: string): string {
 			) {
 				return "string";
 			}
+
 			if (
 				type.startsWith("min(") ||
 				type.startsWith("max(") ||
@@ -107,6 +115,7 @@ function mapParameterType(type: string): string {
 			) {
 				return "integer";
 			}
+
 			return "";
 	}
 }

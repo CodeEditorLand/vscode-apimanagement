@@ -21,6 +21,7 @@ export async function copyAuthorizationPolicy(
 				context,
 			)
 		);
+
 		node = authorizationNode;
 	}
 
@@ -83,13 +84,18 @@ export async function copyAuthorizationPolicy(
 
 	if (identityTypeSelected.label === managed) {
 		comment = `<!-- Add to the inbound policy -->`;
+
 		identityPhrase = `identity-type="${identityTypeSelected.label}"`;
+
 		additionalMessage =
 			"For 'managed' identity-type, make sure managed identity is turned on.";
 	} else {
 		const allowedAudienceMessage = `Allowed audiences for jwt in "identity" attribute are "https://azure-api.net/authorization-manager"`;
+
 		comment = `<!-- Add to the inbound policy. ${allowedAudienceMessage} -->`;
+
 		identityPhrase = `identity-type="${identityTypeSelected.label}" identity="@(context.Request.Headers["Authorization"][0].Replace("Bearer ", ""))"`;
+
 		additionalMessage = `For 'jwt' identity-type, ${allowedAudienceMessage}`;
 	}
 
@@ -121,12 +127,14 @@ export async function copyAuthorizationPolicy(
 	}
 
 	vscode.env.clipboard.writeText(policy);
+
 	vscode.window.showInformationMessage(
 		localize(
 			"CopySnippet",
 			`Policy copied to clipboard. ${additionalMessage}`,
 		),
 	);
+
 	ext.outputChannel.appendLine(
 		`Policy copied to clipboard. ${additionalMessage}`,
 	);

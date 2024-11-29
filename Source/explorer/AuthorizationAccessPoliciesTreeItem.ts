@@ -23,6 +23,7 @@ import { IAuthorizationTreeRoot } from "./IAuthorizationTreeRoot";
 export interface IAuthorizationAccessPolicyTreeItemContext
 	extends ICreateChildImplContext {
 	authorizationAccessPolicyName: string;
+
 	authorizationAccessPolicy: IAuthorizationAccessPolicyPropertiesContract;
 }
 
@@ -30,15 +31,20 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string =
 		"azureApiManagementAuthorizationAccessPolicies";
+
 	public label: string = "Access policies";
+
 	public contextValue: string =
 		AuthorizationAccessPoliciesTreeItem.contextValue;
+
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.AuthorizationAccessPolicy",
 		"AuthorizationAccessPolicy",
 	);
+
 	private _nextLink: string | undefined;
 
 	public hasMoreChildrenImpl(): boolean {
@@ -86,6 +92,7 @@ export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAu
 		) {
 			const authorizationAccessPolicyName =
 				context.authorizationAccessPolicyName;
+
 			context.showCreatingTreeItem(authorizationAccessPolicyName);
 
 			try {

@@ -27,13 +27,16 @@ export async function copyAuthorizationProviderRedirectUrl(
 	const redirectUrl = nonNullValue(
 		node.authorizationProviderContract.properties.oauth2?.redirectUrl,
 	);
+
 	vscode.env.clipboard.writeText(redirectUrl);
+
 	vscode.window.showInformationMessage(
 		localize(
 			"copyRedirect",
 			`RedirectUrl for Authorization provider '${node.authorizationProviderContract.name}' copied to clipboard. value - ${redirectUrl}`,
 		),
 	);
+
 	ext.outputChannel.appendLine(
 		`RedirectUrl for Authorization provider '${node.authorizationProviderContract.name}' copied to clipboard. value - ${redirectUrl}`,
 	);

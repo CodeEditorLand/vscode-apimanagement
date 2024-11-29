@@ -32,6 +32,7 @@ export async function addApiToProduct(
 				context,
 			)
 		);
+
 		node = productNode.productApisTreeItem;
 	} else {
 		productNode = <ProductTreeItem>node.parent;
@@ -50,6 +51,7 @@ export async function addApiToProduct(
 	);
 
 	const apiName = nonNullProp(apiTreeItem.apiContract, "name");
+
 	context.apiName = apiName;
 
 	window
@@ -70,6 +72,7 @@ export async function addApiToProduct(
 		.then(async () => {
 			// tslint:disable:no-non-null-assertion
 			await node!.refresh(context);
+
 			window.showInformationMessage(
 				localize(
 					"addedApiToProduct",

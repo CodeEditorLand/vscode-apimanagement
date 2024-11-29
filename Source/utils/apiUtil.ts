@@ -59,6 +59,7 @@ export namespace apiUtil {
 				`API name cannot be more than ${Constants.maxApiNameLength} characters long.`,
 			);
 		}
+
 		if (apiName.match(/^[^*#&+:<>?]+$/) === null) {
 			return localize("apiNameInvalid", "Invalid API Name.");
 		}
@@ -101,6 +102,7 @@ export namespace apiUtil {
 				.substr(0, Constants.maxApiNameLength)
 				.replace(/(^-)|(-$)/g, "")
 				.toLowerCase();
+
 		identifier = removeAccents(identifier);
 
 		return identifier;
@@ -132,12 +134,16 @@ export namespace apiUtil {
 			if (document.schemes.indexOf("http") !== -1) {
 				protocols.push("http");
 			}
+
 			if (document.schemes.indexOf("https") !== -1) {
 				protocols.push("https");
 			}
+
 			openApiImportPayload.protocols = protocols;
 		}
+
 		openApiImportPayload.format = document.importFormat;
+
 		openApiImportPayload.value = JSON.stringify(document.sourceDocument);
 
 		const options = { ifMatch: "*" };
@@ -173,6 +179,7 @@ export namespace apiUtil {
 				apiExists = false;
 			}
 		}
+
 		if (apiExists) {
 			const overwriteFlag = await window.showWarningMessage(
 				localize(
@@ -206,9 +213,12 @@ export namespace apiUtil {
 		while (nextLink) {
 			const nOperations: OperationCollection =
 				await root.client.apiOperation.listByApiNext(nextLink);
+
 			nextLink = nOperations.nextLink;
+
 			operations = operations.concat(nOperations);
 		}
+
 		return operations;
 	}
 

@@ -22,6 +22,7 @@ export class GraphService {
 
 	public async acquireGraphToken(): Promise<void> {
 		const token = await this.credentials.getToken();
+
 		this.credentials.authContext.acquireToken(
 			this.graphEndpoint,
 			nonNullValue(token.userId),

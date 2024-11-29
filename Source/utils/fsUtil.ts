@@ -16,6 +16,7 @@ export async function createTemporaryFile(fileName: string): Promise<string> {
 		ext.context.globalStoragePath,
 		extensionName,
 	);
+
 	await fse.ensureDir(defaultWorkspacePath);
 
 	// Every vscode sessions will get a unique folder to works with the files
@@ -27,6 +28,7 @@ export async function createTemporaryFile(fileName: string): Promise<string> {
 		sessionFolder,
 		fileName,
 	);
+
 	await fse.ensureFile(filePath);
 
 	return filePath;
@@ -37,9 +39,11 @@ export function getSessionWorkingFolderName(): string {
 	// tslint:disable-next-line: strict-boolean-expressions
 	if (!sessionFolderName) {
 		sessionFolderName = getRandomHexString();
+
 		ext.outputChannel.appendLine(
 			`Session working folder:${sessionFolderName}`,
 		);
+
 		ext.context.globalState.update(sessionFolderKey, sessionFolderName);
 	}
 

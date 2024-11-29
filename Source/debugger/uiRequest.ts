@@ -6,9 +6,13 @@ import { UiThread } from "./uiThread";
 
 export class UiRequest {
 	public id: string;
+
 	public threads: UiThread[];
+
 	private operationId: string;
+
 	private apiId: string;
+
 	private productId: string;
 
 	constructor(
@@ -18,10 +22,13 @@ export class UiRequest {
 		productId: string,
 	) {
 		this.id = id;
+
 		this.threads = [];
 
 		this.operationId = operationId;
+
 		this.apiId = apiId;
+
 		this.productId = productId;
 	}
 
@@ -30,6 +37,7 @@ export class UiRequest {
 		policySource: PolicySource,
 	): UiThread {
 		let thread: UiThread;
+
 		this.threads.push(
 			(thread = new UiThread(
 				gatewayThread,

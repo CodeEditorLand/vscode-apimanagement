@@ -30,6 +30,7 @@ export async function authorizeAuthorization(
 				context,
 			)
 		);
+
 		node = authorizationNode;
 	}
 
@@ -79,6 +80,7 @@ export async function authorizeAuthorization(
 		);
 
 		const authorization = node.authorizationContract;
+
 		authorization.properties.parameters = parameterValues;
 
 		window
@@ -103,6 +105,7 @@ export async function authorizeAuthorization(
 			.then(async () => {
 				// tslint:disable-next-line:no-non-null-assertion
 				await node!.refresh(context);
+
 				window.showInformationMessage(
 					localize(
 						"updatedAuthorization",

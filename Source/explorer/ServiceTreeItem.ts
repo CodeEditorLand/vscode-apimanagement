@@ -51,15 +51,25 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public get id(): string {
 		return nonNullProp(this.apiManagementService, "id");
 	}
+
 	public static contextValue: string = "azureApiManagementService";
+
 	public label: string = nonNullProp(this.apiManagementService, "name");
+
 	public contextValue: string = ServiceTreeItem.contextValue;
+
 	public readonly apisTreeItem: ApisTreeItem;
+
 	public readonly servicePolicyTreeItem: ServicePolicyTreeItem;
+
 	public readonly namedValuesTreeItem: NamedValuesTreeItem;
+
 	public readonly productsTreeItem: ProductsTreeItem;
+
 	public readonly gatewaysTreeItem: GatewaysTreeItem;
+
 	public readonly subscriptionsTreeItem: SubscriptionsTreeItem;
+
 	public readonly authorizationProvidersTreeItem: AuthorizationProvidersTreeItem;
 
 	private _root: IServiceTreeRoot;
@@ -72,10 +82,15 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 		super(parent);
 
 		this._root = this.createRoot(parent.root, apiManagementClient);
+
 		this.servicePolicyTreeItem = new ServicePolicyTreeItem(this);
+
 		this.apisTreeItem = new ApisTreeItem(this);
+
 		this.productsTreeItem = new ProductsTreeItem(this);
+
 		this.namedValuesTreeItem = new NamedValuesTreeItem(this);
+
 		this.subscriptionsTreeItem = new SubscriptionsTreeItem(this);
 		//parent.iconPath =
 
@@ -114,6 +129,7 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				this.authorizationProvidersTreeItem,
 			];
 		}
+
 		return [
 			this.apisTreeItem,
 			this.namedValuesTreeItem,
@@ -147,6 +163,7 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				"deletingService",
 				`Deleting API Management instance "${this.root.serviceName}"...`,
 			);
+
 			await window.withProgress(
 				{
 					location: ProgressLocation.Notification,
@@ -189,6 +206,7 @@ export class ServiceTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 		} else {
 			return subscriptionKeys.secondaryKey;
 		}
+
 		return "";
 	}
 

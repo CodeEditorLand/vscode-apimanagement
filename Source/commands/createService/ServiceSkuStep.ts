@@ -24,6 +24,7 @@ export class ServiceSkuStep extends AzureWizardPromptStep<IServiceWizardContext>
 			}),
 			{ canPickMany: false },
 		);
+
 		wizardContext.sku = sku.label;
 	}
 

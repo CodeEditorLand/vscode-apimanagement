@@ -57,8 +57,10 @@ export async function debugPolicy(
 	if (!vscode.debug.activeDebugSession) {
 		await vscode.debug.startDebugging(undefined, debugConfig);
 		// await vscode.debug.startDebugging(undefined, debugConfig3);
+
 		vscode.debug.onDidTerminateDebugSession((_) => {
 			const editors = vscode.window.visibleTextEditors;
+
 			editors.forEach((editor) => {
 				editor.hide();
 			});
@@ -81,6 +83,7 @@ async function getDebugGatewayAddressUrl(
 	if (gatewayUrl !== undefined) {
 		return `wss://${gatewayUrl}/debug-0123456789abcdef`;
 	}
+
 	const service = await node.root.client.apiManagementService.get(
 		node.root.resourceGroupName,
 		node.root.serviceName,
@@ -102,10 +105,12 @@ async function getDebugGatewayAddressUrl(
 				}),
 				{ canPickMany: false },
 			);
+
 			gatewayHostNameUl = `wss://${pick.gateway.hostName}/debug-0123456789abcdef`;
 		} else {
 			gatewayHostNameUl = `wss://${hostNameConfigs[0].hostName}/debug-0123456789abcdef`;
 		}
+
 		return gatewayHostNameUl;
 	}
 

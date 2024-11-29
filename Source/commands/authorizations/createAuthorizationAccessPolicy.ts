@@ -48,6 +48,7 @@ export async function createAuthorizationAccessPolicy(
 				context,
 			)
 		);
+
 		node = AuthorizationNode.authorizationAccessPoliciesTreeItem;
 	}
 
@@ -106,6 +107,7 @@ export async function createAuthorizationAccessPolicy(
 		);
 
 		permissionName = managedIdentitySelected.label;
+
 		oid = nonNullValue(managedIdentitySelected.description);
 	} else if (
 		identitySelected.label === userAssignedManagedIdentitiesOptionLabel
@@ -126,6 +128,7 @@ export async function createAuthorizationAccessPolicy(
 		);
 
 		permissionName = managedIdentitySelected.label;
+
 		oid = nonNullValue(managedIdentitySelected.description);
 	} else if (identitySelected.label === userEmailIdLabel) {
 		const userId = await askInput(
@@ -137,6 +140,7 @@ export async function createAuthorizationAccessPolicy(
 
 		if (user !== undefined && user.objectId !== null) {
 			permissionName = user.userPrincipalName;
+
 			oid = user.objectId;
 		} else {
 			window.showErrorMessage(
@@ -156,6 +160,7 @@ export async function createAuthorizationAccessPolicy(
 
 		if (group !== undefined && group.objectId !== null) {
 			permissionName = group.displayName.replace(" ", "");
+
 			oid = group.objectId;
 		} else {
 			window.showErrorMessage(
@@ -177,6 +182,7 @@ export async function createAuthorizationAccessPolicy(
 
 		if (spn !== undefined && spn.objectId !== null) {
 			permissionName = spn.displayName.replace(" ", "");
+
 			oid = spn.objectId;
 		} else {
 			window.showErrorMessage(
@@ -188,10 +194,12 @@ export async function createAuthorizationAccessPolicy(
 		}
 	} else {
 		permissionName = identitySelected.label;
+
 		oid = nonNullValue(identitySelected.description);
 	}
 
 	context.authorizationAccessPolicyName = permissionName;
+
 	context.authorizationAccessPolicy = {
 		objectId: oid,
 		tenantId: node.root.tenantId,
@@ -224,6 +232,7 @@ function createAccessPolicy(
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
 			await node!.refresh(context);
+
 			window.showInformationMessage(
 				localize(
 					"createdAuthorizationPermission",
@@ -248,6 +257,7 @@ async function populateIdentityOptionsAsync(
 		description: token.oid,
 		detail: "Current signedIn user",
 	};
+
 	options.push(meOption);
 
 	// 2. APIM Service
@@ -259,6 +269,7 @@ async function populateIdentityOptionsAsync(
 			description: service.identity.principalId,
 			detail: "Current service system managed identity",
 		};
+
 		options.push(apimOption);
 	}
 
@@ -269,6 +280,7 @@ async function populateIdentityOptionsAsync(
 			description: "",
 			detail: "",
 		};
+
 		options.push(systemAssignedManagedIdentities);
 
 		const userAssignedManagedIdentities: QuickPickItem = {
@@ -276,12 +288,15 @@ async function populateIdentityOptionsAsync(
 			description: "",
 			detail: "",
 		};
+
 		options.push(userAssignedManagedIdentities);
 	}
 
 	// 4. Custom
 	options.push({ label: userEmailIdLabel });
+
 	options.push({ label: groupDisplayNameorEmailIdLabel });
+
 	options.push({ label: servicePrincipalDisplayNameLabel });
 
 	return options;
@@ -300,6 +315,7 @@ async function populateManageIdentityOptions(
 			detail: d.id,
 		};
 	});
+
 	options.push(...managedIdentityOptions);
 
 	return options;
@@ -323,6 +339,7 @@ async function askInput(
 				if (value === "") {
 					return localize("valueInvalid", "Value cannot be empty.");
 				}
+
 				return undefined;
 			},
 		})

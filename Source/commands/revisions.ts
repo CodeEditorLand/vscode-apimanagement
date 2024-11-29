@@ -47,7 +47,9 @@ export async function revisions(
 		const pickedApi = await listRevisions(node);
 
 		await node.reloadApi(pickedApi);
+
 		await node.refresh(context);
+
 		window.showInformationMessage(
 			localize(
 				"switchRevisions",
@@ -100,6 +102,7 @@ export async function revisions(
 								node!.root.apiName.split(";rev=")[0];
 
 							const releaseId = Guid.create().toString();
+
 							await node!.root.client.apiRelease.createOrUpdate(
 								node!.root.resourceGroupName,
 								node!.root.serviceName,
@@ -113,7 +116,9 @@ export async function revisions(
 								node!.root.serviceName,
 								node!.root.apiName,
 							);
+
 							await node!.reloadApi(api);
+
 							await node!.refresh(context);
 						},
 					)
@@ -231,6 +236,7 @@ async function createRevision(
 						revNumber = Number(apiRev.apiRevision);
 					}
 				}
+
 				const revDescription = await askRevisionDescription();
 
 				const newApiRev: ApiCreateOrUpdateParameter = {
@@ -239,9 +245,13 @@ async function createRevision(
 					path: curApi.path,
 					isCurrent: false,
 				};
+
 				curApi.apiRevision = (revNumber + 1).toString();
+
 				curApi.apiRevisionDescription = revDescription;
+
 				curApi.isCurrent = false;
+
 				curApi.sourceApiId = "/apis/".concat(curApi.id!);
 
 				const apiRevId = node.root.apiName.concat(
@@ -255,7 +265,9 @@ async function createRevision(
 					apiRevId,
 					newApiRev,
 				);
+
 				await node.reloadApi(resApi);
+
 				await node.refresh(context);
 			},
 		)
@@ -279,6 +291,7 @@ async function deleteRevision(node: ApiTreeItem): Promise<void> {
 			},
 			async () => {
 				const pickedApi = await listRevisions(node);
+
 				await node.root.client.api.deleteMethod(
 					node.root.resourceGroupName,
 					node.root.serviceName,

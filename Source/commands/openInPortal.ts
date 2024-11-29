@@ -18,5 +18,6 @@ export async function openInPortal(
 			context,
 		);
 	}
+
 	await node.openInPortal();
 }

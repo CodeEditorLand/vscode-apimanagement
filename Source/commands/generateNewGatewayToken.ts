@@ -27,6 +27,7 @@ export async function generateNewGatewayToken(
 	}
 
 	ext.outputChannel.show();
+
 	ext.outputChannel.appendLine(
 		localize(
 			"genGatewayToken",
@@ -49,6 +50,7 @@ export async function generateNewGatewayToken(
 						"Input is not valid. Value must be less than 30 days.",
 					);
 				}
+
 				return undefined;
 			},
 		})
@@ -78,7 +80,9 @@ export async function generateNewGatewayToken(
 		numOfDays,
 		keyType.label,
 	);
+
 	env.clipboard.writeText(gatewayToken);
+
 	window.showInformationMessage(
 		localize(
 			"genGatewayToken",

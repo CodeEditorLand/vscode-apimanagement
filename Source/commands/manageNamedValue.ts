@@ -26,11 +26,14 @@ export async function createNamedValue(
 				context,
 			)
 		);
+
 		node = serviceNode.namedValuesTreeItem;
 	}
 
 	context.key = await askId();
+
 	context.value = await askValue();
+
 	context.secret = await isSecret();
 
 	window
@@ -51,6 +54,7 @@ export async function createNamedValue(
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
 			await node!.refresh(context);
+
 			window.showInformationMessage(
 				localize(
 					"creatededNamedValue",
@@ -99,6 +103,7 @@ export async function updateNamedValue(
 		.then(async () => {
 			// tslint:disable-next-line:no-non-null-assertion
 			await node!.refresh(context);
+
 			window.showInformationMessage(
 				localize(
 					"updatedNamedValue",
@@ -121,6 +126,7 @@ async function isSecret(): Promise<boolean | undefined> {
 	if (option.label === options[0]) {
 		return true;
 	}
+
 	return undefined;
 }
 
@@ -153,6 +159,7 @@ async function askValue(initialValue?: string): Promise<string> {
 			if (value === "") {
 				return localize("valueInvalid", "value cannot be empty.");
 			}
+
 			return undefined;
 		},
 	});

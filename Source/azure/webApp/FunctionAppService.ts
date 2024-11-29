@@ -18,10 +18,15 @@ import { IFunctionContract, IFunctionKeys, IWebAppContract } from "./contracts";
 
 export class FunctionAppService {
 	public baseUrl: string;
+
 	public credentials: TokenCredentialsBase;
+
 	public endPointUrl: string;
+
 	public subscriptionId: string;
+
 	public resourceGroup: string;
+
 	public functionName: string;
 
 	constructor(
@@ -37,10 +42,15 @@ export class FunctionAppService {
 			resourceGroup,
 			functionName,
 		);
+
 		this.credentials = credentials;
+
 		this.endPointUrl = endPointUrl;
+
 		this.subscriptionId = subscriptionId;
+
 		this.resourceGroup = resourceGroup;
+
 		this.functionName = functionName;
 	}
 
@@ -67,6 +77,7 @@ export class FunctionAppService {
 		) {
 			return hostKeys.functionKeys[funcAppKeyName];
 		}
+
 		return await this.createFuncHostKey(funcAppKeyName);
 	}
 
@@ -87,6 +98,7 @@ export class FunctionAppService {
 		} else if (!webAppConfig.properties.apiManagementConfig.id) {
 			webAppConfig.properties.apiManagementConfig.id = apiConfigId;
 		}
+
 		await this.request(
 			`${this.baseUrl}/config/web?api-version=${Constants.functionAppApiVersion}`,
 			"PUT",

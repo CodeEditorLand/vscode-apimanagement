@@ -71,10 +71,12 @@ export namespace dotnetUtils {
 			if (v1[i] > v2[i]) {
 				return 1;
 			}
+
 			if (v1[i] < v2[i]) {
 				return -1;
 			}
 		}
+
 		return v1.length === v2.length ? 0 : v1.length < v2.length ? -1 : 1;
 	}
 
@@ -101,6 +103,7 @@ export namespace dotnetUtils {
 		} catch (error) {
 			return false;
 		}
+
 		return false;
 	}
 }

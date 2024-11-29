@@ -20,12 +20,17 @@ import { ProductsTreeItem } from "./ProductsTreeItem";
 
 export class ProductTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 	public static contextValue: string = "azureApiManagementProductTreeItem";
+
 	public contextValue: string = ProductTreeItem.contextValue;
+
 	public readonly commandId: string = "azureApiManagement.showArmProduct";
+
 	public readonly policyTreeItem: ProductPolicyTreeItem;
+
 	public readonly productApisTreeItem: ProductApisTreeItem;
 
 	private _label: string;
+
 	private _root: IProductTreeRoot;
 
 	constructor(
@@ -33,10 +38,13 @@ export class ProductTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
 		public readonly productContract: ApiManagementModels.ProductContract,
 	) {
 		super(parent);
+
 		this._label = nonNullProp(this.productContract, "displayName");
+
 		this._root = this.createRoot(parent.root);
 
 		this.productApisTreeItem = new ProductApisTreeItem(this);
+
 		this.policyTreeItem = new ProductPolicyTreeItem(this);
 	}
 

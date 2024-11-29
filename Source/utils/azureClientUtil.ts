@@ -34,11 +34,13 @@ export namespace azureClientUtil {
 		);
 		// tslint:disable-next-line: no-non-null-assertion
 		const azureAccount = azureAccountExtension!.exports;
+
 		await azureAccount.waitForFilters();
 
 		if (azureAccount.status !== "LoggedIn") {
 			throw new Error(localize("", "Please Log in at first!"));
 		}
+
 		const subscriptions: { id: string; name: string }[] =
 			azureAccount.filters.map((filter) => {
 				return {

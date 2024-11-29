@@ -20,6 +20,8 @@ export async function copySubscriptionKey(
 			)
 		);
 	}
+
 	const key = await node.copySubscriptionKey();
+
 	vscode.env.clipboard.writeText(key);
 }

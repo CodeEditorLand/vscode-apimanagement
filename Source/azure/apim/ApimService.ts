@@ -26,11 +26,17 @@ import {
 
 export class ApimService {
 	public baseUrl: string;
+
 	public credentials: TokenCredentialsBase;
+
 	public endPointUrl: string;
+
 	public subscriptionId: string;
+
 	public resourceGroup: string;
+
 	public serviceName: string;
+
 	private readonly authorizationProviderApiVersion: string =
 		"2021-12-01-preview";
 
@@ -47,10 +53,15 @@ export class ApimService {
 			resourceGroup,
 			serviceName,
 		);
+
 		this.credentials = credentials;
+
 		this.endPointUrl = endPointUrl;
+
 		this.subscriptionId = subscriptionId;
+
 		this.resourceGroup = resourceGroup;
+
 		this.serviceName = serviceName;
 	}
 
@@ -105,6 +116,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		await client.sendRequest({
 			method: "DELETE",
 			url: `${this.baseUrl}/gateways/${gatewayName}/apis/${apiName}?api-version=${Constants.apimApiVersion}`,
@@ -278,6 +290,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		await client.sendRequest({
 			method: "DELETE",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderId}/authorizations/${authorizationName}/accesspolicies/${accessPolicyName}?api-version=${this.authorizationProviderApiVersion}`,
@@ -326,6 +339,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		await client.sendRequest({
 			method: "DELETE",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderName}/authorizations/${authorizationName}?api-version=${this.authorizationProviderApiVersion}`,
@@ -359,6 +373,7 @@ export class ApimService {
 		const client: ServiceClient = await createGenericClient(
 			this.credentials,
 		);
+
 		await client.sendRequest({
 			method: "DELETE",
 			url: `${this.baseUrl}/authorizationProviders/${authorizationProviderName}?api-version=${this.authorizationProviderApiVersion}`,

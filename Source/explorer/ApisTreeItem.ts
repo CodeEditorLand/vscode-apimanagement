@@ -28,6 +28,7 @@ export interface IApiTreeItemContext extends ICreateChildImplContext {
 	apiName: string;
 
 	document?: IOpenApiImportObject;
+
 	apiContract?: ApiContract;
 }
 
@@ -35,15 +36,21 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 	public get iconPath(): { light: string; dark: string } {
 		return treeUtils.getThemedIconPath("list");
 	}
+
 	public static contextValue: string = "azureApiManagementApis";
+
 	public label: string = "APIs";
+
 	public contextValue: string = ApisTreeItem.contextValue;
+
 	public selectedApis: ApiContract[] = [];
 	//public filterValue: string | undefined;
+
 	public readonly childTypeLabel: string = localize(
 		"azureApiManagement.Api",
 		"API",
 	);
+
 	private _nextLink: string | undefined;
 
 	public hasMoreChildrenImpl(): boolean {
@@ -108,11 +115,13 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 						if (apiUtil.isNotApiRevision(api)) {
 							apiVersionSetTreeItem.addApiToSet(api);
 						}
+
 						return undefined;
 					}
 				} else if (apiUtil.isNotApiRevision(api)) {
 					return new ApiTreeItem(this, api);
 				}
+
 				return undefined;
 			},
 			(api: ApiManagementModels.ApiContract) => {
@@ -137,6 +146,7 @@ export class ApisTreeItem extends AzureParentTreeItem<IServiceTreeRoot> {
 				context.apiContract,
 			);
 		}
+
 		throw Error(
 			localize(
 				"",

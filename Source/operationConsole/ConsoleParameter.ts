@@ -7,10 +7,12 @@ import { ParameterContract } from "@azure/arm-apimanagement/src/models";
 
 export class ConsoleParameter {
 	public name: string;
+
 	public value: string;
 
 	constructor(contract?: ParameterContract) {
 		this.name = "";
+
 		this.value = "";
 
 		if (contract) {
