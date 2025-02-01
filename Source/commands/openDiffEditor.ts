@@ -3,23 +3,12 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as vscode from "vscode";
-import { IActionContext } from "vscode-azureextensionui";
-
+import * as vscode from 'vscode';
+import { IActionContext } from '@microsoft/vscode-azext-utils';
 import { ext } from "../extensionVariables";
 
-export async function openDiffEditor(
-	_context: IActionContext,
-	uri: vscode.Uri,
-): Promise<void> {
-	const localPath = uri.fsPath.replace("-tempFile", "");
-
-	ext.outputChannel.show();
-
-	vscode.commands.executeCommand(
-		"vscode.diff",
-		vscode.Uri.file(localPath),
-		vscode.Uri.file(uri.fsPath),
-		"Original -> Current",
-	);
+export async function openDiffEditor(_context: IActionContext, uri: vscode.Uri): Promise<void> {
+    const localPath = uri.fsPath.replace("-tempFile", '');
+    ext.outputChannel.show();
+    vscode.commands.executeCommand("vscode.diff", vscode.Uri.file(localPath), vscode.Uri.file(uri.fsPath), 'Original -> Current');
 }

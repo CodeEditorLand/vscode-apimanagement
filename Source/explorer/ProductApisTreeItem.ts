@@ -3,13 +3,9 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import {
-	AzExtTreeItem,
-	AzureParentTreeItem,
-	ICreateChildImplContext,
-} from "vscode-azureextensionui";
-
+import { ApiContract } from "@azure/arm-apimanagement";
+import { AzExtTreeItem, AzExtParentTreeItem, ICreateChildImplContext } from "@microsoft/vscode-azext-utils";
+import { uiUtils } from "@microsoft/vscode-azext-azureutils";
 import { topItemCount } from "../constants";
 import { localize } from "../localize";
 import { processError } from "../utils/errorUtil";
@@ -18,92 +14,61 @@ import { IProductTreeRoot } from "./IProductTreeRoot";
 import { ProductApiTreeItem } from "./ProductApiTreeItem";
 
 export interface IProductTreeItemContext extends ICreateChildImplContext {
-	apiName: string;
+    apiName: string;
 }
 
-export class ProductApisTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
-	public get iconPath(): { light: string; dark: string } {
-		return treeUtils.getThemedIconPath("list");
-	}
+export class ProductApisTreeItem extends AzExtParentTreeItem {
 
-	public static contextValue: string = "azureApiManagementProductApis";
+    public readonly root: IProductTreeRoot;
 
-	public label: string = "Apis";
+    constructor(parent: AzExtParentTreeItem, root: IProductTreeRoot) {
+        super(parent);
+        this.root = root;
+    }
 
-	public contextValue: string = ProductApisTreeItem.contextValue;
+    public get iconPath(): { light: string, dark: string } {
+        return treeUtils.getThemedIconPath('list');
+    }
+    public static contextValue: string = 'azureApiManagementProductApis';
+    public label: string = "Apis";
+    public contextValue: string = ProductApisTreeItem.contextValue;
+    public readonly childTypeLabel: string = localize('azureApiManagement.ProductApi', 'Product API');
+    private _nextLink: string | undefined;
 
-	public readonly childTypeLabel: string = localize(
-		"azureApiManagement.ProductApi",
-		"Product API",
-	);
+    public hasMoreChildrenImpl(): boolean {
+        return this._nextLink !== undefined;
+    }
 
-	private _nextLink: string | undefined;
+    public async loadMoreChildrenImpl(clearCache: boolean): Promise<AzExtTreeItem[]> {
+        if (clearCache) {
+            this._nextLink = undefined;
+        }
 
-	public hasMoreChildrenImpl(): boolean {
-		return this._nextLink !== undefined;
-	}
+        let productApisCollection: ApiContract[];
+        productApisCollection = await uiUtils.listAllIterator(this.root.client.productApi.listByProduct(this.root.resourceGroupName, this.root.serviceName, this.root.productName, { top: topItemCount }));
 
-	public async loadMoreChildrenImpl(
-		clearCache: boolean,
-	): Promise<AzExtTreeItem[]> {
-		if (clearCache) {
-			this._nextLink = undefined;
-		}
+        return this.createTreeItemsWithErrorHandling(
+            productApisCollection,
+            "invalidApiManagementProductApi",
+            async (api: ApiContract) => new ProductApiTreeItem(this, api, this.root),
+            (api: ApiContract) => {
+                return api.name;
+            });
+    }
 
-		const productApisCollection: ApiManagementModels.ApiCollection =
-			this._nextLink === undefined
-				? await this.root.client.productApi.listByProduct(
-						this.root.resourceGroupName,
-						this.root.serviceName,
-						this.root.productName,
-						{ top: topItemCount },
-					)
-				: await this.root.client.productApi.listByProductNext(
-						this._nextLink,
-					);
+    public async createChildImpl(context: IProductTreeItemContext): Promise<ProductApiTreeItem> {
+        if (context.apiName) {
+            context.showCreatingTreeItem(context.apiName);
 
-		this._nextLink = productApisCollection.nextLink;
+            try {
+                const product = await this.root.client.productApi.createOrUpdate(this.root.resourceGroupName, this.root.serviceName, this.root.productName, context.apiName);
 
-		return this.createTreeItemsWithErrorHandling(
-			productApisCollection,
-			"invalidApiManagementProductApi",
-			async (api: ApiManagementModels.ApiContract) =>
-				new ProductApiTreeItem(this, api),
-			(api: ApiManagementModels.ApiContract) => {
-				return api.name;
-			},
-		);
-	}
-
-	public async createChildImpl(
-		context: IProductTreeItemContext,
-	): Promise<ProductApiTreeItem> {
-		if (context.apiName) {
-			context.showCreatingTreeItem(context.apiName);
-
-			try {
-				const product =
-					await this.root.client.productApi.createOrUpdate(
-						this.root.resourceGroupName,
-						this.root.serviceName,
-						this.root.productName,
-						context.apiName,
-					);
-
-				return new ProductApiTreeItem(this, product);
-			} catch (error) {
-				throw new Error(
-					processError(
-						error,
-						localize(
-							"addApiToProductFailed",
-							`Failed to add '${context.apiName}' to product '${this.root.productName}'.`,
-						),
-					),
-				);
-			}
-		} else {
-			throw Error(localize("", "Expected API name."));
-		}
-	}
+                return new ProductApiTreeItem(this, product, this.root);
+            } catch (error) {
+                throw new Error(processError(error, localize("addApiToProductFailed", `Failed to add '${context.apiName}' to product '${this.root.productName}'.`)));
+            }
+        } else {
+            throw Error(localize("", "Expected API name."));
+        }
+    }
 }

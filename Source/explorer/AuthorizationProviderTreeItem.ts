@@ -4,14 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ProgressLocation, window } from "vscode";
-import {
-	AzureParentTreeItem,
-	AzureTreeItem,
-	DialogResponses,
-	ISubscriptionContext,
-	UserCancelledError,
-} from "vscode-azureextensionui";
-
+import { AzExtParentTreeItem, AzExtTreeItem, DialogResponses, ISubscriptionContext, UserCancelledError } from "@microsoft/vscode-azext-utils";
 import { ApimService } from "../azure/apim/ApimService";
 import { IAuthorizationProviderContract } from "../azure/apim/contracts";
 import { localize } from "../localize";
@@ -22,129 +15,79 @@ import { AuthorizationTreeItem } from "./AuthorizationTreeItem";
 import { IAuthorizationProviderTreeRoot } from "./IAuthorizationProviderTreeRoot";
 import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
-export class AuthorizationProviderTreeItem extends AzureParentTreeItem<IAuthorizationProviderTreeRoot> {
-	public static contextValue: string =
-		"azureApiManagementAuthorizationProvider";
+export class AuthorizationProviderTreeItem extends AzExtParentTreeItem {
+    public static contextValue: string = 'azureApiManagementAuthorizationProvider';
+    public contextValue: string = AuthorizationProviderTreeItem.contextValue;
+    public readonly authorizationsTreeItem: AuthorizationsTreeItem;
+    private _label: string;
+    private _root: IAuthorizationProviderTreeRoot;
 
-	public contextValue: string = AuthorizationProviderTreeItem.contextValue;
+    constructor(
+        parent: AzExtParentTreeItem,
+        public readonly authorizationProviderContract: IAuthorizationProviderContract,
+        root: IServiceTreeRoot) {
+        super(parent);
+        this._label = nonNullProp(this.authorizationProviderContract, 'name');
+        this._root = this.createRoot(root);
 
-	public readonly authorizationsTreeItem: AuthorizationsTreeItem;
+        this.authorizationsTreeItem = new AuthorizationsTreeItem(this,this.root);
+    }
 
-	public readonly commandId: string =
-		"azureApiManagement.showArmAuthorizationProvider";
+    public get label(): string {
+        return this._label;
+    }
 
-	private _label: string;
+    public get root(): IAuthorizationProviderTreeRoot {
+        return this._root;
+    }
 
-	private _root: IAuthorizationProviderTreeRoot;
+    public get iconPath(): { light: string, dark: string } {
+        return treeUtils.getThemedIconPath('authorizationprovider');
+    }
 
-	constructor(
-		parent: AzureParentTreeItem,
-		public readonly authorizationProviderContract: IAuthorizationProviderContract,
-	) {
-		super(parent);
+    public get commandId(): string {
+        return 'azureApiManagement.showArmAuthorizationProvider';
+    }
 
-		this._label = nonNullProp(this.authorizationProviderContract, "name");
+    public hasMoreChildrenImpl(): boolean {
+        return false;
+    }
 
-		this._root = this.createRoot(parent.root);
+    public async loadMoreChildrenImpl(): Promise<AzExtTreeItem[]> {
+        return [this.authorizationsTreeItem];
+    }
 
-		this.authorizationsTreeItem = new AuthorizationsTreeItem(this);
-	}
+    public pickTreeItemImpl(expectedContextValues: (string | RegExp)[]): AzExtTreeItem | undefined {
+        for (const expectedContextValue of expectedContextValues) {
+            switch (expectedContextValue) {
+                case AuthorizationTreeItem.contextValue:
+                    return this.authorizationsTreeItem;
+            default:
+            }
+        }
+        return undefined;
+    }
 
-	public get label(): string {
-		return this._label;
-	}
+    public async deleteTreeItemImpl(): Promise<void> {
+        const message: string = localize("confirmDeleteAuthorizationProvider", `Are you sure you want to remove Authorization provider '${this.authorizationProviderContract.name}'?`);
+        const result = await window.showWarningMessage(message, { modal: true }, DialogResponses.deleteResponse, DialogResponses.cancel);
+        if (result === DialogResponses.deleteResponse) {
+            const deletingMessage: string = localize("removingAuthorizationProvider", `Removing Authorization provider "${this.authorizationProviderContract.name}".'`);
+            await window.withProgress({ location: ProgressLocation.Notification, title: deletingMessage }, async () => {
+                const apimService = new ApimService(this.root.credentials, this.root.environment.resourceManagerEndpointUrl, this.root.subscriptionId, this.root.resourceGroupName, this.root.serviceName);
+                await apimService.deleteAuthorizationProvider(this.root.authorizationProviderName);
+            });
+            // don't wait
+            window.showInformationMessage(localize("removedAuthorizationProvider", `Successfully removed Authorization provider "${this.authorizationProviderContract.name}".`));
 
-	public get root(): IAuthorizationProviderTreeRoot {
-		return this._root;
-	}
+        } else {
+            throw new UserCancelledError();
+        }
+    }
 
-	public get iconPath(): { light: string; dark: string } {
-		return treeUtils.getThemedIconPath("authorizationprovider");
-	}
-
-	public hasMoreChildrenImpl(): boolean {
-		return false;
-	}
-
-	public async loadMoreChildrenImpl(): Promise<
-		AzureTreeItem<IAuthorizationProviderTreeRoot>[]
-	> {
-		return [this.authorizationsTreeItem];
-	}
-
-	public pickTreeItemImpl(
-		expectedContextValues: (string | RegExp)[],
-	): AzureTreeItem<IAuthorizationProviderTreeRoot> | undefined {
-		for (const expectedContextValue of expectedContextValues) {
-			switch (expectedContextValue) {
-				case AuthorizationTreeItem.contextValue:
-					return this.authorizationsTreeItem;
-
-				default:
-			}
-		}
-
-		return undefined;
-	}
-
-	public async deleteTreeItemImpl(): Promise<void> {
-		const message: string = localize(
-			"confirmDeleteAuthorizationProvider",
-			`Are you sure you want to remove Authorization provider '${this.authorizationProviderContract.name}'?`,
-		);
-
-		const result = await window.showWarningMessage(
-			message,
-			{ modal: true },
-			DialogResponses.deleteResponse,
-			DialogResponses.cancel,
-		);
-
-		if (result === DialogResponses.deleteResponse) {
-			const deletingMessage: string = localize(
-				"removingAuthorizationProvider",
-				`Removing Authorization provider "${this.authorizationProviderContract.name}".'`,
-			);
-
-			await window.withProgress(
-				{
-					location: ProgressLocation.Notification,
-					title: deletingMessage,
-				},
-				async () => {
-					const apimService = new ApimService(
-						this.root.credentials,
-						this.root.environment.resourceManagerEndpointUrl,
-						this.root.subscriptionId,
-						this.root.resourceGroupName,
-						this.root.serviceName,
-					);
-
-					await apimService.deleteAuthorizationProvider(
-						this.root.authorizationProviderName,
-					);
-				},
-			);
-			// don't wait
-			window.showInformationMessage(
-				localize(
-					"removedAuthorizationProvider",
-					`Successfully removed Authorization provider "${this.authorizationProviderContract.name}".`,
-				),
-			);
-		} else {
-			throw new UserCancelledError();
-		}
-	}
-
-	private createRoot(
-		subRoot: ISubscriptionContext,
-	): IAuthorizationProviderTreeRoot {
-		return Object.assign({}, <IServiceTreeRoot>subRoot, {
-			authorizationProviderName: nonNullProp(
-				this.authorizationProviderContract,
-				"name",
-			),
-		});
-	}
+    private createRoot(subRoot: ISubscriptionContext): IAuthorizationProviderTreeRoot {
+        return Object.assign({}, <IServiceTreeRoot>subRoot, {
+            authorizationProviderName: nonNullProp(this.authorizationProviderContract, 'name')
+        });
+    }
 }

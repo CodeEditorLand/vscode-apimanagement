@@ -3,16 +3,9 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
+import { OperationContract } from "@azure/arm-apimanagement";
 import { ProgressLocation, window } from "vscode";
-import {
-	AzureParentTreeItem,
-	AzureTreeItem,
-	DialogResponses,
-	ISubscriptionContext,
-	UserCancelledError,
-} from "vscode-azureextensionui";
-
+import { AzExtParentTreeItem, AzExtTreeItem, DialogResponses, ISubscriptionContext, UserCancelledError } from "@microsoft/vscode-azext-utils";
 import { localize } from "../localize";
 import { OperationConsole } from "../operationConsole/OperationConsole";
 import { nonNullProp } from "../utils/nonNull";
@@ -21,120 +14,79 @@ import { IApiTreeRoot } from "./IApiTreeRoot";
 import { IOperationTreeRoot } from "./IOperationTreeRoot";
 import { OperationPolicyTreeItem } from "./OperationPolicyTreeItem";
 
-export class ApiOperationTreeItem extends AzureParentTreeItem<IOperationTreeRoot> {
-	public static contextValue: string = "azureApiManagementApiOperation";
+export class ApiOperationTreeItem extends AzExtParentTreeItem {
+    public static contextValue: string = 'azureApiManagementApiOperation';
+    public contextValue: string = ApiOperationTreeItem.contextValue;
+    public readonly policyTreeItem: OperationPolicyTreeItem;
 
-	public contextValue: string = ApiOperationTreeItem.contextValue;
+    private _name: string;
+    private _label: string;
 
-	public readonly commandId: string =
-		"azureApiManagement.showArmApiOperation";
+    public get root(): IOperationTreeRoot {
+        return this._root;
+    }
 
-	public readonly policyTreeItem: OperationPolicyTreeItem;
+    public get iconPath(): { light: string, dark: string } {
+        return treeUtils.getThemedIconPath('op');
+    }
 
-	private _name: string;
+    public get label() : string {
+        return this._label;
+    }
 
-	private _label: string;
+    public get id(): string {
+        return this._name;
+    }
 
-	public get root(): IOperationTreeRoot {
-		return this._root;
-	}
+    private _root: IOperationTreeRoot;
+    constructor(
+        parent: AzExtParentTreeItem,
+        public readonly operationContract: OperationContract,
+        root: IApiTreeRoot) {
+        super(parent);
 
-	public get iconPath(): { light: string; dark: string } {
-		return treeUtils.getThemedIconPath("op");
-	}
+        this._root = this.createRoot(root);
+        this.policyTreeItem = new OperationPolicyTreeItem(this, this.root);
 
-	public get label(): string {
-		return this._label;
-	}
+        this._label = `[${nonNullProp(this.operationContract, 'method')}] ${nonNullProp(this.operationContract, 'displayName')}`;
+        this._name = nonNullProp(this.operationContract, 'name');
+    }
 
-	public get id(): string {
-		return this._name;
-	}
+    public async loadMoreChildrenImpl(): Promise<AzExtTreeItem[]> {
+        return [this.policyTreeItem];
+    }
 
-	private _root: IOperationTreeRoot;
+    public hasMoreChildrenImpl(): boolean {
+        return false;
+    }
 
-	constructor(
-		parent: AzureParentTreeItem,
-		public readonly operationContract: ApiManagementModels.OperationContract,
-	) {
-		super(parent);
+    public async deleteTreeItemImpl() : Promise<void> {
+        const message: string = localize("confirmDeleteOperation", `Are you sure you want to delete operation '${this.root.opName}'?`);
+        const result = await window.showWarningMessage(message, { modal: true }, DialogResponses.deleteResponse, DialogResponses.cancel);
+        if (result === DialogResponses.deleteResponse) {
+            const deletingMessage: string = localize("", `Deleting operation "${this.root.opName}"...`);
+            await window.withProgress({ location: ProgressLocation.Notification, title: deletingMessage }, async () => {
+                await this.root.client.apiOperation.delete(this.root.resourceGroupName, this.root.serviceName, this.root.apiName, this.root.opName, '*');
+            });
+            // don't wait
+            window.showInformationMessage(localize("deletedOperation", `Successfully deleted API Operation "${this.root.opName}".`));
 
-		this._root = this.createRoot(parent.root);
+        } else {
+            throw new UserCancelledError();
+        }
+    }
 
-		this.policyTreeItem = new OperationPolicyTreeItem(this);
+    public async getOperationTestInfo(): Promise<string> {
+        return await new OperationConsole().buildRequestInfo(this.root);
+    }
 
-		this._label = `[${nonNullProp(this.operationContract, "method")}] ${nonNullProp(this.operationContract, "displayName")}`;
+    public async getOperationDebugInfo(): Promise<string> {
+        return await new OperationConsole().buildDebugRequestInfo(this.root);
+    }
 
-		this._name = nonNullProp(this.operationContract, "name");
-	}
-
-	public async loadMoreChildrenImpl(): Promise<
-		AzureTreeItem<IOperationTreeRoot>[]
-	> {
-		return [this.policyTreeItem];
-	}
-
-	public hasMoreChildrenImpl(): boolean {
-		return false;
-	}
-
-	public async deleteTreeItemImpl(): Promise<void> {
-		const message: string = localize(
-			"confirmDeleteOperation",
-			`Are you sure you want to delete operation '${this.root.opName}'?`,
-		);
-
-		const result = await window.showWarningMessage(
-			message,
-			{ modal: true },
-			DialogResponses.deleteResponse,
-			DialogResponses.cancel,
-		);
-
-		if (result === DialogResponses.deleteResponse) {
-			const deletingMessage: string = localize(
-				"",
-				`Deleting operation "${this.root.opName}"...`,
-			);
-
-			await window.withProgress(
-				{
-					location: ProgressLocation.Notification,
-					title: deletingMessage,
-				},
-				async () => {
-					await this.root.client.apiOperation.deleteMethod(
-						this.root.resourceGroupName,
-						this.root.serviceName,
-						this.root.apiName,
-						this.root.opName,
-						"*",
-					);
-				},
-			);
-			// don't wait
-			window.showInformationMessage(
-				localize(
-					"deletedOperation",
-					`Successfully deleted API "${this.root.apiName}".`,
-				),
-			);
-		} else {
-			throw new UserCancelledError();
-		}
-	}
-
-	public async getOperationTestInfo(): Promise<string> {
-		return await new OperationConsole().buildRequestInfo(this.root);
-	}
-
-	public async getOperationDebugInfo(): Promise<string> {
-		return await new OperationConsole().buildDebugRequestInfo(this.root);
-	}
-
-	private createRoot(subRoot: ISubscriptionContext): IOperationTreeRoot {
-		return Object.assign({}, <IApiTreeRoot>subRoot, {
-			opName: nonNullProp(this.operationContract, "name"),
-		});
-	}
+    private createRoot(subRoot: ISubscriptionContext): IOperationTreeRoot {
+        return Object.assign({}, <IApiTreeRoot>subRoot, {
+            opName : nonNullProp(this.operationContract, 'name')
+        });
+    }
 }

@@ -4,125 +4,76 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ProgressLocation, window } from "vscode";
-import {
-	AzureParentTreeItem,
-	AzureTreeItem,
-	DialogResponses,
-	ISubscriptionContext,
-	UserCancelledError,
-} from "vscode-azureextensionui";
-
+import { AzExtParentTreeItem, AzExtTreeItem, DialogResponses, ISubscriptionContext, UserCancelledError } from "@microsoft/vscode-azext-utils";
 import { ApimService } from "../azure/apim/ApimService";
 import { IAuthorizationAccessPolicyContract } from "../azure/apim/contracts";
 import { localize } from "../localize";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
 import { IAuthorizationAccessPolicyTreeRoot } from "./IAuthorizationAccessPolicyTreeRoot";
+import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
-export class AuthorizationAccessPolicyTreeItem extends AzureTreeItem<IAuthorizationAccessPolicyTreeRoot> {
-	public static contextValue: string =
-		"azureApiManagementAuthorizationAccessPolicy";
+export class AuthorizationAccessPolicyTreeItem extends AzExtTreeItem {
+    public static contextValue: string = 'azureApiManagementAuthorizationAccessPolicy';
+    public contextValue: string = AuthorizationAccessPolicyTreeItem.contextValue;
 
-	public contextValue: string =
-		AuthorizationAccessPolicyTreeItem.contextValue;
+    private _label: string;
+    private _root: IAuthorizationAccessPolicyTreeRoot;
 
-	public readonly commandId: string =
-		"azureApiManagement.showArmAuthorizationAccessPolicy";
+    constructor(
+        parent: AzExtParentTreeItem,
+        public readonly authorizationAccessPolicyContract: IAuthorizationAccessPolicyContract,
+        root: IServiceTreeRoot) {
+        super(parent);
 
-	private _label: string;
+        this._root = this.createRoot(root);
 
-	private _root: IAuthorizationAccessPolicyTreeRoot;
+        this._label = nonNullProp(authorizationAccessPolicyContract, 'name');
+    }
 
-	constructor(
-		parent: AzureParentTreeItem,
-		public readonly authorizationAccessPolicyContract: IAuthorizationAccessPolicyContract,
-	) {
-		super(parent);
+    public get label() : string {
+        return this._label;
+    }
 
-		this._root = this.createRoot(parent.root);
+    public get root(): IAuthorizationAccessPolicyTreeRoot {
+        return this._root;
+    }
 
-		this._label = nonNullProp(authorizationAccessPolicyContract, "name");
-	}
+    public get description(): string | undefined {
+        return this.authorizationAccessPolicyContract.properties.objectId;
+    }
 
-	public get label(): string {
-		return this._label;
-	}
+    public get iconPath(): { light: string, dark: string } {
+        return treeUtils.getThemedIconPath('accesspolicy');
+    }
 
-	public get root(): IAuthorizationAccessPolicyTreeRoot {
-		return this._root;
-	}
+    public get commandId(): string {
+        return 'azureApiManagement.showArmAuthorizationAccessPolicy';
+    }
 
-	public get description(): string | undefined {
-		return this.authorizationAccessPolicyContract.properties.objectId;
-	}
+    public async deleteTreeItemImpl(): Promise<void> {
+        const message: string = localize("confirmAccessPolicyRemove", `Are you sure you want to remove Access Policy '${this.authorizationAccessPolicyContract.name}' from Authorization '${this.root.authorizationName}'?`);
+        const result = await window.showWarningMessage(message, { modal: true }, DialogResponses.deleteResponse, DialogResponses.cancel);
+        if (result === DialogResponses.deleteResponse) {
+            const deletingMessage: string = localize("removingAuthorizationAccessPolicy", `Removing Access Policy "${this.authorizationAccessPolicyContract.name}" from Authorization '${this.root.authorizationName}.'`);
+            await window.withProgress({ location: ProgressLocation.Notification, title: deletingMessage }, async () => {
+                const apimService = new ApimService(this.root.credentials, this.root.environment.resourceManagerEndpointUrl, this.root.subscriptionId, this.root.resourceGroupName, this.root.serviceName);
+                await apimService.deleteAuthorizationAccessPolicy(
+                    this.root.authorizationProviderName,
+                    this.root.authorizationName,
+                    nonNullProp(this.authorizationAccessPolicyContract, "name"));
+            });
+            // don't wait
+            window.showInformationMessage(localize("removedAuthorizationAccessPolicy", `Successfully removed Access Policy "${this.authorizationAccessPolicyContract.name}" from Authorization '${this.root.authorizationName}'.`));
 
-	public get iconPath(): { light: string; dark: string } {
-		return treeUtils.getThemedIconPath("accesspolicy");
-	}
+        } else {
+            throw new UserCancelledError();
+        }
+    }
 
-	public async deleteTreeItemImpl(): Promise<void> {
-		const message: string = localize(
-			"confirmAccessPolicyRemove",
-			`Are you sure you want to remove Access Policy '${this.authorizationAccessPolicyContract.name}' from Authorization '${this.root.authorizationName}'?`,
-		);
-
-		const result = await window.showWarningMessage(
-			message,
-			{ modal: true },
-			DialogResponses.deleteResponse,
-			DialogResponses.cancel,
-		);
-
-		if (result === DialogResponses.deleteResponse) {
-			const deletingMessage: string = localize(
-				"removingAuthorizationAccessPolicy",
-				`Removing Access Policy "${this.authorizationAccessPolicyContract.name}" from Authorization '${this.root.authorizationName}.'`,
-			);
-
-			await window.withProgress(
-				{
-					location: ProgressLocation.Notification,
-					title: deletingMessage,
-				},
-				async () => {
-					const apimService = new ApimService(
-						this.root.credentials,
-						this.root.environment.resourceManagerEndpointUrl,
-						this.root.subscriptionId,
-						this.root.resourceGroupName,
-						this.root.serviceName,
-					);
-
-					await apimService.deleteAuthorizationAccessPolicy(
-						this.root.authorizationProviderName,
-						this.root.authorizationName,
-						nonNullProp(
-							this.authorizationAccessPolicyContract,
-							"name",
-						),
-					);
-				},
-			);
-			// don't wait
-			window.showInformationMessage(
-				localize(
-					"removedAuthorizationAccessPolicy",
-					`Successfully removed Access Policy "${this.authorizationAccessPolicyContract.name}" from Authorization '${this.root.authorizationName}'.`,
-				),
-			);
-		} else {
-			throw new UserCancelledError();
-		}
-	}
-
-	private createRoot(
-		subRoot: ISubscriptionContext,
-	): IAuthorizationAccessPolicyTreeRoot {
-		return Object.assign({}, <IAuthorizationAccessPolicyTreeRoot>subRoot, {
-			accessPolicyName: nonNullProp(
-				this.authorizationAccessPolicyContract,
-				"name",
-			),
-		});
-	}
+    private createRoot(subRoot: ISubscriptionContext): IAuthorizationAccessPolicyTreeRoot {
+        return Object.assign({}, <IAuthorizationAccessPolicyTreeRoot>subRoot, {
+            accessPolicyName: nonNullProp(this.authorizationAccessPolicyContract, 'name')
+        });
+    }
 }

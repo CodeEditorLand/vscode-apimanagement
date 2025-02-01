@@ -3,13 +3,8 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import {
-	AzureParentTreeItem,
-	AzureTreeItem,
-	ISubscriptionContext,
-} from "vscode-azureextensionui";
-
+import { ProductContract } from "@azure/arm-apimanagement";
+import { AzExtParentTreeItem, AzExtTreeItem, ISubscriptionContext } from "@microsoft/vscode-azext-utils";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
 import { IProductTreeRoot } from "./IProductTreeRoot";
@@ -18,61 +13,54 @@ import { ProductApisTreeItem } from "./ProductApisTreeItem";
 import { ProductPolicyTreeItem } from "./ProductPolicyTreeItem";
 import { ProductsTreeItem } from "./ProductsTreeItem";
 
-export class ProductTreeItem extends AzureParentTreeItem<IProductTreeRoot> {
-	public static contextValue: string = "azureApiManagementProductTreeItem";
+export class ProductTreeItem extends AzExtParentTreeItem {
+    public static contextValue: string = 'azureApiManagementProductTreeItem';
+    public contextValue: string = ProductTreeItem.contextValue;
+    public readonly policyTreeItem: ProductPolicyTreeItem;
+    public readonly productApisTreeItem: ProductApisTreeItem;
 
-	public contextValue: string = ProductTreeItem.contextValue;
+    private _label: string;
+    private _root: IProductTreeRoot;
 
-	public readonly commandId: string = "azureApiManagement.showArmProduct";
+    constructor(
+        parent: ProductsTreeItem,
+        public readonly productContract: ProductContract,
+        root: IServiceTreeRoot) {
+        super(parent);
+        this._label = nonNullProp(this.productContract, 'displayName');
+        this._root = this.createRoot(root);
 
-	public readonly policyTreeItem: ProductPolicyTreeItem;
+        this.productApisTreeItem = new ProductApisTreeItem(this, this.root);
+        this.policyTreeItem = new ProductPolicyTreeItem(this, this.root);
+    }
 
-	public readonly productApisTreeItem: ProductApisTreeItem;
+    public get label() : string {
+        return this._label;
+    }
 
-	private _label: string;
+    public get root(): IProductTreeRoot {
+        return this._root;
+    }
 
-	private _root: IProductTreeRoot;
+    public get iconPath(): { light: string, dark: string } {
+        return treeUtils.getThemedIconPath('product');
+    }
 
-	constructor(
-		parent: ProductsTreeItem,
-		public readonly productContract: ApiManagementModels.ProductContract,
-	) {
-		super(parent);
+    public hasMoreChildrenImpl(): boolean {
+        return false;
+    }
 
-		this._label = nonNullProp(this.productContract, "displayName");
+    public async loadMoreChildrenImpl(): Promise<AzExtTreeItem[]> {
+        return [this.productApisTreeItem, this.policyTreeItem];
+    }
 
-		this._root = this.createRoot(parent.root);
+    private createRoot(subRoot: ISubscriptionContext): IProductTreeRoot {
+        return Object.assign({}, <IServiceTreeRoot>subRoot, {
+            productName: nonNullProp(this.productContract, 'name')
+        });
+    }
 
-		this.productApisTreeItem = new ProductApisTreeItem(this);
-
-		this.policyTreeItem = new ProductPolicyTreeItem(this);
-	}
-
-	public get label(): string {
-		return this._label;
-	}
-
-	public get root(): IProductTreeRoot {
-		return this._root;
-	}
-
-	public get iconPath(): { light: string; dark: string } {
-		return treeUtils.getThemedIconPath("product");
-	}
-
-	public hasMoreChildrenImpl(): boolean {
-		return false;
-	}
-
-	public async loadMoreChildrenImpl(): Promise<
-		AzureTreeItem<IProductTreeRoot>[]
-	> {
-		return [this.productApisTreeItem, this.policyTreeItem];
-	}
-
-	private createRoot(subRoot: ISubscriptionContext): IProductTreeRoot {
-		return Object.assign({}, <IServiceTreeRoot>subRoot, {
-			productName: nonNullProp(this.productContract, "name"),
-		});
-	}
+    public get commandId(): string {
+        return 'azureApiManagement.showArmProduct';
+    }
 }

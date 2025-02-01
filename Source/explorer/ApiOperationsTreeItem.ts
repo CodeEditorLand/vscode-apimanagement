@@ -3,67 +3,52 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementModels } from "@azure/arm-apimanagement";
-import { AzExtTreeItem, AzureParentTreeItem } from "vscode-azureextensionui";
-
+import { OperationContract } from "@azure/arm-apimanagement";
+import { AzExtTreeItem, AzExtParentTreeItem } from "@microsoft/vscode-azext-utils";
+import { uiUtils } from "@microsoft/vscode-azext-azureutils";
 import { topItemCount } from "../constants";
 import { localize } from "../localize";
 import { treeUtils } from "../utils/treeUtils";
 import { ApiOperationTreeItem } from "./ApiOperationTreeItem";
 import { IApiTreeRoot } from "./IApiTreeRoot";
 
-export class ApiOperationsTreeItem extends AzureParentTreeItem<IApiTreeRoot> {
-	public get iconPath(): { light: string; dark: string } {
-		return treeUtils.getThemedIconPath("list");
-	}
+export class ApiOperationsTreeItem extends AzExtParentTreeItem {
+    public readonly root: IApiTreeRoot;
 
-	public static contextValue: string = "azureApiManagementOperations";
+    constructor(parent: AzExtParentTreeItem, root: IApiTreeRoot) {
+        super(parent);
+        this.root = root;
+    }
 
-	public label: string = "Operations";
+    public get iconPath(): { light: string, dark: string } {
+        return treeUtils.getThemedIconPath('list');
+    }
+    public static contextValue: string = 'azureApiManagementOperations';
+    public label: string = "Operations";
+    public contextValue: string = ApiOperationsTreeItem.contextValue;
+    public readonly childTypeLabel: string = localize('azureApiManagement.Operation', 'Operation');
+    private _nextLink: string | undefined;
 
-	public contextValue: string = ApiOperationsTreeItem.contextValue;
+    public hasMoreChildrenImpl(): boolean {
+        return this._nextLink !== undefined;
+    }
 
-	public readonly childTypeLabel: string = localize(
-		"azureApiManagement.Operation",
-		"Operation",
-	);
+    public async loadMoreChildrenImpl(clearCache: boolean): Promise<AzExtTreeItem[]> {
+        if (clearCache) {
+            this._nextLink = undefined;
+        }
 
-	private _nextLink: string | undefined;
+        let operationCollection: OperationContract[];
+        operationCollection = await uiUtils.listAllIterator(
+            this.root.client.apiOperation.listByApi(this.root.resourceGroupName, this.root.serviceName, this.root.apiName, { top: topItemCount })
+        );
 
-	public hasMoreChildrenImpl(): boolean {
-		return this._nextLink !== undefined;
-	}
-
-	public async loadMoreChildrenImpl(
-		clearCache: boolean,
-	): Promise<AzExtTreeItem[]> {
-		if (clearCache) {
-			this._nextLink = undefined;
-		}
-
-		const operationCollection: ApiManagementModels.OperationCollection =
-			this._nextLink === undefined
-				? await this.root.client.apiOperation.listByApi(
-						this.root.resourceGroupName,
-						this.root.serviceName,
-						this.root.apiName,
-						{ top: topItemCount },
-					)
-				: await this.root.client.apiOperation.listByApiNext(
-						this._nextLink,
-					);
-
-		// tslint:disable-next-line: no-unsafe-any
-		this._nextLink = operationCollection.nextLink;
-
-		return this.createTreeItemsWithErrorHandling(
-			operationCollection,
-			"invalidApiManagementApiOperation",
-			async (op: ApiManagementModels.OperationContract) =>
-				new ApiOperationTreeItem(this, op),
-			(op: ApiManagementModels.OperationContract) => {
-				return op.name;
-			},
-		);
-	}
+        return this.createTreeItemsWithErrorHandling(
+            operationCollection,
+            "invalidApiManagementApiOperation",
+            async (op: OperationContract) => new ApiOperationTreeItem(this, op, this.root),
+            (op: OperationContract) => {
+                return op.name;
+            });
+    }
 }

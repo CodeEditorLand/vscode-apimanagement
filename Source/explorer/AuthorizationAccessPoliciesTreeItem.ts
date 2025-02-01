@@ -3,148 +3,89 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
-	AzExtTreeItem,
-	AzureParentTreeItem,
-	ICreateChildImplContext,
-} from "vscode-azureextensionui";
-
+import { AzExtTreeItem, AzExtParentTreeItem, ICreateChildImplContext } from "@microsoft/vscode-azext-utils";
 import { ApimService } from "../azure/apim/ApimService";
-import {
-	IAuthorizationAccessPolicyContract,
-	IAuthorizationAccessPolicyPropertiesContract,
-} from "../azure/apim/contracts";
+import { IAuthorizationAccessPolicyContract, IAuthorizationAccessPolicyPropertiesContract } from "../azure/apim/contracts";
 import { localize } from "../localize";
 import { processError } from "../utils/errorUtil";
 import { treeUtils } from "../utils/treeUtils";
 import { AuthorizationAccessPolicyTreeItem } from "./AuthorizationAccessPolicyTreeItem";
 import { IAuthorizationTreeRoot } from "./IAuthorizationTreeRoot";
 
-export interface IAuthorizationAccessPolicyTreeItemContext
-	extends ICreateChildImplContext {
-	authorizationAccessPolicyName: string;
-
-	authorizationAccessPolicy: IAuthorizationAccessPolicyPropertiesContract;
+export interface IAuthorizationAccessPolicyTreeItemContext extends ICreateChildImplContext {
+    authorizationAccessPolicyName: string;
+    authorizationAccessPolicy: IAuthorizationAccessPolicyPropertiesContract;
 }
 
-export class AuthorizationAccessPoliciesTreeItem extends AzureParentTreeItem<IAuthorizationTreeRoot> {
-	public get iconPath(): { light: string; dark: string } {
-		return treeUtils.getThemedIconPath("list");
-	}
+export class AuthorizationAccessPoliciesTreeItem extends AzExtParentTreeItem {
+    public get iconPath(): { light: string, dark: string } {
+        return treeUtils.getThemedIconPath('list');
+    }
+    public static contextValue: string = 'azureApiManagementAuthorizationAccessPolicies';
+    public label: string = "Access policies";
+    public contextValue: string = AuthorizationAccessPoliciesTreeItem.contextValue;
+    public readonly childTypeLabel: string = localize('azureApiManagement.AuthorizationAccessPolicy', 'AuthorizationAccessPolicy');
+    private _nextLink: string | undefined;
+    public readonly root: IAuthorizationTreeRoot;
 
-	public static contextValue: string =
-		"azureApiManagementAuthorizationAccessPolicies";
+    constructor(parent: AzExtParentTreeItem, root: IAuthorizationTreeRoot) {
+        super(parent);
+        this.root = root;
+    }
 
-	public label: string = "Access policies";
+    public hasMoreChildrenImpl(): boolean {
+        return this._nextLink !== undefined;
+    }
 
-	public contextValue: string =
-		AuthorizationAccessPoliciesTreeItem.contextValue;
+    public async loadMoreChildrenImpl(clearCache: boolean): Promise<AzExtTreeItem[]> {
+        if (clearCache) {
+            this._nextLink = undefined;
+        }
 
-	public readonly childTypeLabel: string = localize(
-		"azureApiManagement.AuthorizationAccessPolicy",
-		"AuthorizationAccessPolicy",
-	);
+        const apimService = new ApimService(
+            this.root.credentials,
+            this.root.environment.resourceManagerEndpointUrl,
+            this.root.subscriptionId,
+            this.root.resourceGroupName,
+            this.root.serviceName);
 
-	private _nextLink: string | undefined;
+        const authorizationAccessPolicies: IAuthorizationAccessPolicyContract[] = await apimService.listAuthorizationAccessPolicies(
+            this.root.authorizationProviderName,
+            this.root.authorizationName);
 
-	public hasMoreChildrenImpl(): boolean {
-		return this._nextLink !== undefined;
-	}
+        return this.createTreeItemsWithErrorHandling(
+            authorizationAccessPolicies,
+            "invalidApiManagementAuthorizationAccessPolicy",
+            async (accessPolicy: IAuthorizationAccessPolicyContract) => new AuthorizationAccessPolicyTreeItem(this, accessPolicy, this.root),
+            (accessPolicy: IAuthorizationAccessPolicyContract) => {
+                return accessPolicy.name;
+            });
+    }
 
-	public async loadMoreChildrenImpl(
-		clearCache: boolean,
-	): Promise<AzExtTreeItem[]> {
-		if (clearCache) {
-			this._nextLink = undefined;
-		}
+    public async createChildImpl(context: IAuthorizationAccessPolicyTreeItemContext): Promise<AuthorizationAccessPolicyTreeItem> {
+        if (context.authorizationAccessPolicyName
+            && context.authorizationAccessPolicy !== undefined) {
+            const authorizationAccessPolicyName = context.authorizationAccessPolicyName;
+            context.showCreatingTreeItem(authorizationAccessPolicyName);
 
-		const apimService = new ApimService(
-			this.root.credentials,
-			this.root.environment.resourceManagerEndpointUrl,
-			this.root.subscriptionId,
-			this.root.resourceGroupName,
-			this.root.serviceName,
-		);
-
-		const authorizationAccessPolicies: IAuthorizationAccessPolicyContract[] =
-			await apimService.listAuthorizationAccessPolicies(
-				this.root.authorizationProviderName,
-				this.root.authorizationName,
-			);
-
-		return this.createTreeItemsWithErrorHandling(
-			authorizationAccessPolicies,
-			"invalidApiManagementAuthorizationAccessPolicy",
-			async (accessPolicy: IAuthorizationAccessPolicyContract) =>
-				new AuthorizationAccessPolicyTreeItem(this, accessPolicy),
-			(accessPolicy: IAuthorizationAccessPolicyContract) => {
-				return accessPolicy.name;
-			},
-		);
-	}
-
-	public async createChildImpl(
-		context: IAuthorizationAccessPolicyTreeItemContext,
-	): Promise<AuthorizationAccessPolicyTreeItem> {
-		if (
-			context.authorizationAccessPolicyName &&
-			context.authorizationAccessPolicy !== undefined
-		) {
-			const authorizationAccessPolicyName =
-				context.authorizationAccessPolicyName;
-
-			context.showCreatingTreeItem(authorizationAccessPolicyName);
-
-			try {
-				const apimService = new ApimService(
-					this.root.credentials,
-					this.root.environment.resourceManagerEndpointUrl,
-					this.root.subscriptionId,
-					this.root.resourceGroupName,
-					this.root.serviceName,
-				);
-
-				let authorizationAccessPolicy =
-					await apimService.getAuthorizationAccessPolicy(
-						this.root.authorizationProviderName,
-						this.root.authorizationName,
-						authorizationAccessPolicyName,
-					);
-
-				if (authorizationAccessPolicy === undefined) {
-					authorizationAccessPolicy =
-						await apimService.createAuthorizationAccessPolicy(
-							this.root.authorizationProviderName,
-							this.root.authorizationName,
-							authorizationAccessPolicyName,
-							context.authorizationAccessPolicy,
-						);
-
-					return new AuthorizationAccessPolicyTreeItem(
-						this,
-						authorizationAccessPolicy,
-					);
-				} else {
-					throw new Error(
-						localize(
-							"createAuthorizationAccessPolicy",
-							`Access policy '${authorizationAccessPolicyName}' already exists.`,
-						),
-					);
-				}
-			} catch (error) {
-				throw new Error(
-					processError(
-						error,
-						localize(
-							"createAuthorizationAccessPolicy",
-							`Failed to access policy '${authorizationAccessPolicyName}' to Authorization '${this.root.authorizationName}'.`,
-						),
-					),
-				);
-			}
-		} else {
-			throw Error("Expected Access Policy name.");
-		}
-	}
+            try {
+                const apimService = new ApimService(this.root.credentials, this.root.environment.resourceManagerEndpointUrl, this.root.subscriptionId, this.root.resourceGroupName, this.root.serviceName);
+                let authorizationAccessPolicy = await apimService.getAuthorizationAccessPolicy(this.root.authorizationProviderName, this.root.authorizationName, authorizationAccessPolicyName);
+                if (authorizationAccessPolicy === undefined) {
+                    authorizationAccessPolicy = await apimService.createAuthorizationAccessPolicy(
+                        this.root.authorizationProviderName,
+                        this.root.authorizationName,
+                        authorizationAccessPolicyName,
+                        context.authorizationAccessPolicy);
+                    return new AuthorizationAccessPolicyTreeItem(this, authorizationAccessPolicy, this.root);
+                } else {
+                    throw new Error(localize("createAuthorizationAccessPolicy", `Access policy '${authorizationAccessPolicyName}' already exists.`));
+                }
+            } catch (error) {
+                throw new Error(processError(error, localize("createAuthorizationAccessPolicy", `Failed to access policy '${authorizationAccessPolicyName}' to Authorization '${this.root.authorizationName}'.`)));
+            }
+        } else {
+            throw Error("Expected Access Policy name.");
+        }
+    }
 }

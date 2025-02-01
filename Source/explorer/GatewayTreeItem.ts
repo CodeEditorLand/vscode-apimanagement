@@ -3,12 +3,7 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
-	AzureParentTreeItem,
-	AzureTreeItem,
-	ISubscriptionContext,
-} from "vscode-azureextensionui";
-
+import { AzExtParentTreeItem, AzExtTreeItem, ISubscriptionContext } from "@microsoft/vscode-azext-utils";
 import { IGatewayContract } from "../azure/apim/contracts";
 import { nonNullProp } from "../utils/nonNull";
 import { treeUtils } from "../utils/treeUtils";
@@ -17,55 +12,48 @@ import { GatewaysTreeItem } from "./GatewaysTreeItem";
 import { IGatewayTreeRoot } from "./IGatewayTreeRoot";
 import { IServiceTreeRoot } from "./IServiceTreeRoot";
 
-export class GatewayTreeItem extends AzureParentTreeItem<IGatewayTreeRoot> {
-	public static contextValue: string = "azureApiManagementGatewayTreeItem";
+export class GatewayTreeItem extends AzExtParentTreeItem {
+    public static contextValue: string = 'azureApiManagementGatewayTreeItem';
+    public contextValue: string = GatewayTreeItem.contextValue;
+    public readonly gatewayApisTreeItem: GatewayApisTreeItem;
 
-	public contextValue: string = GatewayTreeItem.contextValue;
+    private _label: string;
+    private _root: IGatewayTreeRoot;
 
-	public readonly gatewayApisTreeItem: GatewayApisTreeItem;
+    constructor(
+        parent: GatewaysTreeItem,
+        public readonly gatewayContract: IGatewayContract,
+        root: IServiceTreeRoot) {
+        super(parent);
+        this._label = nonNullProp(this.gatewayContract, 'name');
+        this._root = this.createRoot(root);
 
-	private _label: string;
+        this.gatewayApisTreeItem = new GatewayApisTreeItem(this, this.root);
+    }
 
-	private _root: IGatewayTreeRoot;
+    public get label() : string {
+        return this._label;
+    }
 
-	constructor(
-		parent: GatewaysTreeItem,
-		public readonly gatewayContract: IGatewayContract,
-	) {
-		super(parent);
+    public get root(): IGatewayTreeRoot {
+        return this._root;
+    }
 
-		this._label = nonNullProp(this.gatewayContract, "name");
+    public get iconPath(): { light: string, dark: string } {
+        return treeUtils.getThemedIconPath('gateway');
+    }
 
-		this._root = this.createRoot(parent.root);
+    public hasMoreChildrenImpl(): boolean {
+        return false;
+    }
 
-		this.gatewayApisTreeItem = new GatewayApisTreeItem(this);
-	}
+    public async loadMoreChildrenImpl(): Promise<AzExtTreeItem[]> {
+        return [this.gatewayApisTreeItem];
+    }
 
-	public get label(): string {
-		return this._label;
-	}
-
-	public get root(): IGatewayTreeRoot {
-		return this._root;
-	}
-
-	public get iconPath(): { light: string; dark: string } {
-		return treeUtils.getThemedIconPath("gateway");
-	}
-
-	public hasMoreChildrenImpl(): boolean {
-		return false;
-	}
-
-	public async loadMoreChildrenImpl(): Promise<
-		AzureTreeItem<IGatewayTreeRoot>[]
-	> {
-		return [this.gatewayApisTreeItem];
-	}
-
-	private createRoot(subRoot: ISubscriptionContext): IGatewayTreeRoot {
-		return Object.assign({}, <IServiceTreeRoot>subRoot, {
-			gatewayName: nonNullProp(this.gatewayContract, "name"),
-		});
-	}
+    private createRoot(subRoot: ISubscriptionContext): IGatewayTreeRoot {
+        return Object.assign({}, <IServiceTreeRoot>subRoot, {
+            gatewayName: nonNullProp(this.gatewayContract, 'name')
+        });
+    }
 }
