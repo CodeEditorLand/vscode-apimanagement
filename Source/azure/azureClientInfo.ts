@@ -4,12 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { Environment } from "@azure/ms-rest-azure-env";
-import { TokenCredentialsBase } from "@azure/ms-rest-nodeauth";
+import { AzExtServiceClientCredentials } from "@microsoft/vscode-azext-utils";
 
 export interface IAzureClientInfo {
-	credentials: TokenCredentialsBase;
-
-	subscriptionId: string;
-
-	environment: Environment;
+    credentials: AzExtServiceClientCredentials;
+    subscriptionId: string;
+    environment: Environment;
 }

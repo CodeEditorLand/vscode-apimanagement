@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ApiManagementClient } from "@azure/arm-apimanagement";
-import { ApiManagementServiceResource } from "@azure/arm-apimanagement/src/models";
-import { IResourceGroupWizardContext } from "vscode-azureextensionui";
+import { ApiManagementClient } from '@azure/arm-apimanagement';
+import { ApiManagementServiceResource } from '@azure/arm-apimanagement/src/models';
+import { IResourceGroupWizardContext } from '@microsoft/vscode-azext-azureutils';
 
 export interface IServiceWizardContext extends IResourceGroupWizardContext {
 	client: ApiManagementClient;
