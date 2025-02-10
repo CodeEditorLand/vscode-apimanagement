@@ -771,28 +771,28 @@
 		"onCommand:azureApiManagement.showArmAuthorizationAccessPolicy"
 	],
 	"dependencies": {
-		"@types/xml": "^1.0.4",
-		"adal-node": "^0.2.2",
+		"@types/xml": "^1.0.11",
+		"adal-node": "^0.2.4",
 		"await-notify": "1.0.1",
 		"decompress": "^4.2.1",
-		"fs-extra": "^4.0.2",
+		"fs-extra": "^11.3.0",
 		"guid-typescript": "^1.0.9",
-		"opn": "^5.3.0",
+		"opn": "^6.0.0",
 		"request": "^2.88.2",
-		"request-promise": "^4.2.5",
-		"request-promise-native": "^1.0.8",
-		"swagger-parser": "^6.0.5",
-		"ws": "^7.4.6",
-		"xregexp": "^4.3.0"
+		"request-promise": "^4.2.6",
+		"request-promise-native": "^1.0.9",
+		"swagger-parser": "^10.0.3",
+		"ws": "^8.18.0",
+		"xregexp": "^5.1.1"
 	},
 	"devDependencies": {
-		"@types/fs-extra": "^4.0.3",
-		"@types/node": "^8.10.59",
-		"@types/request": "^2.48.4",
-		"@types/request-promise": "^4.1.46",
-		"@types/request-promise-native": "^1.0.17",
-		"@types/swagger-parser": "^4.0.3",
-		"@types/ws": "^6.0.4"
+		"@types/fs-extra": "^11.0.4",
+		"@types/node": "^22.13.1",
+		"@types/request": "^2.48.12",
+		"@types/request-promise": "^4.1.51",
+		"@types/request-promise-native": "^1.0.21",
+		"@types/swagger-parser": "^7.0.1",
+		"@types/ws": "^8.5.14"
 	},
 	"extensionDependencies": [
 		"humao.rest-client",
